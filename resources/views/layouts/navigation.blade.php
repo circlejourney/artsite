@@ -1,20 +1,21 @@
 <nav class="p-2">
-    <div class="nav-left d-flex justify-content-center">
+    <div class="nav-left">
         <a href="#nav-menu" class="menu-toggle" data-toggle="collapse"><i class="fa fa-bars"></i></a>
         <a href="/" class="logo">Logo</a>
-        <form class="search-form p-1" method="get" action="">
-            <button>
-                <i class="fa fa-magnifying-glass"></i>
-            </button>
-            <input type="text" name="search" placeholder="Search">
-        </form>
+		<div class="d-none d-lg-block">
+			@include("components.search-form")
+		</div>
 
         <a class="nav-button text-uppercase" href="#">
             <i class="nav-button-icon fa fa-arrow-up-from-bracket"></i>
-            <span class="nav-button-label">Submit</span>
+            <span class="nav-button-label d-none d-lg-flex">Submit</span>
         </a>
+
         <div class="collapse-container">
             <div class="collapse" id="nav-menu">
+				<div class="menu-form-container d-lg-none">
+					@include("components.search-form")
+				</div>
                 @if(Auth::user())
 
                     <a class="menu-item" href="/{{ Auth::user()->name }}">{{ Auth::user()->name }}</a>

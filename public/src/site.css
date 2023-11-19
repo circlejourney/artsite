@@ -35,11 +35,11 @@ body {
 
 /* NAVIGATION */
 nav {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  position: sticky;
   width: 100%;
   background-color: #d9d9d9;
   box-sizing: border-box;
@@ -57,6 +57,16 @@ nav .nav-left, nav .nav-right {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.8rem;
+  justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  nav .nav-right {
+    justify-content: flex-end;
+  }
+  nav .nav-left {
+    flex-basis: 60%;
+    justify-content: flex-start;
+  }
 }
 nav .search-form, nav .nav-button, nav .menu-toggle-circle, nav .menu-toggle {
   font-size: 16pt;
@@ -83,6 +93,7 @@ nav .search-form, nav .nav-button {
 nav .nav-button {
   padding-left: 1.2rem;
   padding-right: 1.2rem;
+  min-height: 2em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,13 +105,20 @@ nav .nav-button .nav-button-label:not(:first-child) {
   margin-left: 0.8rem;
 }
 nav .search-form {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+@media screen and (max-width: 768px) {
+  nav .search-form {
+    width: calc(100% - 3rem);
+  }
+}
 nav .search-form input {
   border: none;
   font-size: 14pt;
+  width: 100%;
 }
 nav .search-form button {
   background: none;
@@ -123,22 +141,32 @@ nav .logo {
   font-weight: bold;
   display: inline-block;
 }
+@media screen and (max-width: 768px) {
+  nav .logo {
+    display: none;
+  }
+}
 nav .menu-item {
   display: block;
   padding: 0.2rem;
+}
+nav .menu-form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 main {
   margin: 0 auto;
   background-color: white;
   flex-grow: 1;
-  max-width: 1200px;
+  width: 1200px;
   /* PROFILE */
   /* EDIT PROFILE */
 }
-@media screen and (min-width: 1200px) {
+@media screen and (max-width: 768px) {
   main {
-    width: 1200px;
+    width: 100vw;
   }
 }
 main .profile-banner {
@@ -151,6 +179,8 @@ main .profile-banner {
 }
 main .profile-info {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   padding: 0 3rem 1rem;
 }
 main .profile-info .profile-details {

@@ -72,9 +72,9 @@ body {
 
 /* NAVIGATION */
 nav {
+	position: relative;
 	@include flex-wrap(row);
     align-items: center;
-    position: sticky;
     width: 100%;
     background-color: $base;
 	box-sizing: border-box;
@@ -91,12 +91,24 @@ nav {
 
     %nav-section {
         @include flex-wrap(row);
+		gap: 0.8rem;
+		justify-content: center;
     }
 
-    .nav-left, .nav-right {
+    .nav-right {
         @extend %nav-section;
-        gap: 0.8rem;
+		@include screen-sm {
+			justify-content: flex-end;
+		}
     }
+
+	.nav-left {
+        @extend %nav-section;
+		@include screen-sm {
+			flex-basis: 60%;
+			justify-content: flex-start;
+		}
+	}
     
     %nav-block {
         font-size: 16pt;
@@ -128,6 +140,7 @@ nav {
         @extend %nav-button;
         padding-left: $button-padding;
         padding-right: $button-padding;
+		min-height: 2em;
 		@include flex-centre();
 
         .nav-button-label {
@@ -140,11 +153,16 @@ nav {
 
     .search-form {
         @extend %nav-button;
+		height: 100%;
 		@include flex-centre();
+		@include screen-sm {
+			width: calc(100% - 3rem);
+		}
         
         input {
             border: none;
             font-size: 14pt;
+			width: 100%;
         }
     }
     
@@ -171,22 +189,30 @@ nav {
         text-transform: uppercase;
         font-weight: bold;
         display: inline-block;
+
+		@include screen-sm {
+			display: none;
+		}
     }
     
     .menu-item {
         display: block;
         padding: $button-padding;
     }
+
+	.menu-form-container {
+		@include flex-centre;
+	}
 }
 
 main {
     margin: 0 auto;
 	background-color: $main-bg;
 	flex-grow: 1;
-	max-width: 1200px;
+	width: 1200px;
 
-	@include screen-lg {
-		width: 1200px;
+	@include screen-sm {
+		width: 100vw;
 	}
 
 	/* PROFILE */
@@ -201,7 +227,7 @@ main {
     }
 
     .profile-info {
-        display: flex;
+        @include flex-wrap(row);
 		padding: 0 $profile-gap $profile-padding;
 
         .profile-details {
