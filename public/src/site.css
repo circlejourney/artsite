@@ -1,0 +1,147 @@
+body {
+  font-family: "Lato";
+}
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 13pt;
+  }
+}
+
+/* GLOBAL STYLES */
+h1 {
+  margin-top: 2rem;
+}
+
+.button {
+  background-color: #d9d9d9;
+  height: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  min-width: 10rem;
+}
+
+/* NAVIGATION */
+nav {
+  position: sticky;
+  width: 100vw;
+  background-color: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+nav a {
+  color: black;
+}
+nav a:hover, nav a:active {
+  color: black;
+  text-decoration: none;
+}
+nav .nav-left, nav .nav-right {
+  display: flex;
+  gap: 0.8rem;
+}
+nav .search-form, nav .nav-button, nav .menu-toggle-circle, nav .menu-toggle {
+  font-size: 16pt;
+  padding: 0.2rem;
+  border-radius: 0.6rem;
+}
+nav .menu-toggle {
+  display: flex;
+  align-items: center;
+}
+nav .menu-toggle-circle {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 100%;
+}
+nav .search-form, nav .nav-button {
+  background-color: white;
+}
+nav .nav-button {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+nav .nav-button .nav-button-label {
+  font-size: 13pt;
+}
+nav .nav-button .nav-button-label:not(:first-child) {
+  margin-left: 0.8rem;
+}
+nav .search-form {
+  display: flex;
+  align-items: center;
+}
+nav .search-form input {
+  border: none;
+  font-size: 14pt;
+}
+nav .search-form button {
+  background: none;
+  border: none;
+}
+nav .collapse-container {
+  position: absolute !important;
+  width: 100%;
+  left: 0;
+  top: 100%;
+  background-color: #d9d9d9;
+}
+nav .collapse-container .collapse.show, nav .collapse-container .collapse.collapsing {
+  justify-content: space-around;
+}
+nav .logo {
+  padding: 0 1rem;
+  font-size: 24pt;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: inline-block;
+}
+nav .menu-item {
+  display: block;
+  padding: 0.2rem;
+}
+
+main {
+  padding: 0 6rem;
+  max-width: 1130px;
+  margin: 0 auto;
+}
+
+.profile .profile-banner {
+  width: 100%;
+  height: 240px;
+}
+.profile .profile-info {
+  display: flex;
+}
+.profile .profile-info .display-name {
+  font-size: 18pt;
+}
+.profile .profile-info .profile-details {
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.profile .profile-avatar {
+  width: 150px;
+  height: 150px;
+  background-color: #d9d9d9;
+  margin-top: -75px;
+  margin-left: 30px;
+  border-radius: 0.6rem;
+}
+.profile .profile-interact {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
