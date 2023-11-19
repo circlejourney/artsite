@@ -7,7 +7,7 @@
         <div class="profile-banner" style="background-image: url(/images/defaultbanner.png)"></div>
         
         <div class="profile-info">
-            <img class="profile-avatar" src="{{ $user->avatar ?? '/images/user.png' }}">
+            <img class="profile-avatar" src="{{ $user->avatar_url ?? '/images/user.png' }}">
             <div class="profile-details">
                 <div class="display-name">{{ $user->display_name }}</div>
                 <div class="display-username">{{ "@" . $user->name }}</div>

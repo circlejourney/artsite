@@ -58,8 +58,9 @@
 		<h1>Edit Profile HTML</h1>
 		
 		<h2>Avatar</h2>
-		<img class="image-preview" src="{{ old("avatar", $user->avatar) ?? '/images/user.png' }}">
+		<img class="image-preview" src="{{ old("avatar", $user->avatar_url) ?? '/images/user.png' }}">
 
+		<h2>Profile HTML</h2>
 		<form method="POST" enctype="multipart/form-data">
 			@csrf
 			@method("PATCH")
@@ -69,7 +70,5 @@
 			<button class="button-pill" onclick="beforePost()">Update</button>
 		</form>
 	</div>
-	
-	<h2 class="px-4">Preview</h2>
 	<div class="profile-custom customised"></div>
 @endsection

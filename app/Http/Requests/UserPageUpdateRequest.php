@@ -23,6 +23,7 @@ class UserPageUpdateRequest extends FormRequest
     {
         return [
             'profile_html' => ['string'],
+			'avatar' => ['mimes:jpg,jpeg,png,gif']
         ];
     }
 }

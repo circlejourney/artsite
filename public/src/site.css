@@ -162,7 +162,6 @@ main .profile-info .display-name {
   font-size: 18pt;
 }
 main .profile-avatar {
-  width: 150px;
   height: 150px;
   background-color: #d9d9d9;
   margin-top: -75px;
