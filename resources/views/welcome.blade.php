@@ -5,6 +5,7 @@
 @push("metadescription"){{ "A cool art site with groups and more." }}@endpush
 
 @section("body")
+<div class="padded">
     <h1>Art Site</h1>
     <p>Welcome to the art site homepage!</p>
     
@@ -13,5 +14,5 @@
         <a href="/login">Log in or register</a>
     </p>
     @endif
-
+</div>
 @endsection

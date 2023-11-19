@@ -22,7 +22,7 @@ class UserPageUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profilehtml' => ['string'],
+            'profile_html' => ['string'],
         ];
     }
 }

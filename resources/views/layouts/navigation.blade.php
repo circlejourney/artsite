@@ -18,6 +18,7 @@
                 @if(Auth::user())
 
                     <a class="menu-item" href="/{{ Auth::user()->name }}">{{ Auth::user()->name }}</a>
+					<a class="menu-item" href="{{route('profile.html.edit')}}">Edit profile</a>
                     <a class="menu-item" href="{{route('profile.edit')}}">Settings</a>
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
