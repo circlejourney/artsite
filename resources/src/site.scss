@@ -4,7 +4,7 @@ $form-input-bg: white;
 
 @mixin screen-sm {
     @media screen and (max-width: 768px) {
-      @content;
+    	@content;
     }
 }
 
@@ -35,9 +35,10 @@ h1 {
 /* NAVIGATION */
 nav {
     position: sticky;
-    width: 100vw;
+    width: 100%;
     background-color: $base;
     display: flex;
+	box-sizing: border-box;
     align-items: center;
     justify-content: space-between;
     

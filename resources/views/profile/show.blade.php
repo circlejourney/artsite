@@ -3,6 +3,7 @@
 @push("metatitle"){{ "Display Name" }}@endpush
 
 @section('body')
+	@isset($user)
     <div class="profile">
         <div class="profile-banner" style="background-image: url(/images/defaultbanner.png)"></div>
         
@@ -17,4 +18,7 @@
             </div>
         </div>
     </div>
+	@else
+	User does not exist.
+	@endif
 @endsection
