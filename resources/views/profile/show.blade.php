@@ -45,9 +45,9 @@
 		</ul>
 
 		<div class="profile-highlight">
-			<img class="" src="https://via.placeholder.com/300">
-			<img src="https://via.placeholder.com/300">
-			<img src="https://via.placeholder.com/300">
+			<img class="" src="/images/300.png">
+			<img src="/images/300.png">
+			<img src="/images/300.png">
 		</div>
 		
 		<div class="profile-custom @if($user->customised){{ "customised" }}@endif">
