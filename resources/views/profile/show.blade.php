@@ -1,6 +1,6 @@
 @extends("layouts.site")
 
-@push("metatitle"){{ "Display Name" }}@endpush
+@push("metatitle"){{ $user->display_name }}@endpush
 
 @section('body')
 	@isset($user)

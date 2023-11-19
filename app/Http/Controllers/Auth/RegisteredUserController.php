@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:'.User::class],
+            'name' => ['required', 'string', 'max:255', 'unique:'.User::class, 'regex:/^[\w-]*$/'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -49,4 +49,8 @@ class RegisteredUserController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+	public function messages() {
+		return [ 'name.regex' => "Username should contain only alphanumeric characters and dashes." ];
+	}
 }
