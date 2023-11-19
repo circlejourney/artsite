@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string("avatar")->nullable();
+			$table->string("profilehtml")->nullable();
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn("avatar");
+			if(Schema::hasColumn("users", "avatar")) $table->dropColumn("avatar");
+			if(Schema::hasColumn("users", "profilehtml")) $table->dropColumn("profilehtml");
         });
     }
 };

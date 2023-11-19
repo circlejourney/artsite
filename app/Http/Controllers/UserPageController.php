@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserProfileController extends Controller
+class UserPageController extends Controller
 {
     public function show(string $username) {
         $user = User::where("name", $username)->first();
