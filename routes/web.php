@@ -21,7 +21,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+	Route::get('/profile/delete', function(){
+		return view("profile.delete");
+	})->name('profile.destroy');
+    Route::delete('/profile/delete', [ProfileController::class, 'destroy']);
 	Route::get("/profile/customise", [UserPageController::class, 'edit'])->name('profile.html.edit');
 	Route::patch("/profile/customise", [UserPageController::class, 'update']);
 });

@@ -1,7 +1,5 @@
 <?php namespace App\Services;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Image;
 
 class UploadService {
     public function upload($file, $target_folder) {
@@ -50,14 +48,6 @@ class UploadService {
         $imagefunc($destination_image_blob, $imagepath);
         
         return $imagepath;
-		/*$imagepath = $relative_path;
-		error_log($imagepath);
-		$img = Image::make($imagepath);
-		$img->resize(400, 400, function ($constraint) {
-			$constraint->aspectRatio();
-			$constraint->upsize();
-		});
-		$img->save($imagepath);*/
 	}
     
     public function generate_thumbnail($imagepath, $target_folder) {

@@ -32,6 +32,12 @@ $main-width: 1200px;
 	justify-content: center;
 }
 
+@mixin inline-flex-centre {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
 body {
     font-family: "Lato";
 	background: $site-bg;
@@ -49,13 +55,14 @@ body {
     background-color: $base;
     height: 2rem;
     border-radius: 1rem;
-    @include flex-centre();
+	@include inline-flex-centre();
     color: black;
 }
 
 .button-pill {
 	@extend %button;
 	min-width: 10rem;
+	border: none;
 }
 
 .button-circle {

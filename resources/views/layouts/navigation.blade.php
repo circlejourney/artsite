@@ -43,7 +43,7 @@
     </div>
 
     <div class="nav-right">
-        <div class="menu-toggle-circle"><i class="far fa-fw fa-bell"></i></div>
-        <div class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></div>
+        <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-bell"></i></a>
+        <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></a>
     </div>
 </nav>
