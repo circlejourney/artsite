@@ -1,5 +1,6 @@
 $border-radius: 0.6rem;
 $base: #d9d9d9;
+$base-highlight: #eee;
 $site-bg: #eee;
 $main-bg: white;
 $light-bg: #f5f5f5;
@@ -63,6 +64,11 @@ body {
 	@extend %button;
 	min-width: 10rem;
 	border: none;
+	&:hover {
+		text-decoration: none;
+		color: initial;
+		background-color: $base-highlight;
+	}
 }
 
 .button-circle {

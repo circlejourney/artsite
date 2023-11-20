@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('artwork_user', function (Blueprint $table) {
-			$table->foreign('user_id')->references('id')
-				->on('users')->onDelete('cascade');
-			$table->foreign('artwork_id')->references('id')
-				->on('artworks')->onDelete('cascade');
+        Schema::table('artworks', function (Blueprint $table) {
+            $table->string("path")->unique()->change();
         });
     }
 
@@ -24,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('artwork_user', function (Blueprint $table) {
+        Schema::table('artworks', function (Blueprint $table) {
             //
         });
     }

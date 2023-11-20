@@ -50,49 +50,13 @@ class UploadService {
         return $imagepath;
 	}
     
-    public function generate_thumbnail($imagepath, $target_folder) {
-        $maxsize = config("services.fileupload.thumbnail_max_size");
-        error_log($maxsize);
-
-        if(!$imagesize = getimagesize($imagepath) ) {
-            return false;
-        };
-
-        $hwratio = $imagesize[1] / $imagesize[0];
-        $scaleH = $imagesize[1] > $imagesize[0] ? $maxsize : $maxsize * $hwratio;
-        $scaleW = $imagesize[0] > $imagesize[1] ? $maxsize : $maxsize / $hwratio;
-        preg_match("/([^\/\\\]+)\.[A_Za-z]{3,4}$/", $imagepath, $matches);
-        $filename = $matches[1]."-thumb.png";
-        $target_path = $target_folder . "/" . $filename;
-
-        if($imagesize[1] <= $maxsize && $imagesize[0] <= $maxsize) {
-            copy($imagepath, $target_path);
-            return $target_path;
-        }
-
-        $format = explode("/", $imagesize["mime"])[1];
-        $imagecreatefunc = "imagecreatefrom".$format;
-        
-        $source_image_blob = $imagecreatefunc($imagepath);
-        $destination_image_blob = imagecreatetruecolor($scaleW, $scaleH);
-        imagealphablending($destination_image_blob, false);
-        imagesavealpha($destination_image_blob, true);
-        $clear = imagecolorallocatealpha($destination_image_blob, 255, 255, 255, 127);
-        imagefilledrectangle($destination_image_blob, 0, 0, $scaleW, $scaleH, $clear);
-        
-        imagecopyresampled( $destination_image_blob, $source_image_blob,
-            0, 0,
-            0, 0,
-            $scaleW, $scaleH,
-            $imagesize[0], $imagesize[1]
-        );
-        
-        if(file_exists(realpath($target_path))) {
-            unlink(realpath($target_path));
-        }
-
-        imagepng($destination_image_blob, $target_path);
-        
-        return $target_path;
+    public function generate_thumbnail($imagepath, $target_path, $maxsize) {
+		$mime = explode("/", Storage::mimeType($imagepath))[1];
+		$basename = basename($imagepath, ".$mime");
+		$thumbpath = "$target_path/$basename"."_thumb.$mime";
+		error_log($thumbpath);
+		Storage::copy($imagepath, $thumbpath);
+		$this->resizeToFit($thumbpath, $maxsize);
+		return $thumbpath;
     }
 }

@@ -13,13 +13,19 @@ class Artwork extends Model
 
     protected $fillable = [
         'title',
-        'caption'
+        'caption',
+		'images',
+		'path'
+    ];
+
+	protected $casts = [
+        'images' => 'array'
     ];
 
 	/**
 	 * Get the users (creators) of the artwork
 	 */
-	public function artworks(): BelongsToMany {
+	public function users(): BelongsToMany {
 		return $this->belongsToMany(User::class);
 	}
 }

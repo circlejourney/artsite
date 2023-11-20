@@ -28,6 +28,11 @@ body {
   min-width: 10rem;
   border: none;
 }
+.button-pill:hover {
+  text-decoration: none;
+  color: initial;
+  background-color: #eee;
+}
 
 .button-circle {
   width: 2rem;

@@ -6,7 +6,7 @@
 			@include("components.search-form")
 		</div>
 
-        <a class="nav-button text-uppercase" href="#">
+        <a class="nav-button text-uppercase" href="/works/new">
             <i class="nav-button-icon fa fa-arrow-up-from-bracket"></i>
             <span class="nav-button-label d-none d-lg-flex">Submit</span>
         </a>

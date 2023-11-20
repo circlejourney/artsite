@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserPageController;
+use App\Http\Controllers\ArtworkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,10 +28,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete', [ProfileController::class, 'destroy']);
 	Route::get("/profile/customise", [UserPageController::class, 'edit'])->name('profile.html.edit');
 	Route::patch("/profile/customise", [UserPageController::class, 'update']);
+	
+	Route::get("/works/new", [ArtworkController::class, 'create'])->name('art.create');
+	Route::post("/works/new", [ArtworkController::class, 'store']);
+	Route::get("/works/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
+	Route::delete("/works/{path}/delete", [ArtworkController::class, 'delete']);
+
 });
 
 require __DIR__.'/auth.php';
 
-Route::get("/art/{id}", [UserPageController::class, 'show']);
-
-Route::get("/{username}", [UserPageController::class, 'show']);
+Route::get("/works/{path}", [ArtworkController::class, 'show'])->name("art");
+Route::get("/{username}", [UserPageController::class, 'show'])->name('user');
