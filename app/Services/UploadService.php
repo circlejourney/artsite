@@ -52,9 +52,8 @@ class UploadService {
     
     public function generate_thumbnail($imagepath, $target_path, $maxsize) {
 		$mime = explode("/", Storage::mimeType($imagepath))[1];
-		$basename = basename($imagepath, ".$mime");
+		$basename = explode(".", basename($imagepath))[0];
 		$thumbpath = "$target_path/$basename"."_thumb.$mime";
-		error_log($thumbpath);
 		Storage::copy($imagepath, $thumbpath);
 		$this->resizeToFit($thumbpath, $maxsize);
 		return $thumbpath;

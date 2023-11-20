@@ -15,6 +15,7 @@ class Artwork extends Model
         'title',
         'caption',
 		'images',
+		'thumbnail',
 		'path'
     ];
 

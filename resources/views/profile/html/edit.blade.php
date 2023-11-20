@@ -41,13 +41,13 @@
 			$("#profile_html").val(editor.getValue());
 		}
 
-		function updatePreview() {
+		function updatePreview(selector) {
 			if(!event.target.files) return false;
 			const file = event.target.files[0];
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
 			reader.onload = function(){
-				$(".image-preview").attr("src", this.result);
+				$(event.target.closest(selector)).attr("src", this.result);
 			}
 		}
 	</script>
@@ -64,7 +64,7 @@
 		<form method="POST" enctype="multipart/form-data">
 			@csrf
 			@method("PATCH")
-			<input type="file" name="avatar" onchange="updatePreview()">
+			<input type="file" name="avatar" onchange="updatePreview(this, $('.image-preview')[0])">
 			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $user->profile_html) }}">
 			<div id="editor"></div>
 			<button class="button-pill" onclick="beforePost()">Update</button>

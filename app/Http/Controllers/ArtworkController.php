@@ -27,12 +27,13 @@ class ArtworkController extends Controller
 		$imagepaths = array();
 
 		foreach($request->images as $image) {
+			if(!$image) continue;
 			$imagepaths[] = $uploadService->upload($image, "art/".$request->user()->name);
 		};
 
-		$thumb = $uploadService->generate_thumbnail($imagepaths[0], "art/".$request->user()->name, 300);
+		$thumb = sizeof($imagepaths) > 0 ? $uploadService->generate_thumbnail($imagepaths[0], "art/".$request->user()->name, 300) : null;
 		
-		$path = $this->makeURL($request->title)."-".Str::random(8);
+		$path = $this->makeURL($request->title);
 
 		$artwork = Artwork::create([
             'title' => $request->title,
@@ -43,6 +44,14 @@ class ArtworkController extends Controller
         ]);
 		$artwork->users()->attach($request->user()->id);
 		return redirect("/works/".$path);
+	}
+
+	public function edit(string $path) {
+		$artwork = Artwork::where("path", $path)->first();
+	}
+
+	public function update(Request $request) {
+
 	}
 
 	public function showdelete(Request $request, string $path) {
@@ -56,18 +65,18 @@ class ArtworkController extends Controller
 
 	public function delete(Request $request, string $path, UploadService $uploadService) {
 		$artwork = Artwork::where("path", $path)->first();
-		error_log($artwork->id);
+		if($artwork->thumbnail) $uploadService->delete($artwork->thumbnail);
 		foreach($artwork->images as $image) {
 			$uploadService->delete($image);
 		}
 		Artwork::destroy($artwork->id);
-		return redirect(route("user", ["username" => $request->user()->id]));
+		return redirect(route("user", ["username" => $request->user()->name]));
 	}
 
 	private function makeURL(string $string) {
 		$stringparts = explode(" ", $string);
 		$string = implode("-", array_slice($stringparts, 0, 10));
-		return strtolower(preg_replace("/[^A-Za-z0-9]+/", "-", $string));
+		return trim(strtolower(preg_replace("/[^A-Za-z0-9]+/", "-", $string)), "-")."-".Str::random(8);
 	}
 
 	private function get_owners(Artwork $artwork) {

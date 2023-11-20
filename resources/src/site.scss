@@ -221,7 +221,11 @@ main {
 		width: 100vw;
 	}
 
-	/* PROFILE */
+	.page-block {
+		padding: $global-padding;
+	}
+
+	/* PROFILE PAGE */
 	$profile-gap: 3rem;
 	$profile-padding: 1rem;
 	
@@ -291,9 +295,38 @@ main {
 			padding: $profile-padding;
 		}
 	}
+
+	.gallery {
+		@include flex-wrap(row);
+		gap: $profile-padding;
+	}
+
+	.gallery-thumbnail {
+		@include flex-centre();
+		flex-direction: column;
+		height: 200px;
+		width: 200px;
+		font-size: 14pt;
+
+		img {
+			max-height: 100%;
+			max-width: 100%;
+		}
+		border: 1px solid $base;
+	}
 	
 	/* EDIT PROFILE */
 	.image-preview {
 		width: 150px;
+	}
+
+	/* ART PAGE */
+	.art-display-container {
+		@include flex-centre();
+		flex-direction: column;
+	}
+
+	.art-display {
+		max-width: 100%;
 	}
 }

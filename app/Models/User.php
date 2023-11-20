@@ -52,6 +52,6 @@ class User extends Authenticatable
 	 * Get the artworks of the user
 	 */
 	public function artworks(): BelongsToMany {
-		return $this->belongsToMany(Artwork::class, "artworks_users");
+		return $this->belongsToMany(Artwork::class, "artwork_user");
 	}
 }

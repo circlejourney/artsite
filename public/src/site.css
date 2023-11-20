@@ -166,13 +166,17 @@ main {
   background-color: white;
   flex-grow: 1;
   width: 1200px;
-  /* PROFILE */
+  /* PROFILE PAGE */
   /* EDIT PROFILE */
+  /* ART PAGE */
 }
 @media screen and (max-width: 768px) {
   main {
     width: 100vw;
   }
+}
+main .page-block {
+  padding: 3rem;
 }
 main .profile-banner {
   height: 240px;
@@ -242,6 +246,35 @@ main .profile-custom {
 main .profile-custom:not(.customised) {
   padding: 1rem;
 }
+main .gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+main .gallery-thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 200px;
+  width: 200px;
+  font-size: 14pt;
+  border: 1px solid #d9d9d9;
+}
+main .gallery-thumbnail img {
+  max-height: 100%;
+  max-width: 100%;
+}
 main .image-preview {
   width: 150px;
+}
+main .art-display-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+main .art-display {
+  max-width: 100%;
 }
