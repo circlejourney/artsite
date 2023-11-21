@@ -146,6 +146,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Site Closed To New Registrations
+    |--------------------------------------------------------------------------
+    |
+    | Set whether the site is open or closed to new registrations.
+    | By default the site is closed and the register app will be inaccessible.
+    | 
+    |
+    | 
+    |
+    */
+
+    'site_closed' => env('SITE_CLOSED', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |

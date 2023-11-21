@@ -29,6 +29,9 @@
 <body>
     @include("layouts.navigation")
     <main>
+        @if ($errors->any())
+            {!! implode('', $errors->all('<div class="alert alert-danger m-4">:message</div>')) !!}
+        @endif
         @yield("body")
     </main>
 </body>
