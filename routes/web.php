@@ -29,15 +29,15 @@ Route::middleware('auth')->group(function () {
 	Route::get("/profile/customise", [UserPageController::class, 'edit'])->name('profile.html.edit');
 	Route::patch("/profile/customise", [UserPageController::class, 'update']);
 	
-	Route::get("/works/new", [ArtworkController::class, 'create'])->name('art.create');
-	Route::post("/works/new", [ArtworkController::class, 'store']);
-	Route::get("/works/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
-	Route::get("/works/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
-	Route::put("/works/{path}/edit", [ArtworkController::class, 'update']);
+	Route::get("/work/new", [ArtworkController::class, 'create'])->name('art.create');
+	Route::post("/work/new", [ArtworkController::class, 'store']);
+	Route::get("/work/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
+	Route::get("/work/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
+	Route::put("/work/{path}/edit", [ArtworkController::class, 'update']);
 
 });
 
 require __DIR__.'/auth.php';
 
-Route::get("/works/{path}", [ArtworkController::class, 'show'])->name("art");
+Route::get("/work/{path}", [ArtworkController::class, 'show'])->name("art");
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');
