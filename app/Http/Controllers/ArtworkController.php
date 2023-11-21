@@ -48,6 +48,7 @@ class ArtworkController extends Controller
 
 	public function edit(string $path) {
 		$artwork = Artwork::where("path", $path)->first();
+		return view("art.edit", ["artwork" => $artwork]);
 	}
 
 	public function update(Request $request) {

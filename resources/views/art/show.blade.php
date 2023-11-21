@@ -17,9 +17,13 @@
 		@else Artist:
 		@endif
 		
-		@foreach($artwork->users()->get() as $user)
-			<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
+		@foreach($artwork->users()->get() as $i=>$user)
+		{{ $i > 0 ? ", " : "" }}<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
 		@endforeach
+		
+		@if($artwork->text)
+		<div class="artwork-text">{!! $artwork->text !!}</div>
+		@endif
 
 		@if(Auth::user() && $owner_ids->contains(Auth::user()->id))
 		<a class="button-pill bg-danger" href="{{ route('art.delete', ['path' => $artwork->path]) }}">

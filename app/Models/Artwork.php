@@ -13,7 +13,7 @@ class Artwork extends Model
 
     protected $fillable = [
         'title',
-        'caption',
+        'text',
 		'images',
 		'thumbnail',
 		'path'
