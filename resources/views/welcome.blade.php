@@ -9,7 +9,7 @@
     <h1>Art Site</h1>
     <p>Welcome to {{ config("app.name") }}! A cool art site with groups, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
     
-    @unless(Auth::user())
+    @unless(Auth::check())
     <p>
         <a href="{{ route("login") }}">Log in</a>
 		<br>

@@ -30,7 +30,7 @@
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
 			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('title', $artwork->text ) }}</textarea>
 			@foreach( $artwork->users()->get()->filter(function($user) {
-				return Auth::user() && $user->id !== Auth::user()->id;
+				return Auth::check() && $user->id !== Auth::user()->id;
 			}) as $user)
 				<input class="form-control" type="text" name="artist[]" placeholder="Collaborator" value="{{ $user["name"] }}">
 			@endforeach

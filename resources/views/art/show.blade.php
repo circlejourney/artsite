@@ -31,7 +31,7 @@
 		
 		<br>
 		
-		@if(Auth::user() && $owner_ids->contains(Auth::user()->id))
+		@if(Auth::check() && $owner_ids->contains(Auth::user()->id))
 		<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
 			Edit artwork
 		</a>

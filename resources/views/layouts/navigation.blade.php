@@ -16,7 +16,7 @@
 				<div class="menu-form-container d-lg-none">
 					@include("components.search-form")
 				</div>
-                @if(Auth::user())
+                @if(Auth::check())
 
                     <a class="menu-item" href="/{{ Auth::user()->name }}">{{ Auth::user()->name }}</a>
 					<a class="menu-item" href="{{route('profile.html.edit')}}">Edit profile</a>
