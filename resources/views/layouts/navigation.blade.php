@@ -22,16 +22,7 @@
 					<a class="menu-item" href="{{route('profile.html.edit')}}">Edit profile</a>
                     <a class="menu-item" href="{{route('profile.edit')}}">Settings</a>
                     <!-- Authentication -->
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-
-                        <a
-                            class="menu-item"
-                            href="{{route('logout')}}"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                            Log Out
-                        </a>
-                    </form>
+                    @include("components.logout-form")
 
                 @else
 
