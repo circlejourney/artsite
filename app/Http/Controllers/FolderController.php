@@ -13,24 +13,9 @@ class FolderController extends Controller
      */
     public function index(Request $request)
     {
-		$folders = $request->user()->folders()->orderBy("depth", "asc")->get();
-
-		$sorted = collect();
-		foreach($folders as $folder) {
-			$parentid = $folder->parent_folder_id;
-			$foundparent = $sorted->search(function($item)use($parentid) {
-				return $item->id === $parentid;
-			});
-			if($foundparent === false) {
-				$sorted->push($folder);
-				continue;
-			}
-			$insertpoint = $foundparent + 1;
-
-			$sorted->splice($insertpoint, 0, [$folder]);
-		}
-
-		return view("folders.manage", ["folders" => $sorted->all()]);
+		$folders = $request->user()->folders();
+		$sorted = $this->makeTree($folders);
+		return view("folders.manage", ["folderlist" => $sorted]);
     }
 
     /**
@@ -69,9 +54,11 @@ class FolderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Folder $folder)
+    public function edit(Folder $folder, Request $request)
     {
-        //
+		$folders = $request->user()->folders();
+		$sorted = $this->makeTree($folders);
+		return view("folders.edit", ["folder" => $folder, "folderlist" => $sorted]);
     }
 
     /**
@@ -79,7 +66,16 @@ class FolderController extends Controller
      */
     public function update(Request $request, Folder $folder)
     {
-        //
+		$query = [
+			"title" => $request->title
+		];
+		if($request->parent_folder) {
+			$query["parent_folder_id"] = $request->parent_folder;
+			$query["depth"] = Folder::where("id", $request->parent_folder)->first()->depth + 1;
+		};
+		
+        $folder->update($query);
+		return redirect( route("folders.edit", ["folder" => $folder->id]) )->with('success', 'Folder updated successfully.');
     }
 
     /**
@@ -90,9 +86,10 @@ class FolderController extends Controller
         //
     }
 
-	private function makeTree($folders) {
+	public static function makeTree($folders) {
+		$unsorted = $folders->orderBy("depth", "asc")->get();
 		$sorted = collect();
-		foreach($folders as $folder) {
+		foreach($unsorted as $folder) {
 			$parentid = $folder->parent_folder_id;
 			$foundparent = $sorted->search(function($item)use($parentid) {
 				return $item->id === $parentid;
@@ -102,8 +99,8 @@ class FolderController extends Controller
 				continue;
 			}
 			$insertpoint = $foundparent + 1;
-
 			$sorted->splice($insertpoint, 0, [$folder]);
 		}
+		return $sorted->all();
 	}
 }
