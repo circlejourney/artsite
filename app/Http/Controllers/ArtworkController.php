@@ -48,7 +48,7 @@ class ArtworkController extends Controller
 		}
 		$artwork->users()->attach($artistIDs);
 
-		return redirect("/works/".$path);
+		return redirect(route("art", ["path" => $path]));
 	}
 
 	public function edit(string $path) {
@@ -59,7 +59,28 @@ class ArtworkController extends Controller
 
 	public function update(string $path, Request $request) {
 		$artwork = Artwork::byPath($path);
-		$artwork->update($request->all());
+
+		foreach($request->images as $i => $image) {
+			if(!$image) continue;
+			UploadService::find($artwork->images[$i])->delete();
+			$imageupload = UploadService::upload($image, "art/".$request->user()->name);
+			$imagepath = $imageupload->getRelativePath();
+
+			$images = $artwork->images;
+			$images[$i] = $imagepath;
+			$artwork->update(['images' => $images]);
+			
+			if($i == 0) {
+				UploadService::find($artwork->thumbnail)->delete();
+				$thumbpath = $imageupload->makeThumbnail(300)->getRelativePath();
+				$artwork->update(["thumbnail" => $thumbpath]);
+			}
+		};
+
+		$artwork->update([
+			"title" => $request->title,
+			"text" => $request->text
+		]);
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}
 
@@ -74,7 +95,7 @@ class ArtworkController extends Controller
 		$artwork = Artwork::where("path", $path)->first();
 		if($artwork->thumbnail) UploadService::find($artwork->thumbnail)->delete();
 		foreach($artwork->images as $image) {
-			UploadService::find($image)->delete();
+			if($image && gettype($image) == "string") UploadService::find($image)->delete();
 		}
 		Artwork::destroy($artwork->id);
 		return redirect(route("user", ["username" => $request->user()->name]));

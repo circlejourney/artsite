@@ -5,17 +5,8 @@
 @section('body')
 	<div class="page-block">
 		<h1>{{ $artwork->title }}</h1>
-	</div>
-	<div class="art-display-container">
-		@foreach($image_urls as $image_url)
-			<img class="art-display" src="{{$image_url}}">
-		@endforeach
-	</div>
-	
-	<div class="art-info page-block">
-		@if(sizeof($owner_ids) > 1) Artists:
-		@else Artist:
-		@endif
+		
+		@if(sizeof($owner_ids) > 1) Artists: @else Artist: @endif
 		
 		@foreach($artwork->users()->get() as $i=>$user)
 			@if(!$loop->last)
@@ -25,6 +16,14 @@
 			@endif
 		@endforeach
 		
+	</div>
+	<div class="art-display-container">
+		@foreach($image_urls as $image_url)
+			<img class="art-display" src="{{$image_url}}">
+		@endforeach
+	</div>
+	
+	<div class="art-info page-block">
 		@if($artwork->text)
 		<div class="artwork-text">{!! $artwork->text !!}</div>
 		@endif

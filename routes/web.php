@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 	Route::get("/work/new", [ArtworkController::class, 'create'])->name('art.create');
 	Route::post("/work/new", [ArtworkController::class, 'store']);
 	Route::get("/work/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
+	Route::delete("/work/{path}/delete", [ArtworkController::class, 'delete']);
 	Route::get("/work/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
 	Route::put("/work/{path}/edit", [ArtworkController::class, 'update']);
 
