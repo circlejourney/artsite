@@ -21,7 +21,7 @@
 			<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
 		@endforeach
 
-		@if($owner_ids->contains(Auth::user()->id))
+		@if(Auth::user() && $owner_ids->contains(Auth::user()->id))
 		<a class="button-pill bg-danger" href="{{ route('art.delete', ['path' => $artwork->path]) }}">
 			Delete artwork
 		</a>

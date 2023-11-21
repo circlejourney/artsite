@@ -5,13 +5,13 @@ class UploadService {
     public function upload($file, $target_folder) {
 		// $target_folder is relative to the public/storage.
 		$filename = $file->hashName();
-        Storage::disk('public')->put($target_folder, $file);
+        Storage::put($target_folder, $file);
 		return "$target_folder/$filename";
     }
 
 	public function delete($relative_path) {
 		// $relative_path is relative to the public/storage.
-		Storage::disk('public')->delete($relative_path);
+		Storage::delete($relative_path);
 	}
 
 	public function resizeToFit($relative_path, $maxsize) {
@@ -51,8 +51,9 @@ class UploadService {
 	}
     
     public function generate_thumbnail($imagepath, $target_path, $maxsize) {
-		$mime = explode("/", Storage::mimeType($imagepath))[1];
-		$basename = explode(".", basename($imagepath))[0];
+		$filenameparts = explode(".", basename($imagepath));
+		$basename = $filenameparts[0];
+        $mime = $filenameparts[1];
 		$thumbpath = "$target_path/$basename"."_thumb.$mime";
 		Storage::copy($imagepath, $thumbpath);
 		$this->resizeToFit($thumbpath, $maxsize);
