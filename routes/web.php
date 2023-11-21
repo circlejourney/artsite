@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\ArtworkController;
+use App\Http\Controllers\FolderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,9 @@ Route::middleware('auth')->group(function () {
 	Route::get("/work/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
 	Route::put("/work/{path}/edit", [ArtworkController::class, 'update']);
 
+	Route::get("/manage-folders", [FolderController::class, 'index'])->name("folders");
+	Route::post("/manage-folders", [FolderController::class, 'store']);
+	Route::get("/manage-folders/{id}", [FolderController::class, 'edit'])->name("folders.edit");
 });
 
 require __DIR__.'/auth.php';

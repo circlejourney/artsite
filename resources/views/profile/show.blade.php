@@ -69,4 +69,17 @@
 		@endforeach
 		</div>
 	</div>
+	<div class="page-block row">
+		<div class="col-12 col-md-6 profile-column">
+			<div class="blog">
+				<h2>Latest Blog</h2>
+				<h2 class="blogpost-title">This is a blog title</h2>
+				<div class="blogpost-byline">By user</div>
+				<div></div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6 profile-column">
+			<h2>Profile Comments</h2>
+		</div>
+	</div>
 @endsection

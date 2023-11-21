@@ -8,7 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Artwork;
+use App\Models\Folder;
 
 class User extends Authenticatable
 {
@@ -52,6 +55,10 @@ class User extends Authenticatable
 	 * Get the artworks of the user
 	 */
 	public function artworks(): BelongsToMany {
-		return $this->belongsToMany(Artwork::class, "artwork_user");
+		return $this->belongsToMany(Artwork::class);
+	}
+
+	public function folders(): HasMany {
+		return $this->hasMany(Folder::class);
 	}
 }
