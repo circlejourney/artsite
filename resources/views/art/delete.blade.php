@@ -6,7 +6,7 @@
 		@csrf
 		@method("DELETE")
 		<div>
-			Are you sure you want to delete {{ $artwork->title }}?
+			Are you sure you want to delete '{{ $artwork->title }}'?
 		</div>
 		<button class="button-pill bg-danger">
 			Yes, I'm sure

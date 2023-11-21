@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Artwork;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Services\UploadService;
@@ -11,11 +12,9 @@ use Illuminate\Support\Facades\Auth;
 class ArtworkController extends Controller
 {
     public function show(string $path) {
-		$artwork = Artwork::where("path", $path)->first();
-		$image_urls = array_map(function($image){
-			return Storage::url($image);
-		}, $artwork->images);
-		$owner_ids = $this->get_owners($artwork);
+		$artwork = Artwork::byPath($path);
+		$image_urls = $this->getImageURLs($artwork->images);
+		$owner_ids = $this->getOwners($artwork);
 		if($artwork->text) {
 			$artwork->text = SanitiseService::sanitiseHTML($artwork->text);
 		}
@@ -41,22 +40,32 @@ class ArtworkController extends Controller
 			'thumbnail' => $thumb,
 			'path' => $path
         ]);
-		$artwork->users()->attach($request->user()->id);
+		
+		$artistIDs = array( $request->user()->id );
+		foreach($request->artist as $artist) {
+			if(!$artist) continue;
+			$artistIDs[] = User::where("name", $artist)->first()->id;
+		}
+		$artwork->users()->attach($artistIDs);
+
 		return redirect("/works/".$path);
 	}
 
 	public function edit(string $path) {
-		$artwork = Artwork::where("path", $path)->first();
-		return view("art.edit", ["artwork" => $artwork]);
+		$artwork = Artwork::byPath($path);
+		$image_urls = $this->getImageURLs($artwork->images);
+		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls]);
 	}
 
-	public function update(Request $request) {
-
+	public function update(string $path, Request $request) {
+		$artwork = Artwork::byPath($path);
+		$artwork->update($request->all());
+		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}
 
 	public function showdelete(Request $request, string $path) {
-		$artwork = Artwork::where("path", $path)->first();
-		$owner_ids = $this->get_owners($artwork);
+		$artwork = Artwork::byPath($path);
+		$owner_ids = $this->getOwners($artwork);
 		if(!$owner_ids->contains($request->user()->id)) return route("art",["path" => $artwork->path]);
 		return view("art.delete", ["artwork" => $artwork]);
 	}
@@ -71,11 +80,18 @@ class ArtworkController extends Controller
 		return redirect(route("user", ["username" => $request->user()->name]));
 	}
 
-	private function get_owners(Artwork $artwork) {
+	private function getOwners(Artwork $artwork) {
 		$owner_ids = $artwork->users()->get()
 			->map(function($user) {
 				return $user->id;
 			});
 		return $owner_ids;
+	}
+
+	private function getImageURLs($images) {
+		$image_urls = array_map(function($image){
+			return Storage::url($image);
+		}, $images);
+		return $image_urls;
 	}
 }

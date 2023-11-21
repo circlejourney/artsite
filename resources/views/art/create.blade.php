@@ -25,8 +25,8 @@
 		<div class="col">
 			<input class="form-control" type="text" name="title" placeholder="Title">
 			<textarea class="form-control" name="text" placeholder="HTML text"></textarea>
-			<input class="form-control" type="text" name="artist" placeholder="Collaborator 1">
-			<input class="form-control" type="text" name="artist" placeholder="Collaborator 2">
+			<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">
+			<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>

@@ -18,14 +18,24 @@
 		@endif
 		
 		@foreach($artwork->users()->get() as $i=>$user)
-		{{ $i > 0 ? ", " : "" }}<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
+			@if(!$loop->last)
+				<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>,
+			@else
+				<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
+			@endif
 		@endforeach
 		
 		@if($artwork->text)
 		<div class="artwork-text">{!! $artwork->text !!}</div>
 		@endif
-
+		
+		<br>
+		
 		@if(Auth::user() && $owner_ids->contains(Auth::user()->id))
+		<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
+			Edit artwork
+		</a>
+		<br>
 		<a class="button-pill bg-danger" href="{{ route('art.delete', ['path' => $artwork->path]) }}">
 			Delete artwork
 		</a>

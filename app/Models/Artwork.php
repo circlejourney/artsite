@@ -29,4 +29,8 @@ class Artwork extends Model
 	public function users(): BelongsToMany {
 		return $this->belongsToMany(User::class);
 	}
+
+	public static function byPath($path) : Artwork {
+		return Artwork::Where("path", $path)->first();
+	}
 }

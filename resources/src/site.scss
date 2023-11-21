@@ -290,9 +290,8 @@ main {
 	}
 
 	.profile-custom {
-		background-color: $light-bg;
+        padding: $profile-padding;
 		&:not(.customised) {
-			padding: $profile-padding;
 		}
 	}
 
