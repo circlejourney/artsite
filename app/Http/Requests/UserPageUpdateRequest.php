@@ -22,7 +22,7 @@ class UserPageUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_html' => ['string'],
+            'profile_html' => ['string', 'nullable'],
 			'avatar' => ['mimes:jpg,jpeg,png,gif']
         ];
     }

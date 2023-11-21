@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\UserPageUpdateRequest;
 use App\Services\UploadService;
+use App\Services\SanitiseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class UserPageController extends Controller
     public function show(string $username) {
         $user = User::where("name", $username)->first();
 		if(!$user) abort(404);
-		$user->profile_html = $this->sanitise_html($user->profile_html);
+		$user->profile_html = SanitiseService::sanitiseHTML($user->profile_html);
 		$avatar_url = $user->avatar ? Storage::url($user->avatar) : "/images/user.png";
 		$preview_artworks = $user->artworks()->limit(10)->orderBy("created_at", "desc")->get();
         return view("profile.show", ["user" => $user, "avatar_url" => $avatar_url, "artworks" => $preview_artworks]);
@@ -26,28 +27,19 @@ class UserPageController extends Controller
 		return view("profile.html.edit", ["user" => $user]);
 	}
 
-	public function update(UserPageUpdateRequest $request, UploadService $uploadService) {
+	public function update(UserPageUpdateRequest $request) {
 		// Validate HTML
 		$profile_html = $request->validated()["profile_html"];
-
-		if($request->user()->avatar) $uploadService->delete($request->user()->avatar);
-		$avatar = $uploadService->upload($request->validated()["avatar"], "avatars/".$request->user()->name);
-		$uploadService->resizeToFit($avatar, 300);
-
 		$request->user()->profile_html = $profile_html;
 		$request->user()->customised = strlen(trim($profile_html)) > 0;
-		$request->user()->avatar = $avatar;
+		if($request->avatar)
+		{
+			UploadService::find($request->user()->avatar)->delete();
+			$avatar = UploadService::upload($request->validated()["avatar"], "avatars/".$request->user()->name)
+				->resizeToFit(300)->getRelativePath();
+			$request->user()->avatar = $avatar;
+		}
 		$request->user()->save();
 		return Redirect::route('profile.html.edit')->with('status', 'profile-updated');
-	}
-
-	private function sanitise_html($string) {
-		// Sanitise the string before rendering, but don't transform it in database because we don't want the user to lose their work.
-		$blocked = implode(
-			"|",
-			["script", "style", "title", "head", "body"]
-		);
-		$re = "/<\/?($blocked).*?>/";
-		return preg_replace($re, "", $string);
 	}
 }
