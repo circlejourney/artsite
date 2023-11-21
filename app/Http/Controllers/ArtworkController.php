@@ -61,11 +61,11 @@ class ArtworkController extends Controller
 		return view("art.delete", ["artwork" => $artwork]);
 	}
 
-	public function delete(Request $request, string $path, UploadService $uploadService) {
+	public function delete(Request $request, string $path) {
 		$artwork = Artwork::where("path", $path)->first();
-		if($artwork->thumbnail) $uploadService->delete($artwork->thumbnail);
+		if($artwork->thumbnail) UploadService::find($artwork->thumbnail)->delete();
 		foreach($artwork->images as $image) {
-			$uploadService->delete($image);
+			UploadService::find($image)->delete();
 		}
 		Artwork::destroy($artwork->id);
 		return redirect(route("user", ["username" => $request->user()->name]));

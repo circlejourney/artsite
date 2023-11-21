@@ -34,7 +34,7 @@ class UserPageController extends Controller
 		$request->user()->customised = strlen(trim($profile_html)) > 0;
 		if($request->avatar)
 		{
-			UploadService::find($request->user()->avatar)->delete();
+			if($request->user()->avatar) UploadService::find($request->user()->avatar)->delete();
 			$avatar = UploadService::upload($request->validated()["avatar"], "avatars/".$request->user()->name)
 				->resizeToFit(300)->getRelativePath();
 			$request->user()->avatar = $avatar;
