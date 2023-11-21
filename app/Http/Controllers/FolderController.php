@@ -13,16 +13,24 @@ class FolderController extends Controller
      */
     public function index(Request $request)
     {
-		$folders = $request->user()->folders()->get();
-		$childfolders = $request->user()->folders()->whereNotNull('parent_folder_id')->get();
-        $topfolders = $request->user()->folders()->whereNull('parent_folder_id')->get();
+		$folders = $request->user()->folders()->orderBy("depth", "asc")->get();
 
-		$foldermap = array_fill_keys(
-			$topfolders->map(function($folder) { return $folder->id; })->all(),
-			null
-		);
+		$sorted = collect();
+		foreach($folders as $folder) {
+			$parentid = $folder->parent_folder_id;
+			$foundparent = $sorted->search(function($item)use($parentid) {
+				return $item->id === $parentid;
+			});
+			if($foundparent === false) {
+				$sorted->push($folder);
+				continue;
+			}
+			$insertpoint = $foundparent + 1;
 
-		return view("folders.manage", ["folders" => $folders]);
+			$sorted->splice($insertpoint, 0, [$folder]);
+		}
+
+		return view("folders.manage", ["folders" => $sorted->all()]);
     }
 
     /**
@@ -43,6 +51,7 @@ class FolderController extends Controller
 		];
 		if($request->parent_folder) {
 			$query["parent_folder_id"] = $request->parent_folder;
+			$query["depth"] = Folder::where("id", $request->parent_folder)->first()->depth + 1;
 		};
 		
         $folder = Folder::create($query);
@@ -80,4 +89,21 @@ class FolderController extends Controller
     {
         //
     }
+
+	private function makeTree($folders) {
+		$sorted = collect();
+		foreach($folders as $folder) {
+			$parentid = $folder->parent_folder_id;
+			$foundparent = $sorted->search(function($item)use($parentid) {
+				return $item->id === $parentid;
+			});
+			if($foundparent === false) {
+				$sorted->push($folder);
+				continue;
+			}
+			$insertpoint = $foundparent + 1;
+
+			$sorted->splice($insertpoint, 0, [$folder]);
+		}
+	}
 }

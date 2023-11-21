@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('folders', function (Blueprint $table) {
-            //
+            $table->integer("depth")->default(1);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('folders', function (Blueprint $table) {
-            //
+            $table->dropColumn("depth");
         });
     }
 };

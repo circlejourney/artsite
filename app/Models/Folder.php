@@ -17,7 +17,8 @@ class Folder extends Model
 	protected $fillable = [
 		"title",
 		"user_id",
-		"parent_folder_id"
+		"parent_folder_id",
+		"depth"
 	];
 
 	public function artworks() : HasMany {
