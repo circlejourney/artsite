@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Artwork;
 use App\Models\User;
+use App\Models\Folder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Services\UploadService;
@@ -21,8 +22,10 @@ class ArtworkController extends Controller
 		return view("art.show", ["artwork" => $artwork, "image_urls" => $image_urls ,"owner_ids" => $owner_ids]);
 	}
 	
-	public function create() {
-		return view("art.create");
+	public function create(Request $request) {
+		$folders = $request->user()->folders();
+		$folderlist = Folder::makeTree($folders);
+		return view("art.create", ["folders" => $folderlist]);
 	}
 
 	public function store(Request $request) {
