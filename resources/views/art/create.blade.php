@@ -25,6 +25,7 @@
 			<textarea class="form-control" name="text" placeholder="HTML text"></textarea>
 			<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">
 			<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">
+			@include("components.folder-select", ["folderlist" => $folderlist])
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>

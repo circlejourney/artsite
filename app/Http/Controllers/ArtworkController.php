@@ -27,7 +27,7 @@ class ArtworkController extends Controller
 	public function create(Request $request) {
 		$topFolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
 		$folderlist = FolderListService::class($topFolder)->tree();
-		return view("art.create", ["folders" => $folderlist]);
+		return view("art.create", ["folderlist" => $folderlist]);
 	}
 
 	public function store(ArtworkRequest $request) {
@@ -47,12 +47,23 @@ class ArtworkController extends Controller
 			'path' => $path
         ]);
 		
+		$folderIDs=[];
+		if($request->folder && Folder::where("id", $request->folder)->user == $request->user) {
+			$folderIDs[] = $request->folder;
+		} else {
+			$folderIDs[] = $request->user()->top_folder_id;
+		}
+
 		$artistIDs = array( $request->user()->id );
 		foreach($request->artist as $artist) {
+			// Loop through guest artists (not the user making the request)
 			if(!$artist) continue;
-			$artistIDs[] = User::where("name", $artist)->first()->id;
+			$guestArtist = User::where("name", $artist)->first();
+			$artistIDs[] = $guestArtist->id;
+			$folderIDs[] = $guestArtist->top_folder_id;
 		}
 		$artwork->users()->attach($artistIDs);
+		$artwork->folders()->attach($folderIDs);
 
 		return redirect(route("art", ["path" => $path]));
 	}

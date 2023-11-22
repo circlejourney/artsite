@@ -64,7 +64,7 @@ class User extends Authenticatable
 
 	public function createTopFolder() {
 		$top_folder = Folder::create([
-			"title" => $this->id,
+			"title" => $this->id."_topfolder",
 			"user_id" => $this->id
 		]);
 		$this->top_folder_id = $top_folder->id;
