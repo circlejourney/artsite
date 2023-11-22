@@ -41,7 +41,9 @@ class RegisteredUserController extends Controller
 			'display_name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+		]);
+		
+		$user->createTopFolder();
 
         event(new Registered($user));
 

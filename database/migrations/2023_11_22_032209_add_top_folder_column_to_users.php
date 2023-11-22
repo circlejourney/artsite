@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('folders', function (Blueprint $table) {
-            $table->integer("depth")->default(1);
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger("top_folder_id")->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('folders', function (Blueprint $table) {
-            $table->dropColumn("depth");
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn("top_folder_id");
         });
     }
 };
