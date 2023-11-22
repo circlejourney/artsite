@@ -65,7 +65,7 @@
 			@csrf
 			@method("PATCH")
 			<input type="file" name="avatar" onchange="updatePreview(this, $('.image-preview')[0])">
-			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $user->profile_html) }}">
+			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $profile_html) }}">
 			<div id="editor"></div>
 			<button class="button-pill" onclick="beforePost()">Update</button>
 		</form>
