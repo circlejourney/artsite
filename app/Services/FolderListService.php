@@ -1,7 +1,6 @@
 <?php
 namespace App\Services;
 use App\Models\Folder;
-use App\Models\User;
 
 use function Laravel\Prompts\error;
 

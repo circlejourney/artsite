@@ -9,11 +9,11 @@
 @endpush
 
 @section('body')
-<div class="p-4">
+<div class="post-block">
 	<h1>Submit new artwork</h1>
-	<form method="POST" enctype="multipart/form-data" class="row">
+	<form method="POST" enctype="multipart/form-data">
 		@csrf
-		<div class="col-auto">
+		<div>
 			<div id="image-inputs" class="flex-column">
 				<div class="image-input-wrapper">
 					<input type="file" name="images[]" onchange="updatePreview(this, $(this).siblings('.image-preview')[0])">
@@ -21,9 +21,7 @@
 				</div>
 			</div>
 			<a class='button-pill' onclick="addImageInput()">+</a>
-		</div>
-		<div class="col">
-			<input class="form-control" type="text" name="title" placeholder="Title">
+			<input class="form-control" type="text" name="title" placeholder="Title" required>
 			<textarea class="form-control" name="text" placeholder="HTML text"></textarea>
 			<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">
 			<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">

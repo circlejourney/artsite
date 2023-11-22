@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Folder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Http\Requests\ArtworkRequest;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\FolderListService;
@@ -24,29 +25,30 @@ class ArtworkController extends Controller
 	}
 	
 	public function create(Request $request) {
-		$folders = $request->user()->folders();
-		$folderlist = FolderListService::class($folders)->makeTree(); //Folder::makeTree($folders);
+		$topFolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
+		$folderlist = FolderListService::class($topFolder)->tree(); //Folder::makeTree($folders);
 		return view("art.create", ["folders" => $folderlist]);
 	}
 
-	public function store(Request $request) {
+	public function store(ArtworkRequest $request) {
+		$validated = $request->validated();
 		$imagepaths = array();
-		foreach($request->images as $image) {
+		foreach($validated->images as $image) {
 			if(!$image) continue;
-			$imagepaths[] = UploadService::upload($image, "art/".$request->user()->name)->getRelativePath();
+			$imagepaths[] = UploadService::upload($image, "art/".$validated->user()->name)->getRelativePath();
 		};
 		$thumb = sizeof($imagepaths) > 0 ? UploadService::find($imagepaths[0])->makeThumbnail(300)->getRelativePath() : null;
-		$path = SanitiseService::makeURL($request->title, 10, 8);
+		$path = SanitiseService::makeURL($validated->title, 10, 8);
 		$artwork = Artwork::create([
-            'title' => $request->title,
-			'text' => $request->text,
+            'title' => $validated->title,
+			'text' => $validated->text,
             'images' => $imagepaths,
 			'thumbnail' => $thumb,
 			'path' => $path
         ]);
 		
 		$artistIDs = array( $request->user()->id );
-		foreach($request->artist as $artist) {
+		foreach($validated->artist as $artist) {
 			if(!$artist) continue;
 			$artistIDs[] = User::where("name", $artist)->first()->id;
 		}
