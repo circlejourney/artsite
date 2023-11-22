@@ -14,8 +14,8 @@ class FolderController extends Controller
      */
     public function index(Request $request)
     {
-		$folders = $request->user()->folders();
-		$sorted = FolderListService::class($folders)->makeTree();
+		$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
+		$sorted = FolderListService::class($topfolder)->tree();
 		return view("folders.manage", ["folderlist" => $sorted]);
     }
 
@@ -33,12 +33,9 @@ class FolderController extends Controller
     {
 		$query = [
 			"title" => $request->title,
-			"user_id" => $request->user()->id
+			"user_id" => $request->user()->id,
+			"parent_folder_id" => $request->parent_folder ?? $request->user()->top_folder_id
 		];
-		if($request->parent_folder) {
-			$query["parent_folder_id"] = $request->parent_folder;
-			$query["depth"] = Folder::where("id", $request->parent_folder)->first()->depth + 1;
-		};
 		
         $folder = Folder::create($query);
 		return redirect( route("folders") )->with('success', 'Folder created successfully.');
@@ -57,9 +54,14 @@ class FolderController extends Controller
      */
     public function edit(Folder $folder, Request $request)
     {
-		$folders = $request->user()->folders();
-		$sorted = FolderListService::class($folders)->makeTree();
-		return view("folders.edit", ["folder" => $folder, "folderlist" => $sorted]);
+		$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
+		$sorted = FolderListService::class($topfolder)->tree();
+		
+		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
+		$childkeys = FolderListService::class($thisfolder)->tree()
+			->map(function($i){ return $i["id"]; })->all();
+			
+		return view("folders.edit", ["folder" => $folder, "folderlist" => $sorted, "childkeys" => $childkeys]);
     }
 
     /**
@@ -68,10 +70,10 @@ class FolderController extends Controller
     public function update(Request $request, Folder $folder)
     {
 		$query = [
-			"title" => $request->title
+			"title" => $request->title,
+			"parent_folder_id" => $request->parent_folder
 		];
 		if($request->parent_folder) {
-			$query["parent_folder_id"] = $request->parent_folder;
 			$query["depth"] = Folder::where("id", $request->parent_folder)->first()->depth + 1;
 		};
 		

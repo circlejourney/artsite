@@ -17,8 +17,7 @@ class Folder extends Model
 	protected $fillable = [
 		"title",
 		"user_id",
-		"parent_folder_id",
-		"depth"
+		"parent_folder_id"
 	];
 
 	public function artworks() : HasMany {
@@ -35,5 +34,9 @@ class Folder extends Model
 	
 	public function children() : HasMany {
 		return $this->hasMany(Folder::class, "parent_folder_id");
+	}
+
+	public function allChildren() {
+		return $this->children()->with("allChildren");
 	}
 }

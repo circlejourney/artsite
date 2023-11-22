@@ -1,31 +1,46 @@
 <?php
 namespace App\Services;
 use App\Models\Folder;
+use App\Models\User;
 
+use function Laravel\Prompts\error;
 
 class FolderListService {
 
-	public function __construct(public object $folderlist){}
+	public function __construct(public Folder $folder){
+	}
 	
-	public static function class($folderlist) {
-		return new FolderListService($folderlist);
+	public static function class(Folder $folder) {
+		return new folderListService($folder);
 	}
 
-	public function makeTree(): array {
-		$unsorted = $this->folderlist->orderBy("depth", "asc")->get();
-		$sorted = collect();
-		foreach($unsorted as $folder) {
-			$parentid = $folder->parent_folder_id;
-			$foundparent = $sorted->search(function($item)use($parentid) {
-				return $item->id === $parentid;
-			});
-			if($foundparent === false) {
-				$sorted->push($folder);
-				continue;
-			}
-			$insertpoint = $foundparent + 1;
-			$sorted->splice($insertpoint, 0, [$folder]);
+	public function tree() {
+		$sorted = $this->recursivePush($this->folder, 0, collect([]));
+		return $sorted;
+	}	
+	
+	public function recursivePush($folder, $depth, $accumulator) {
+		if($depth > 0) {
+			$attributes = array(
+				"id" => $folder->id,
+				"title" => $folder->title,
+				"depth" => $depth,
+				"parent_folder_id" => $folder->parent_folder_id
+			);
+			$accumulator->push($attributes);
 		}
-		return $sorted->all();
+		
+		$children = $folder->allChildren;
+		if($children->count() > 0) {
+			foreach($children as $child) {
+				$this->recursivePush($child, $depth+1, $accumulator);
+			}
+		}
+		return $accumulator;
 	}
+
+	public function listChildren() {
+		
+	}
+	
 }

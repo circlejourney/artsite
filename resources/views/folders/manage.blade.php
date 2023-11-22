@@ -10,9 +10,9 @@
 				<div class="folder-list">
 					@foreach($folderlist as $folder)
 					<div>
-						<a style="margin-left: {{ ($folder->depth-1)*1.2 }}rem" href="{{ route("folders.edit", ["folder" => $folder->id]) }}">
-							@if($folder->depth > 1) &#x2937; @endif
-							{{ $folder->title }}
+						<a style="margin-left: {{ ($folder["depth"]-1)*1.2 }}rem" href="{{ route("folders.edit", ["folder" => $folder["id"]]) }}">
+							@if($folder["depth"] > 1) &#x2937; @endif
+							{{ $folder["title"] }}
 						</a>
 					</div>
 					@endforeach
@@ -25,7 +25,7 @@
 					@csrf
 					<input name="title" class="form-control" placeholder="Folder name" required>
 					<label for="parent_folder">Parent folder</label>
-					@include("components.folder-select", ["folderlist" => $folderlist])
+					@component("components.folder-select", ["folderlist" => $folderlist])@endcomponent
 					<button class="button-pill">Create folder</button>
 				</form>
 			</div>

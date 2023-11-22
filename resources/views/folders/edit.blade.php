@@ -10,14 +10,17 @@
 			<select id="parent_folder" class="form-control" name="parent_folder">
 				<option value="">[None]</option>
 				@foreach($folderlist as $listfolder)
-					<option value="{{ $listfolder->id }}"
-						@if($folder->parent_folder_id == $listfolder->id || $listfolder->id == old("parent_folder"))
+					<option value="{{ $listfolder["id"] }}"
+						@if($folder->parent_folder_id == $listfolder["id"] || $listfolder["id"] == old("parent_folder"))
 							selected="selected"
-						@endif>
-						{!! str_repeat("&ensp;", $listfolder->depth-1) !!} {{ $listfolder->title }}
+						@endif
+						@if(in_array($listfolder["id"], $childkeys)) disabled @endif
+						>
+						{!! str_repeat("&ensp;", $listfolder["depth"]-1) !!} {{ $listfolder["title"] }}
 					</option>
 				@endforeach
 			</select>
+
 			<button class="button-pill">Update</button>
 		</form>
 	</div>
