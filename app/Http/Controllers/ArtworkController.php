@@ -33,22 +33,22 @@ class ArtworkController extends Controller
 	public function store(ArtworkRequest $request) {
 		$validated = $request->validated();
 		$imagepaths = array();
-		foreach($validated->images as $image) {
+		foreach($request->images as $image) {
 			if(!$image) continue;
-			$imagepaths[] = UploadService::upload($image, "art/".$validated->user()->name)->getRelativePath();
+			$imagepaths[] = UploadService::upload($image, "art/".$request->user()->name)->getRelativePath();
 		};
 		$thumb = sizeof($imagepaths) > 0 ? UploadService::find($imagepaths[0])->makeThumbnail(300)->getRelativePath() : null;
-		$path = SanitiseService::makeURL($validated->title, 10, 8);
+		$path = SanitiseService::makeURL($request->title, 10, 8);
 		$artwork = Artwork::create([
-            'title' => $validated->title,
-			'text' => $validated->text,
+            'title' => $request->title,
+			'text' => $request->text,
             'images' => $imagepaths,
 			'thumbnail' => $thumb,
 			'path' => $path
         ]);
 		
 		$artistIDs = array( $request->user()->id );
-		foreach($validated->artist as $artist) {
+		foreach($request->artist as $artist) {
 			if(!$artist) continue;
 			$artistIDs[] = User::where("name", $artist)->first()->id;
 		}
@@ -98,7 +98,7 @@ class ArtworkController extends Controller
 	}
 
 	public function delete(Request $request, string $path) {
-		$artwork = Artwork::where("path", $path)->first();
+		$artwork = Artwork::byPath($path);
 		if($artwork->thumbnail) UploadService::find($artwork->thumbnail)->delete();
 		foreach($artwork->images as $image) {
 			if($image && gettype($image) == "string") UploadService::find($image)->delete();

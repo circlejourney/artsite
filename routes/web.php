@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
 	Route::post("/manage-folders", [FolderController::class, 'store']);
 	Route::get("/manage-folders/{folder}", [FolderController::class, 'edit'])->name("folders.edit");
 	Route::put("/manage-folders/{folder}", [FolderController::class, 'update']);
+	Route::delete("/manage-folders/{folder}", [FolderController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';

@@ -32,8 +32,8 @@ class Artwork extends Model
 		return $this->belongsToMany(User::class);
 	}
 
-	public function folder(): BelongsTo {
-		return $this->belongsTo(Folder::class);
+	public function folders(): BelongsToMany {
+		return $this->belongsToMany(Folder::class);
 	}
 
 	public static function byPath($path) : Artwork {

@@ -37,7 +37,7 @@ class FolderController extends Controller
 			"parent_folder_id" => $request->parent_folder ?? $request->user()->top_folder_id
 		];
 		
-        $folder = Folder::create($query);
+        Folder::create($query);
 		return redirect( route("folders") )->with('success', 'Folder created successfully.');
     }
 
@@ -85,7 +85,7 @@ class FolderController extends Controller
 		};
 		
         $folder->update($query);
-		return redirect( route("folders", ["folder" => $folder->id]) )->with('success', 'Folder updated successfully.');
+		return redirect( route("folders.edit", ["folder" => $folder->id]) )->with('success', 'Folder updated successfully.');
     }
 
     /**
@@ -93,6 +93,13 @@ class FolderController extends Controller
      */
     public function destroy(Folder $folder)
     {
-        //
+		$owner = $folder->user;
+		$artworks = $folder->artworks;
+		foreach($artworks as $artwork) {
+			$artwork->update(["folder_id" => $owner->top_folder_id]);
+		}
+		error_log($folder->id);
+        Folder::destroy($folder->id);
+		return redirect( route("folders") );
     }
 }

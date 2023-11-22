@@ -24,5 +24,12 @@
 
 			<button class="button-pill">Update</button>
 		</form>
+
+		<form method="POST">
+			@csrf
+			@method("DELETE")
+			<button class="button-pill bg-danger">Delete</button>
+		</form>
+
 	</div>
 @endsection

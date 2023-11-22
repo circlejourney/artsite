@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Artwork;
 use App\Models\User;
@@ -20,8 +21,8 @@ class Folder extends Model
 		"parent_folder_id"
 	];
 
-	public function artworks() : HasMany {
-		return $this->hasMany(Artwork::class);
+	public function artworks() : BelongsToMany {
+		return $this->belongsToMany(Artwork::class);
 	}
 	
 	public function user() : BelongsTo {
