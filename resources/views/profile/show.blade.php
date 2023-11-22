@@ -50,7 +50,7 @@
 	</div>
 	
 	<div class="profile-custom @if($user->customised){{ "customised" }}@endif">
-		{!! $user->profile_html !!}
+		{!! $profile_html !!}
 	</div>
 	
 	<div class="page-block">
