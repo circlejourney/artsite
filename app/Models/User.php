@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Artwork;
 use App\Models\Folder;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -60,6 +61,10 @@ class User extends Authenticatable
 
 	public function folders(): HasMany {
 		return $this->hasMany(Folder::class);
+	}
+
+	public function roles(): BelongsToMany {
+		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
 
 	public function createTopFolder() {

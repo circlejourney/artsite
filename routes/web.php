@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\AdminPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::middleware("auth")->group(function(){
+	Route::get("/admin/users", [AdminPageController::class, 'index_users'])->name("admin.user.index");
+	Route::get("/admin/users/{user}", [AdminPageController::class, 'edit_user'])->name("admin.user.edit");
+	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
+	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

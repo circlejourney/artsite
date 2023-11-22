@@ -9,7 +9,7 @@
 @endpush
 
 @section('body')
-<div class="post-block">
+<div class="page-block">
 	<h1>Submit new artwork</h1>
 	<form method="POST" enctype="multipart/form-data">
 		@csrf
