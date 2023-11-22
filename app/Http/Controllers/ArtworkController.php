@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
+use App\Services\FolderListService;
 use Illuminate\Support\Facades\Auth;
 
 class ArtworkController extends Controller
@@ -24,7 +25,7 @@ class ArtworkController extends Controller
 	
 	public function create(Request $request) {
 		$folders = $request->user()->folders();
-		$folderlist = Folder::makeTree($folders);
+		$folderlist = FolderListService::class($folders)->makeTree(); //Folder::makeTree($folders);
 		return view("art.create", ["folders" => $folderlist]);
 	}
 
