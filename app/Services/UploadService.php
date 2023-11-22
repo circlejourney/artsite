@@ -17,6 +17,13 @@ class UploadService {
         $file = Storage::get($relative_path);
         return new UploadService($relative_path);
     }
+
+	public static function create($filename, $content, $target_folder) {
+		// TODO: write this
+		$relative_path = "$target_folder/$filename";
+		Storage::put($relative_path, $content);
+		return new UploadService($relative_path);
+	}
     
     public static function duplicate($relative_path, $new_file_suffix) {
         $imagepath = $relative_path;

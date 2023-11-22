@@ -35,7 +35,7 @@ class ArtworkController extends Controller
 		$imagepaths = array();
 		foreach($request->images as $image) {
 			if(!$image) continue;
-			$imagepaths[] = UploadService::upload($image, "art/".$request->user()->name)->getRelativePath();
+			$imagepaths[] = UploadService::upload($image, "art/".$request->user()->id)->getRelativePath();
 		};
 		$thumb = sizeof($imagepaths) > 0 ? UploadService::find($imagepaths[0])->makeThumbnail(300)->getRelativePath() : null;
 		$path = SanitiseService::makeURL($request->title, 10, 8);
@@ -80,7 +80,7 @@ class ArtworkController extends Controller
 		foreach($request->images as $i => $image) {
 			if(!$image) continue;
 			UploadService::find($artwork->images[$i])->delete();
-			$imageupload = UploadService::upload($image, "art/".$request->user()->name);
+			$imageupload = UploadService::upload($image, "art/".$request->user()->id);
 			$imagepath = $imageupload->getRelativePath();
 
 			$images = $artwork->images;
