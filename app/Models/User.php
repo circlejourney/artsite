@@ -75,4 +75,10 @@ class User extends Authenticatable
 		$this->top_folder_id = $top_folder->id;
 		$this->save();
 	}
+	
+	public function hasRole($role) {
+		$hasRole = $this->roles()->where("name", $role)->get()->count();
+		error_log($hasRole);
+		return $hasRole;
+	}
 }

@@ -23,9 +23,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::middleware("auth")->group(function(){
+Route::middleware("role:admin")->group(function(){
 	Route::get("/admin/users", [AdminPageController::class, 'index_users'])->name("admin.user.index");
 	Route::get("/admin/users/{user}", [AdminPageController::class, 'edit_user'])->name("admin.user.edit");
+	Route::put("/admin/users/{user}", [AdminPageController::class, 'update_user']);
 	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
 	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
 });
