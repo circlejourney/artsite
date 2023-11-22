@@ -235,6 +235,10 @@ main {
 		width: 100vw;
 	}
 
+	img {
+		max-width: 100%;
+	}
+
 	.page-block {
 		padding: $global-padding;
 	}

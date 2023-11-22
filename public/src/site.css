@@ -189,6 +189,9 @@ main {
     width: 100vw;
   }
 }
+main img {
+  max-width: 100%;
+}
 main .page-block {
   padding: 3rem;
 }
