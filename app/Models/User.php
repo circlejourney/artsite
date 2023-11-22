@@ -61,4 +61,13 @@ class User extends Authenticatable
 	public function folders(): HasMany {
 		return $this->hasMany(Folder::class);
 	}
+
+	public function createTopFolder() {
+		$top_folder = Folder::create([
+			"title" => $this->id,
+			"user_id" => $this->id
+		]);
+		$this->top_folder_id = $top_folder->id;
+		$this->save();
+	}
 }
