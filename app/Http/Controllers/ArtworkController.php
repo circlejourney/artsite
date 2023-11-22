@@ -26,7 +26,7 @@ class ArtworkController extends Controller
 	
 	public function create(Request $request) {
 		$topFolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
-		$folderlist = FolderListService::class($topFolder)->tree(); //Folder::makeTree($folders);
+		$folderlist = FolderListService::class($topFolder)->tree();
 		return view("art.create", ["folders" => $folderlist]);
 	}
 

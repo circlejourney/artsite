@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use App\Services\FolderListService;
+use Illuminate\Support\Facades\Redirect;
 
 class FolderController extends Controller
 {
@@ -69,6 +69,13 @@ class FolderController extends Controller
      */
     public function update(Request $request, Folder $folder)
     {
+		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
+		$childkeys = FolderListService::class($thisfolder)->tree()
+			->map(function($i){ return $i["id"]; })->all();
+		if(in_array($request->parent_folder, $childkeys) || $request->parent_folder == $folder->id) {
+			return Redirect::back()->withErrors("Folder cannot be placed within itself.");
+		}
+
 		$query = [
 			"title" => $request->title,
 			"parent_folder_id" => $request->parent_folder
