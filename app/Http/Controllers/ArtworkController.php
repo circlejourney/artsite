@@ -18,10 +18,8 @@ class ArtworkController extends Controller
 		$artwork = Artwork::byPath($path);
 		$image_urls = $this->getImageURLs($artwork->images);
 		$owner_ids = $this->getOwners($artwork);
-		if($artwork->text) {
-			$artwork->text = SanitiseService::sanitiseHTML($artwork->text);
-		}
-		return view("art.show", ["artwork" => $artwork, "image_urls" => $image_urls ,"owner_ids" => $owner_ids]);
+		$artwork_text = $artwork->getText();
+		return view("art.show", ["artwork" => $artwork, "text" => $artwork_text, "image_urls" => $image_urls ,"owner_ids" => $owner_ids]);
 	}
 	
 	public function create(Request $request) {
@@ -41,11 +39,11 @@ class ArtworkController extends Controller
 		$path = SanitiseService::makeURL($request->title, 10, 8);
 		$artwork = Artwork::create([
             'title' => $request->title,
-			'text' => $request->text,
             'images' => $imagepaths,
 			'thumbnail' => $thumb,
 			'path' => $path
         ]);
+		$artwork->updateText($request->text);
 		
 		$folderIDs=[];
 		if($request->folder && Folder::where("id", $request->folder)->user == $request->user) {
@@ -76,28 +74,30 @@ class ArtworkController extends Controller
 
 	public function update(string $path, Request $request) {
 		$artwork = Artwork::byPath($path);
+		if($request->images) {
+			foreach($request->images as $i => $image) {
+				if(!$image) continue;
+				UploadService::find($artwork->images[$i])->delete();
+				$imageupload = UploadService::upload($image, "art/".$request->user()->id);
+				$imagepath = $imageupload->getRelativePath();
 
-		foreach($request->images as $i => $image) {
-			if(!$image) continue;
-			UploadService::find($artwork->images[$i])->delete();
-			$imageupload = UploadService::upload($image, "art/".$request->user()->id);
-			$imagepath = $imageupload->getRelativePath();
-
-			$images = $artwork->images;
-			$images[$i] = $imagepath;
-			$artwork->update(['images' => $images]);
-			
-			if($i == 0) {
-				UploadService::find($artwork->thumbnail)->delete();
-				$thumbpath = $imageupload->makeThumbnail(300)->getRelativePath();
-				$artwork->update(["thumbnail" => $thumbpath]);
-			}
-		};
+				$images = $artwork->images;
+				$images[$i] = $imagepath;
+				$artwork->update(['images' => $images]);
+				
+				if($i == 0) {
+					UploadService::find($artwork->thumbnail)->delete();
+					$thumbpath = $imageupload->makeThumbnail(300)->getRelativePath();
+					$artwork->update(["thumbnail" => $thumbpath]);
+				}
+			};
+		}
 
 		$artwork->update([
-			"title" => $request->title,
-			"text" => $request->text
+			"title" => $request->title
 		]);
+		$artwork->updateText($request->text);
+		$artwork->save();
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}
 

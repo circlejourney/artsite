@@ -24,6 +24,11 @@ class UploadService {
 		Storage::put($relative_path, $content);
 		return new UploadService($relative_path);
 	}
+
+	public function update($content) {
+		Storage::put($this->relative_path, $content);
+		return $this;
+	}
     
     public static function duplicate($relative_path, $new_file_suffix) {
         $imagepath = $relative_path;
@@ -93,4 +98,8 @@ class UploadService {
     function getURL() {
         return Storage::url($this->relative_path);
     }
+
+	public function getContent() {
+		return Storage::get($this->relative_path);
+	}
 }

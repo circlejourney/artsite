@@ -24,8 +24,8 @@
 	</div>
 	
 	<div class="art-info page-block">
-		@if($artwork->text)
-		<div class="artwork-text">{!! $artwork->text !!}</div>
+		@if($text)
+		<div class="artwork-text">{!! $text !!}</div>
 		@endif
 		
 		<br>

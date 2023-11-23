@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Artwork;
 use App\Models\Folder;
 use App\Models\Role;
+use App\Services\UploadService;
+use App\Services\SanitiseService;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -78,7 +83,36 @@ class User extends Authenticatable
 	
 	public function hasRole($role) {
 		$hasRole = $this->roles()->where("name", $role)->get()->count();
-		error_log($hasRole);
 		return $hasRole;
+	}
+
+	public function getProfileHTML(): string {
+		if(!$this->profile_html) return "";
+		$profile_html_content = Storage::get($this->profile_html);
+		if(!$profile_html_content) return "";
+		return SanitiseService::sanitiseHTML($profile_html_content);
+	}
+
+	public function updateProfileHTML(string $profile_html) {
+		$relative_path = $this->profile_html;
+		if(!$relative_path)
+		{
+			$relative_path = UploadService::create(Str::random(20) . ".txt", $profile_html, "profiles/".$this->id)->getRelativePath();
+			$this->profile_html = $relative_path;
+		} else {
+			Storage::put($relative_path, $profile_html);
+		}
+		return $this;
+	}
+
+	public function updateAvatar(UploadedFile $avatar_file) {
+		if($avatar_file)
+		{
+			if($this->avatar) UploadService::find($this->avatar)->delete();
+			$avatar = UploadService::upload($avatar_file, "avatars/".$this->id)
+				->resizeToFit(300)->getRelativePath();
+			$this->avatar = $avatar;
+		}
+		return $this;
 	}
 }
