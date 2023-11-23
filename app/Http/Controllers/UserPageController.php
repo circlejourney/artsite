@@ -15,10 +15,9 @@ class UserPageController extends Controller
     public function show(string $username) {
         $user = User::where("name", $username)->first();
 		if(!$user) abort(404);
-		$user->profile_html = SanitiseService::sanitiseHTML($user->profile_html);
 		$avatar_url = $user->avatar ? Storage::url($user->avatar) : "/images/user.png";
 		$preview_artworks = $user->artworks()->limit(10)->orderBy("created_at", "desc")->get();
-		$profile_html = $user->profile_html ? Storage::get($user->profile_html) : "";
+		$profile_html = $user->profile_html ? SanitiseService::sanitiseHTML(Storage::get($user->profile_html)) : "";
         return view("profile.show", ["user" => $user, "avatar_url" => $avatar_url, "artworks" => $preview_artworks, "profile_html" => $profile_html]);
     }
 
