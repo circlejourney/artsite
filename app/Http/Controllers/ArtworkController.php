@@ -27,6 +27,8 @@ class ArtworkController extends Controller
 		return view("art.create", ["folderlist" => $folderlist]);
 	}
 
+
+	/* Store new artwork submission */
 	public function store(ArtworkRequest $request) {
 		$validated = $request->validated();
 		$imagepaths = array();
@@ -36,18 +38,11 @@ class ArtworkController extends Controller
             'title' => $validated["title"],
             'images' => $imagepaths,
 			'path' => $path
-        ]);		
-
-		foreach(array_filter($request->images) as $i => $image) {
-			if(!$image) continue;
-			$artwork->writeImage($i, $image, $request->user());
-		};
-
-		$artwork->generateThumbnail()->updateText($request->text)->save();
+        ]);
 		
 		$folderIDs=[];
-		if($request->folder && Folder::where("id", $request->folder)->user == $request->user) {
-			$folderIDs[] = $request->folder;
+		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
+			$folderIDs[] = $request->parent_folder;
 		} else {
 			$folderIDs[] = $request->user()->top_folder_id;
 		}
@@ -60,12 +55,22 @@ class ArtworkController extends Controller
 			$artistIDs[] = $guestArtist->id;
 			$folderIDs[] = $guestArtist->top_folder_id;
 		}
+
 		$artwork->users()->attach($artistIDs);
 		$artwork->folders()->attach($folderIDs);
+
+		foreach(array_filter($request->images) as $i => $image) {
+			if(!$image) continue;
+			$artwork->writeImage($i, $image, $request->user());
+		};
+
+		$artwork->generateThumbnail()->updateText($request->text)->save();
 
 		return redirect(route("art", ["path" => $path]));
 	}
 
+
+	/* Artwork edit form */
 	public function edit(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
 		$folderlist = Folder::getUserFolder($request->user());
@@ -74,6 +79,8 @@ class ArtworkController extends Controller
 		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls, "folderlist" => $folderlist, "text" => $text]);
 	}
 
+	
+	/* Update the artwork */
 	public function update(string $path, Request $request) {
 		$artwork = Artwork::byPath($path);
 
@@ -94,8 +101,11 @@ class ArtworkController extends Controller
 			$artwork->generateThumbnail()->save();
 		}
 
-		if($request->parent_folder) {
-			error_log($request->user()->folders()->get()->contains($request->parent_folder));
+		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
+			$keepfolders = $artwork->folders()->get()
+				->diff( $request->user()->folders )->push($request->parent_folder)
+				->map(function($i) { return intval($i); });
+			$artwork->folders()->sync($keepfolders);
 		}
 
 		$artwork->title = $request->title;

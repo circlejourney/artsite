@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 	Route::get("/work/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
 	Route::put("/work/{path}/edit", [ArtworkController::class, 'update']);
 
-	Route::get("/manage-folders", [FolderController::class, 'index'])->name("folders");
+	Route::get("/manage-folders", [FolderController::class, 'index_manage'])->name("folders.manage");
 	Route::post("/manage-folders", [FolderController::class, 'store']);
 	Route::get("/manage-folders/{folder}", [FolderController::class, 'edit'])->name("folders.edit");
 	Route::put("/manage-folders/{folder}", [FolderController::class, 'update']);
@@ -58,4 +58,6 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get("/work/{path}", [ArtworkController::class, 'show'])->name("art");
+Route::get("/{username}/folders", [FolderController::class, 'index_user'])->name("folders.index");
+Route::get("/{username}/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');

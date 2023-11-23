@@ -3,21 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Folder;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\FolderListService;
 use Illuminate\Support\Facades\Redirect;
 
 class FolderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-		$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
-		$sorted = FolderListService::class($topfolder)->tree();
-		return view("folders.manage", ["folderlist" => $sorted]);
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -38,15 +30,34 @@ class FolderController extends Controller
 		];
 		
         Folder::create($query);
-		return redirect( route("folders") )->with('success', 'Folder created successfully.');
+		return redirect( route("folders.manage") )->with('success', 'Folder created successfully.');
     }
+
+    /**
+     * Display a listing of the selected user's folders.
+     */
+	public function index_user(string $username) {
+		$user = User::where("name", $username)->firstOrFail();
+		return view("folders.index", ["user" => $user]);
+	}
 
     /**
      * Display the specified resource.
      */
-    public function show(Folder $folder)
+	public function show(string $username, Folder $folder) {
+		$user = User::where("name", $username)->firstOrFail();
+		if($user->folders()->get()->contains($folder)) return view("folders.show", ["folder" => $folder]);
+		abort(404);
+	}
+
+    /**
+     * Display a listing of the authenticated user's folders
+     */
+    public function index_manage(Request $request)
     {
-        //
+		$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
+		$sorted = FolderListService::class($topfolder)->tree();
+		return view("folders.manage", ["folderlist" => $sorted]);
     }
 
     /**

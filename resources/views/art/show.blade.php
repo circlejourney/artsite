@@ -6,8 +6,7 @@
 	<div class="page-block">
 		<h1>{{ $artwork->title }}</h1>
 		
-		@if(sizeof($owner_ids) > 1) Artists: @else Artist: @endif
-		
+		{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
 		@foreach($artwork->users()->get() as $i=>$user)
 			@if(!$loop->last)
 				<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>,
@@ -15,6 +14,18 @@
 				<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
 			@endif
 		@endforeach
+		
+		<?php $folders = $artwork->folders->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; }) ?>
+		@if(sizeof($folders) > 0)
+		<div>
+			Inside folder(s):
+			@foreach($folders as $folder)
+			<a href="{{ $folder->user()->first()->name }}">{{$folder->user()->first()->name}}</a>
+			>
+			<a href="{{ route("folders.show", ["username" => $folder->user()->first()->name, "folder"=>$folder]) }}">{{ $folder->title }}</a>
+			@endforeach
+		</div>
+		@endif
 		
 	</div>
 	<div class="art-display-container">

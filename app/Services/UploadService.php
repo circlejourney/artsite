@@ -35,7 +35,7 @@ class UploadService {
         $old_path = dirname($relative_path);
 		$mime = explode("/", Storage::mimeType($imagepath))[1];
 		$basename = explode(".", basename($imagepath))[0];
-        $new_path = "$old_path/$basename"."$new_file_suffix..$mime";
+        $new_path = "$old_path/$basename"."$new_file_suffix.$mime";
 		Storage::copy($relative_path, $new_path);
         return new UploadService($new_path);
     }

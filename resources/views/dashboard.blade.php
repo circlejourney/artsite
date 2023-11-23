@@ -11,7 +11,7 @@
 	<br>
 	<a href="{{ route("profile.html.edit") }}">Customise your profile</a>
 	<br>
-	<a href="{{ route("folders") }}">Manage art folders</a>
+	<a href="{{ route("folders.manage") }}">Manage art folders</a>
 	<br>
 	<a href="{{ route("profile.edit") }}">Update your settings</a>
 	<br>

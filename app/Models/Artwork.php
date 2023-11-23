@@ -51,6 +51,12 @@ class Artwork extends Model
 		return $text ?? "";
 	}
 
+	public function getThumbnailURL() : string {
+		if(!$relative_path = $this->thumbnail) return "";
+		$thumbnail = Storage::url($relative_path);
+		return $thumbnail ?? "";
+	}
+
 	public function updateText($text) {
 		if(!$relative_path = $this->text)
 		{
