@@ -23,27 +23,27 @@ class ArtworkController extends Controller
 	}
 	
 	public function create(Request $request) {
-		$topFolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
-		$folderlist = FolderListService::class($topFolder)->tree();
+		$folderlist = Folder::getUserFolder($request->user());
 		return view("art.create", ["folderlist" => $folderlist]);
 	}
 
 	public function store(ArtworkRequest $request) {
 		$validated = $request->validated();
 		$imagepaths = array();
-		foreach($request->images as $image) {
-			if(!$image) continue;
-			$imagepaths[] = UploadService::upload($image, "art/".$request->user()->id)->getRelativePath();
-		};
-		$thumb = sizeof($imagepaths) > 0 ? UploadService::find($imagepaths[0])->makeThumbnail(300)->getRelativePath() : null;
+
 		$path = SanitiseService::makeURL($request->title, 10, 8);
 		$artwork = Artwork::create([
-            'title' => $request->title,
+            'title' => $validated["title"],
             'images' => $imagepaths,
-			'thumbnail' => $thumb,
 			'path' => $path
-        ]);
-		$artwork->updateText($request->text);
+        ]);		
+
+		foreach(array_filter($request->images) as $i => $image) {
+			if(!$image) continue;
+			$artwork->writeImage($i, $image, $request->user());
+		};
+
+		$artwork->generateThumbnail()->updateText($request->text)->save();
 		
 		$folderIDs=[];
 		if($request->folder && Folder::where("id", $request->folder)->user == $request->user) {
@@ -66,38 +66,42 @@ class ArtworkController extends Controller
 		return redirect(route("art", ["path" => $path]));
 	}
 
-	public function edit(string $path) {
+	public function edit(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
+		$folderlist = Folder::getUserFolder($request->user());
+		$text = $artwork->getText();
 		$image_urls = $this->getImageURLs($artwork->images);
-		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls]);
+		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls, "folderlist" => $folderlist, "text" => $text]);
 	}
 
 	public function update(string $path, Request $request) {
 		$artwork = Artwork::byPath($path);
+
 		if($request->images) {
 			foreach($request->images as $i => $image) {
 				if(!$image) continue;
-				UploadService::find($artwork->images[$i])->delete();
-				$imageupload = UploadService::upload($image, "art/".$request->user()->id);
-				$imagepath = $imageupload->getRelativePath();
-
-				$images = $artwork->images;
-				$images[$i] = $imagepath;
-				$artwork->update(['images' => $images]);
-				
-				if($i == 0) {
-					UploadService::find($artwork->thumbnail)->delete();
-					$thumbpath = $imageupload->makeThumbnail(300)->getRelativePath();
-					$artwork->update(["thumbnail" => $thumbpath]);
-				}
+				$artwork->writeImage($i, $image, $request->user())->save();
 			};
 		}
 
-		$artwork->update([
-			"title" => $request->title
-		]);
-		$artwork->updateText($request->text);
+		if($request->delete_image){
+			foreach($request->delete_image as $i => $delete) {
+				if($delete === "true") $artwork->deleteImage($i)->save();
+			}
+		}
+			
+		if($request->images && $request->images[0] !== null || $request->delete_image[0] !== null) {
+			$artwork->generateThumbnail()->save();
+		}
+
+		if($request->parent_folder) {
+			error_log($request->user()->folders()->get()->contains($request->parent_folder));
+		}
+
+		$artwork->title = $request->title;
+		$artwork->updateText($request->text ?? "");
 		$artwork->save();
+
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}
 
@@ -111,9 +115,7 @@ class ArtworkController extends Controller
 	public function delete(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
 		if($artwork->thumbnail) UploadService::find($artwork->thumbnail)->delete();
-		foreach($artwork->images as $image) {
-			if($image && gettype($image) == "string") UploadService::find($image)->delete();
-		}
+		$artwork->deleteText()->deleteThumbnail()->deleteAllImages();
 		Artwork::destroy($artwork->id);
 		return redirect(route("user", ["username" => $request->user()->name]));
 	}

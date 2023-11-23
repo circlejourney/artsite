@@ -346,4 +346,12 @@ main {
 	.art-display {
 		max-width: 100%;
 	}
+
+	/* EDIT ART */
+	.image-input-wrapper {
+		&.deselected {
+			background-color: $base;
+			opacity: 0.5;
+		}
+	}
 }

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Artwork;
 use App\Models\User;
+use App\Services\FolderListService;
+use Illuminate\Support\Collection;
 
 class Folder extends Model
 {
@@ -39,5 +41,15 @@ class Folder extends Model
 
 	public function allChildren() {
 		return $this->children()->with("allChildren");
+	}
+
+	public static function getUserFolder(User $user): Collection {
+		$topFolder = Folder::with("allChildren")->where("id", $user->top_folder_id)->first();
+		return FolderListService::class($topFolder)->tree();
+	}
+
+	public function getChildKeys(): Collection {
+		$thisfolder = $this->with("allChildren")->first();
+		return FolderListService::class($thisfolder)->tree();
 	}
 }

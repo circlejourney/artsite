@@ -11,6 +11,7 @@ use App\Models\Folder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\UploadService;
+use Illuminate\Http\UploadedFile;
 
 class Artwork extends Model
 {
@@ -50,16 +51,66 @@ class Artwork extends Model
 		return $text ?? "";
 	}
 
-	public function updateText(string $text) {
-		$relative_path = $this->text;
-		if(!$relative_path)
+	public function updateText($text) {
+		if(!$relative_path = $this->text)
 		{
-			$relative_path = UploadService::create(Str::random(20) . ".txt", $text, "profiles/".$this->id)->getRelativePath();
-			$this->profile_html = $relative_path;
+			$relative_path = UploadService::create(Str::random(20) . ".txt", $text ?? "", "artwork-text/".$this->id)->getRelativePath();
+			$this->text = $relative_path;
 		} else
 		{
-			Storage::put($relative_path, $text);
+			Storage::put($relative_path, $text ?? "");
 		}
+		return $this;
+	}
+
+	public function writeImage(int $i, UploadedFile $image, User $user) {
+		if(isset($this->images[$i]) && $relative_path = $this->images[$i]) Storage::delete($relative_path);
+		$imageupload = UploadService::upload($image, "art/".$user->id);
+		$images = $this->images;
+		$images[$i] = $imageupload->getRelativePath();
+		$this->images = $images;
+		return $this;
+	}
+
+	public function generateThumbnail() {
+		if(isset($this->images[0])) {
+			if($relative_path = $this->thumbnail) {
+				Storage::delete($relative_path);
+			}
+			$this->thumbnail = UploadService::find($this->images[0])->makeThumbnail(300)->getRelativePath();
+		}
+		return $this;
+	}
+
+	public function deleteText() {
+		if($relative_path = $this->text) {
+			Storage::delete($relative_path);
+		}
+		$this->text = null;
+		return $this;
+	}
+
+	public function deleteThumbnail() {
+		if($relative_path = $this->thumbnail) {
+			Storage::delete($relative_path);
+		}
+		$this->thumbnail = null;
+		return $this;
+	}
+
+	public function deleteImage($i) {
+		if(isset($this->images[$i]) && $relative_path = $this->images[$i]) Storage::delete($relative_path);
+		$images = $this->images;
+		unset($images[$i]);
+		$this->images = array_values($images);
+		return $this;
+	}
+
+	public function deleteAllImages() {
+		foreach($this->images as $image) {
+			if($image) Storage::delete($image);
+		}
+		$this->images = null;
 		return $this;
 	}
 }

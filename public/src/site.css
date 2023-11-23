@@ -183,6 +183,7 @@ main {
   /* PROFILE PAGE */
   /* EDIT PROFILE */
   /* ART PAGE */
+  /* EDIT ART */
 }
 @media screen and (max-width: 768px) {
   main {
@@ -291,4 +292,8 @@ main .art-display-container {
 }
 main .art-display {
   max-width: 100%;
+}
+main .image-input-wrapper.deselected {
+  background-color: #d9d9d9;
+  opacity: 0.5;
 }

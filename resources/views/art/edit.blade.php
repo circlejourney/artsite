@@ -1,9 +1,14 @@
 @extends("layouts.site")
 
+@push("metatitle"){{ "Edit ".$artwork->title }}@endpush
+
 @push("head")
+	<script src="/src/extend_form.js"></script>
 	<script>
-		function addImageInput() {
-			if($("input-wrapper").length < 9) $("#image-inputs").append("<div class=\"input-wrapper\"><input type=\"file\" name=\"images[]\"></input></div>");
+		function toggleImageDelete(element){
+			const newval = $(element).find('input').val() == "false";
+			$(element).find('input').val(newval);
+			$(element).closest('.image-input-wrapper').toggleClass('deselected', newval);
 		}
 	</script>
 @endpush
@@ -17,23 +22,31 @@
 		@csrf
 		<div class="col-auto">
 			<div id="image-inputs" class="flex-column">
-				@foreach($image_urls as $image_url)
+				@foreach($image_urls as $i=>$image_url)
 					<div class="image-input-wrapper">
+
 						<input type="file" name="images[]" onchange="updatePreview(this, $(this).siblings('.image-preview')[0])">
 						<img class="image-preview" src="{{ $image_url }}">
+						
+						<a onclick="toggleImageDelete(this)">
+							<input type="hidden" name="delete_image[{{$i}}]" value="false">
+							x
+						</a>
+
 					</div>
 				@endforeach
 			</div>
-			<a class='button-pill' onclick="addImageInput()">+</a>
+			<a class='button-pill' onclick="addImageInput('.image-input-wrapper', '#image-inputs')">+</a>
 		</div>
 		<div class="col">
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
-			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('title', $artwork->text ) }}</textarea>
+			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text', $text ) }}</textarea>
 			@foreach( $artwork->users()->get()->filter(function($user) {
 				return Auth::check() && $user->id !== Auth::user()->id;
 			}) as $user)
 				<input class="form-control" type="text" name="artist[]" placeholder="Collaborator" value="{{ $user["name"] }}">
 			@endforeach
+			@include("components.folder-select", ["folderlist" => $folderlist])
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>
