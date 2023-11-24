@@ -44,17 +44,17 @@ class RegisteredUserController extends Controller
 			'display_name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-			'top_folder_id' => null,
-			'role' => $user_role
+			'top_folder_id' => null
 		]);
 		
 		$user->createTopFolder();
+		$user->roles()->attach($user_role);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(route("home"));
     }
 
 	public function messages() {
