@@ -16,32 +16,42 @@
 				:
 				route("folders.show", ["username" => $user->name, "folder" => $folder->parent])
 		}}">
-			Back to {{ $folder->parent()->first()->getFolderDisplayName() }}
+			Back to {{ $folder->parent()->first()->getDisplayName() }}
 		</a>
 		@endif
 		
-		@if($folder->children)
-		<h2>Subfolders</h2>
-		<ul>
-			@foreach($folder->children as $child)
-				<li>
-					<a href="{{ route("folders.show", ["username" => $user->name, "folder" => $child->id]) }}">
-					{{ $child->title }}
-					</a>
-				</li>
-			@endforeach
-		</ul>
-		@endif
+		<div class="row">
 		
-		@forelse($folder->artworks as $artwork) 
+		<div class="col-12 col-md-3">
+			<h2>Folder tree</h2>
 			<div>
-				<a href="{{ route("art", ["path" => $artwork->path]) }}">
-					<img src="{{ $artwork->getThumbnailURL() }}">
-					{{ $artwork->title }}
-				</a>
+				<div>
+					<a href="{{ route("folders.index", ["username"=>$user->name]) }}">
+						{{ $user->getTopFolder()->getDisplayName() }}
+					</a>
+				</div>
+				@foreach($folderlist as $listfolder)
+					<div>
+						<a style="margin-left: {{ ($listfolder["depth"])*1.2 }}rem" href="{{ route("folders.show", ["username" => $user->name, "folder" => $listfolder["id"]]) }}"
+							@if($listfolder["id"] == $folder->id) class="font-weight-bold" @endif>
+							&#x2937;{{ $listfolder["title"] }}
+						</a>
+					</div>
+				@endforeach
 			</div>
-		@empty
-			Folder is empty.
-		@endforelse
+		</div>
+		
+		<div class="col">
+			@forelse($folder->artworks as $artwork) 
+				<div>
+					<a href="{{ route("art", ["path" => $artwork->path]) }}">
+						<img src="{{ $artwork->getThumbnailURL() }}">
+						{{ $artwork->title }}
+					</a>
+				</div>
+			@empty
+				Folder is empty.
+			@endforelse
+		</div>
 	</div>
 @endsection

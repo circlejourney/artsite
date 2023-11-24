@@ -47,11 +47,12 @@ class FolderController extends Controller
      */
 	public function show(string $username, Folder $folder) {
 		$user = User::where("name", $username)->firstOrFail();
-		if($user->folders()->get()->contains($folder)) {
-			$folder = Folder::with("children")->where("id", $folder->id)->first();
-			return view("folders.show", ["user" => $user, "folder" => $folder]);
-		}
-		abort(404);
+
+		if(!$user->folders()->get()->contains($folder)) abort(404);
+		//$topfolder = Folder::with("allChildren")->where("id", $user->top_folder_id)->first();
+		$sorted = $user->getFolderTree();
+
+		return view("folders.show", ["user" => $user, "folder" => $folder, "folderlist" => $sorted]);
 	}
 
     /**

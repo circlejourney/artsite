@@ -16,6 +16,7 @@ use App\Models\Role;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -79,6 +80,14 @@ class User extends Authenticatable
 		]);
 		$this->top_folder_id = $top_folder->id;
 		$this->save();
+	}
+
+	public function getTopFolder() {
+		return Folder::where("id", $this->top_folder_id)->first();
+	}
+
+	public function getFolderTree(): Collection {
+		return $this->getTopFolder()->getTree();
 	}
 	
 	public function hasRole($role) {

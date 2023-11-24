@@ -3,6 +3,7 @@
 - Email verification
 - Make the folder listings actually link to the artwork.
 - Delete users flow, deleted accounts table
+- Tag system...hoo boy
 
 # General
 - Invites

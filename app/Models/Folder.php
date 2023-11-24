@@ -43,9 +43,8 @@ class Folder extends Model
 		return $this->children()->with("allChildren");
 	}
 
-	public static function getUserFolder(User $user): Collection {
-		$topFolder = Folder::with("allChildren")->where("id", $user->top_folder_id)->first();
-		return FolderListService::class($topFolder)->tree();
+	public function getTree(): Collection {
+		return FolderListService::class($this)->tree();
 	}
 
 	public function getChildKeys(): Collection {
@@ -57,7 +56,7 @@ class Folder extends Model
 		return $this->id == $this->user()->first()->top_folder_id;
 	}
 
-	public function getFolderDisplayName() {
+	public function getDisplayName() {
 		if($this->isTopFolder()) return $this->user()->first()->name . "'s Gallery";
 		return $this->title;
 	}

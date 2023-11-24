@@ -20,12 +20,12 @@ class FolderListService {
 	
 	public function recursivePush($folder, $depth, $accumulator) {
 		if($depth > 0) {
-			$attributes = array(
+			$attributes = collect([
 				"id" => $folder->id,
 				"title" => $folder->title,
 				"depth" => $depth,
 				"parent_folder_id" => $folder->parent_folder_id
-			);
+			]);
 			$accumulator->push($attributes);
 		}
 		

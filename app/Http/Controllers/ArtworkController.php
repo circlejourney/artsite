@@ -23,7 +23,7 @@ class ArtworkController extends Controller
 	}
 	
 	public function create(Request $request) {
-		$folderlist = Folder::getUserFolder($request->user());
+		$folderlist = $request->user()->getFolderTree();
 		return view("art.create", ["folderlist" => $folderlist]);
 	}
 
@@ -76,7 +76,7 @@ class ArtworkController extends Controller
 		if($artwork->users()->get()->doesntContain($request->user())
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);
 
-		$folderlist = Folder::getUserFolder($request->user());
+		$folderlist = $request->user()->getFolderTree();
 		$text = $artwork->getText();
 		$image_urls = $this->getImageURLs($artwork->images);
 		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls, "folderlist" => $folderlist, "text" => $text]);
