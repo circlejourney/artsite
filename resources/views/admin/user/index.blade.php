@@ -6,7 +6,7 @@
 		@foreach($users as $user)
 			<div>
 				<a href="{{ route("admin.user.edit", ["user" => $user]) }}">
-					{{ $user->name }}
+					{!! $user->getFlairHTML() !!} {{ $user->name }}
 				</a>
 			</div>
 		@endforeach

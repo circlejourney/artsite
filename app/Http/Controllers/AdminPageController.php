@@ -22,9 +22,7 @@ class AdminPageController extends Controller
 
 	function edit_user(Request $request, User $user) {
 		$roles = $request->user()->controlsRoles();
-		$user_roles = $user->roles->map(function($i){
-			return $i->id;
-		});
+		$user_roles = $user->roles->pluck("id");
 		return view("admin.user.edit", ["user" => $user, "roles" => $roles, "user_roles" => $user_roles]);
 	}
 

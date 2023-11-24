@@ -90,8 +90,12 @@ class User extends Authenticatable
 	}
 
 	public function controlsRoles() {
-		$toproleid = $this->roles()->orderBy("id", "asc")->first()->id;
+		$toproleid = $this->getTopRole()->id;
 		return Role::all()->sortBy("id")->slice($toproleid);
+	}
+	
+	public function getTopRole() {
+		return $this->roles()->orderBy("id", "asc")->first();
 	}
 
 	public function getProfileHTML(): string {
@@ -99,6 +103,11 @@ class User extends Authenticatable
 		$profile_html_content = Storage::get($this->profile_html);
 		if(!$profile_html_content) return "";
 		return SanitiseService::sanitiseHTML($profile_html_content);
+	}
+
+	public function getFlairHTML(): string {
+		$toprole = $this->getTopRole();
+		return "<i class='user-flair fa fa-$toprole->default_flair'></i>";
 	}
 
 	public function updateProfileHTML(string $profile_html) {

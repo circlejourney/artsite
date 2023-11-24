@@ -8,11 +8,10 @@
 		
 		{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
 		@foreach($artwork->users()->get() as $i=>$user)
-			@if(!$loop->last)
-				<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>,
-			@else
-				<a href="{{ route("user", ["username" => $user->name]) }}">{{ $user->name }}</a>
-			@endif
+				<a href="{{ route("user", ["username" => $user->name]) }}">
+					{!! $user->getFlairHTML() !!}
+					{{ $user->name }}</a><!--
+					-->@if(!$loop->last), @endif
 		@endforeach
 		
 		<?php $folders = $artwork->folders->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; }) ?>
@@ -20,9 +19,12 @@
 		<div>
 			Inside folder(s):
 			@foreach($folders as $folder)
-			<a href="{{ route("user", ["username" => $folder->user()->first()->name]) }}">{{$folder->user()->first()->name}}</a>
-			>
-			<a href="{{ route("folders.show", ["username" => $folder->user()->first()->name, "folder"=>$folder]) }}">{{ $folder->title }}</a>
+				<a href="{{ route("user", ["username" => $folder->user()->first()->name]) }}">
+					{!! $folder->user()->first()->getFlairHTML() !!} {{$folder->user()->first()->name}}</a>'s
+				<a href="{{ route("folders.show", ["username" => $folder->user()->first()->name, "folder"=>$folder]) }}">
+					{{ $folder->title }}
+				</a><!--
+				-->@if(!$loop->last), @endif
 			@endforeach
 		</div>
 		@endif

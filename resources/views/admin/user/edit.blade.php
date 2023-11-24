@@ -2,7 +2,7 @@
 
 @section('body')
 	<div class="page-block">
-		<h1>Manage <a href="{{ route("user", $user->name) }}">{{ $user->name }}</a></h1>
+		<h1>Manage <a href="{{ route("user", $user->name) }}">{!! $user->getFlairHTML() !!} {{ $user->name }}</a></h1>
 		<form method="POST">
 			@csrf
 			@method("PUT")

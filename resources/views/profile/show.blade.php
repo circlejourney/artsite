@@ -8,8 +8,8 @@
 	<div class="profile-info">
 		<img class="profile-avatar" src="{{ $avatar_url ?? '/images/user.png' }}">
 		<div class="profile-details">
-			<div class="display-name">{{ $user->display_name }}</div>
-			<div class="display-username">{{ "@" . $user->name }}</div>
+			<div class="display-name">{!! $user->display_name !!}</div>
+			<div class="display-username">{{ "@" . $user->name }} {!! $user->getFlairHTML() !!}</div>
 		</div>
 		<div class="profile-interact">
 			<a class="button-pill" href="#">Follow</a>
