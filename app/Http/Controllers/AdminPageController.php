@@ -16,7 +16,7 @@ class AdminPageController extends Controller
 	}
 
     function index_users() {
-		$users = User::all();
+		$users = User::with("roles")->get()->sortBy("role_id");
 		return view("admin.user.index", ["users" => $users]);
 	}
 
