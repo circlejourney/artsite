@@ -89,12 +89,12 @@ class ArtworkController extends Controller
 		if($artwork->users()->get()->doesntContain($request->user())
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);	
 
-		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
+		$parentfolderID = intval($request->parent_folder);
+		if($request->parent_folder && $request->user()->folders()->get()->contains($parentfolderID)) {
 			$keepfolders = $artwork->folders()->get()
-				->diff( $request->user()->folders() )
+				->diff( $request->user()->folders()->get() )
 				->pluck("id")
-				->push( $request->parent_folder );
-			error_log($keepfolders);
+				->push( $parentfolderID );
 			$artwork->folders()->sync($keepfolders);
 		}
 

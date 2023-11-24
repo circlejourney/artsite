@@ -88,7 +88,8 @@ class FolderController extends Controller
 		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
 		$childkeys = FolderListService::class($thisfolder)->tree()
 			->map(function($i){ return $i["id"]; })->all();
-		if(in_array($request->parent_folder, $childkeys) || $request->parent_folder == $folder->id) {
+			
+		if($childkeys->contains($request->parent_folder) || $request->parent_folder == $folder->id) {
 			return Redirect::back()->withErrors("Folder cannot be placed within itself.");
 		}
 
