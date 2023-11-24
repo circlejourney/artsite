@@ -5,7 +5,7 @@
 		<h1>Manage Art Folder: {{ $folder->title }}</h1>
 		<div class="row">
 			<div class="col-12 col-md-4">
-				@include("components.manage-folderlist", ["folderlist" => $folderlist, "selected" => $folder->id])
+				@include("folders.folderlist-manage", ["folderlist" => $folderlist, "selected" => $folder->id])
 			</div>
 
 			<div class="col">

@@ -86,8 +86,8 @@ class User extends Authenticatable
 		return Folder::where("id", $this->top_folder_id)->first();
 	}
 
-	public function getFolderTree(): Collection {
-		return $this->getTopFolder()->getTree();
+	public function getFolderTree($includeRoot): Collection {
+		return $this->getTopFolder()->getTree($includeRoot);
 	}
 	
 	public function hasRole($role) {

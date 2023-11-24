@@ -13,8 +13,9 @@ class FolderListService {
 		return new folderListService($folder);
 	}
 
-	public function tree() {
-		$sorted = $this->recursivePush($this->folder, 0, collect([]));
+	public function tree($includeRoot) {
+		$accumulator = collect([]);
+		$sorted = $this->recursivePush($this->folder, 0+intval($includeRoot), $accumulator);
 		return $sorted;
 	}	
 	
@@ -22,7 +23,7 @@ class FolderListService {
 		if($depth > 0) {
 			$attributes = collect([
 				"id" => $folder->id,
-				"title" => $folder->title,
+				"title" => $folder->getDisplayName(),
 				"depth" => $depth,
 				"parent_folder_id" => $folder->parent_folder_id
 			]);

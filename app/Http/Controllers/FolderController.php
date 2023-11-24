@@ -38,8 +38,9 @@ class FolderController extends Controller
      */
 	public function index_user(string $username) {
 		$user = User::where("name", $username)->firstOrFail();
-		$topfolder = Folder::where("id", $user->top_folder_id)->with("children")->first();
-		return $this->show($username, $topfolder);
+		$artworks = $user->artworks()->get();
+		$sorted = $user->getFolderTree(true);
+		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $sorted]);
 	}
 
     /**
@@ -47,11 +48,9 @@ class FolderController extends Controller
      */
 	public function show(string $username, Folder $folder) {
 		$user = User::where("name", $username)->firstOrFail();
-
 		if(!$user->folders()->get()->contains($folder)) abort(404);
-		//$topfolder = Folder::with("allChildren")->where("id", $user->top_folder_id)->first();
-		$sorted = $user->getFolderTree();
 
+		$sorted = $user->getFolderTree(true);
 		return view("folders.show", ["user" => $user, "folder" => $folder, "folderlist" => $sorted]);
 	}
 
@@ -60,8 +59,7 @@ class FolderController extends Controller
      */
     public function index_manage(Request $request)
     {
-		$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
-		$sorted = FolderListService::class($topfolder)->tree();
+		$sorted = $request->user()->getFolderTree(false);
 		return view("folders.manage", ["folderlist" => $sorted]);
     }
 
@@ -70,11 +68,12 @@ class FolderController extends Controller
      */
     public function edit(Folder $folder, Request $request)
     {
-		$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
-		$sorted = FolderListService::class($topfolder)->tree();
+		/*$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
+		$sorted = FolderListService::class($topfolder)->tree(false);*/
+		$sorted = $request->user()->getFolderTree(false);
 		
 		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
-		$childkeys = FolderListService::class($thisfolder)->tree()
+		$childkeys = FolderListService::class($thisfolder)->tree(false)
 			->map(function($i){ return $i["id"]; })->all();
 
 		$selectedfolder = $folder->parent()->first()->id;
@@ -88,7 +87,7 @@ class FolderController extends Controller
     public function update(Request $request, Folder $folder)
     {
 		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
-		$childkeys = FolderListService::class($thisfolder)->tree()
+		$childkeys = FolderListService::class($thisfolder)->tree(false)
 			->map(function($i){ return $i["id"]; });
 			
 		if($childkeys->contains($request->parent_folder) || $request->parent_folder == $folder->id) {
@@ -115,7 +114,6 @@ class FolderController extends Controller
 		foreach($artworks as $artwork) {
 			$artwork->update(["folder_id" => $owner->top_folder_id]);
 		}
-		error_log($folder->id);
         Folder::destroy($folder->id);
 		return redirect( route("folders") );
     }

@@ -7,7 +7,7 @@
 
 			<div class="col-12 col-md-4">
 				<h2>Edit folders</h2>
-				@include("components.manage-folderlist", ["folderlist" => $folderlist])
+				@include("folders.folderlist-manage", ["folderlist" => $folderlist])
 			</div>
 			
 			<div class="col">

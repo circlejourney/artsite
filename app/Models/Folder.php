@@ -44,13 +44,13 @@ class Folder extends Model
 		return $this->children()->with("allChildren");
 	}
 
-	public function getTree(): Collection {
-		return FolderListService::class($this)->tree();
+	public function getTree($includeRoot): Collection {
+		return FolderListService::class($this)->tree($includeRoot);
 	}
 
 	public function getChildKeys(): Collection {
 		$thisfolder = $this->with("allChildren")->first();
-		return FolderListService::class($thisfolder)->tree();
+		return FolderListService::class($thisfolder)->tree(false);
 	}
 
 	public function isTopFolder() {
