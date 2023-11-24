@@ -38,7 +38,8 @@ class FolderController extends Controller
      */
 	public function index_user(string $username) {
 		$user = User::where("name", $username)->firstOrFail();
-		return view("folders.index", ["user" => $user]);
+		$topfolder = Folder::where("id", $user->top_folder_id)->with("children")->first();
+		return $this->show($username, $topfolder);
 	}
 
     /**
@@ -46,7 +47,10 @@ class FolderController extends Controller
      */
 	public function show(string $username, Folder $folder) {
 		$user = User::where("name", $username)->firstOrFail();
-		if($user->folders()->get()->contains($folder)) return view("folders.show", ["folder" => $folder]);
+		if($user->folders()->get()->contains($folder)) {
+			$folder = Folder::with("children")->where("id", $folder->id)->first();
+			return view("folders.show", ["user" => $user, "folder" => $folder]);
+		}
 		abort(404);
 	}
 

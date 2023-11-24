@@ -27,7 +27,7 @@
 			<a href="#">Profile</a>
 		</li>
 		<li>
-			<a href="#">Gallery</a>
+			<a href="{{ route("folders.index", ["username" => $user->name]) }}">Gallery</a>
 		</li>
 		<li>
 			<a href="#">Favorites</a>

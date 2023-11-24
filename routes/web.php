@@ -73,5 +73,5 @@ require __DIR__.'/auth.php';
 
 Route::get("/art/{path}", [ArtworkController::class, 'show'])->name("art");
 Route::get("/{username}/folders", [FolderController::class, 'index_user'])->name("folders.index");
-Route::get("/{username}/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
+Route::get("/{username}/folders/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');

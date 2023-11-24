@@ -52,4 +52,13 @@ class Folder extends Model
 		$thisfolder = $this->with("allChildren")->first();
 		return FolderListService::class($thisfolder)->tree();
 	}
+
+	public function isTopFolder() {
+		return $this->id == $this->user()->first()->top_folder_id;
+	}
+
+	public function getFolderDisplayName() {
+		if($this->isTopFolder()) return $this->user()->first()->name . "'s Gallery";
+		return $this->title;
+	}
 }
