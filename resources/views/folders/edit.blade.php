@@ -12,9 +12,10 @@
 				<form method="POST">
 					@csrf
 					@method("PUT")
-					<input name="title" value="{{ old("title", $folder->title) }}" placeholder="Folder name">
+					<label for="title">Folder name</label>
+					<input class="form-control" name="title" id="title" value="{{ old("title", $folder->title) }}" placeholder="Folder name">
+					
 					<label for="parent_folder">Parent folder</label>
-
 					<select id="parent_folder" class="form-control" name="parent_folder">
 						<option value="">[None]</option>
 						@foreach($folderlist as $listfolder)

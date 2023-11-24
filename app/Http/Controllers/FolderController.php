@@ -76,8 +76,10 @@ class FolderController extends Controller
 		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
 		$childkeys = FolderListService::class($thisfolder)->tree()
 			->map(function($i){ return $i["id"]; })->all();
+
+		$selectedfolder = $folder->parent()->first()->id;
 			
-		return view("folders.edit", ["folder" => $folder, "folderlist" => $sorted, "childkeys" => $childkeys]);
+		return view("folders.edit", ["folder" => $folder, "folderlist" => $sorted, "childkeys" => $childkeys, "selected" => $selectedfolder]);
     }
 
     /**
@@ -95,12 +97,9 @@ class FolderController extends Controller
 
 		$query = [
 			"title" => $request->title,
-			"parent_folder_id" => $request->parent_folder,
+			"parent_folder_id" => $request->parent_folder ?? $folder->user()->first()->top_folder_id,
 			"privacy_level_id" => $request->privacy_level
 		];
-		if($request->parent_folder) {
-			$query["depth"] = Folder::where("id", $request->parent_folder)->first()->depth + 1;
-		};
 		
         $folder->update($query);
 		return redirect( route("folders.edit", ["folder" => $folder->id]) )->with('success', 'Folder updated successfully.');
