@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -36,12 +37,15 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+		$user_role = Role::where("name", "user")->first()->id;
+
         $user = User::create([
             'name' => $request->name,
 			'display_name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-			'top_folder_id' => null
+			'top_folder_id' => null,
+			'role' => $user_role
 		]);
 		
 		$user->createTopFolder();
