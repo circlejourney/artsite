@@ -6,15 +6,27 @@
 @section('body')
 <div class="p-4">
 	<h1>Dashboard</h1>
-	<p>Welcome back to {{ config("app.name") }}, {{ Auth::user()->name }}!</p>
-	<a href="/{{ Auth::user()->name }}">View your profile</a>
+	<p>Welcome back to {{ config("app.name") }}, {{ auth()->user()->name }}!</p>
+	<ul>
+		<li>
+			<a href="/{{ auth()->user()->name }}">View your profile</a>
+		</li>
+		<li>
+			<a href="{{ route("profile.html.edit") }}">Customise your profile</a>
+		</li>
+		<li>
+		<a href="{{ route("folders.manage") }}">Manage art folders</a>
+		</li>
+		<li>
+		<a href="{{ route("profile.edit") }}">Update your settings</a>
+		</li>
+		<li>
+		@include("components.logout-form")
+		</li>
+	</ul>
 	<br>
-	<a href="{{ route("profile.html.edit") }}">Customise your profile</a>
-	<br>
-	<a href="{{ route("folders.manage") }}">Manage art folders</a>
-	<br>
-	<a href="{{ route("profile.edit") }}">Update your settings</a>
-	<br>
-	@include("components.logout-form")
+	<h2>Admin section</h2>
+	@include("components.admin-links", ["roles" => auth()->user()->roles()])
+
 </div>
 @endsection

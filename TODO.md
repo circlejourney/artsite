@@ -1,6 +1,7 @@
 # Important
 - Set up so that only authorised users can edit artwork (owns the artwork or has edit artworks permission)
 - Make the folder listings actually link to the artwork.
+- Delete users flow, deleted accounts table
 
 # Useful
 - Reorder artwork images without reuploading (an additional input value?)
