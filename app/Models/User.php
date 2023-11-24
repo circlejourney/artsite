@@ -90,6 +90,7 @@ class User extends Authenticatable
 	}
 
 	public function controlsRoles() {
+		if($this->hasRole("founder")) return Role::all();
 		$toproleid = $this->getTopRole()->id;
 		return Role::all()->sortBy("id")->slice($toproleid);
 	}

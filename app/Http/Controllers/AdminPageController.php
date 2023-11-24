@@ -21,12 +21,16 @@ class AdminPageController extends Controller
 	}
 
 	function edit_user(Request $request, User $user) {
-		$roles = $request->user()->controlsRoles();
+		$controlledRoles = $request->user()->controlsRoles();
 		$user_roles = $user->roles->pluck("id");
-		return view("admin.user.edit", ["user" => $user, "roles" => $roles, "user_roles" => $user_roles]);
+		return view("admin.user.edit", ["user" => $user, "roles" => $controlledRoles, "user_roles" => $user_roles]);
 	}
 
 	function update_user(User $user, Request $request) {
+		$controlledRoleIDs = $request->user()->controlsRoles()->pluck("id");
+		foreach($request->roles as $role) {
+			if($controlledRoleIDs->doesntContain(intval($role))) abort(403);
+		}
 		$user->roles()->sync($request->roles);
 		return Redirect::back()->with("success", "User roles updated successfully.");
 	}
