@@ -38,6 +38,7 @@ Route::middleware("permissions:manage_users")->group(function(){
 Route::middleware("permissions:manage_roles")->group(function(){
 	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
 	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
+	Route::put("/admin/roles/{role}", [AdminPageController::class, 'update_role']);
 });
 
 Route::middleware("permissions:manage_artworks")->group(function(){

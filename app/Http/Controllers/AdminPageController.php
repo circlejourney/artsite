@@ -36,12 +36,22 @@ class AdminPageController extends Controller
 	}
 
     function index_roles(Request $request) {
-		$roles = $request->user()->controlsRoles();
-		return view("admin.role.index", ["roles" => $roles]);
+		$controlledRoles = $request->user()->controlsRoles();
+		return view("admin.role.index", ["roles" => $controlledRoles]);
 	}
 
-	function update_roles(Role $role, Request $request) {
-		$role->fill($request->all());
+    function edit_role(Request $request, Role $role) {
+		$controlledRoles = $request->user()->controlsRoles();
+		if($controlledRoles->doesntContain($role)) abort(403);
+		return view("admin.role.edit", ["role" => $role]);
+	}
+
+	function update_role(Role $role, Request $request) {
+		$controlledRoles = $request->user()->controlsRoles();
+		if($controlledRoles->doesntContain($role)) abort(403);
+		$role->update([
+			"default_flair" => $request->default_flair
+		]);
 		return Redirect::back()->with("success", "Role updated successfully.");
 
 	}

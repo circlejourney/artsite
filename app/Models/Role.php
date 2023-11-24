@@ -10,7 +10,16 @@ use App\Models\User;
 class Role extends Model
 {
     use HasFactory;
+
+	protected $fillable = [
+		"default_flair"
+	];
+
 	function users(): BelongsToMany {
 		return $this->belongsToMany(User::class)->withTimestamps();
+	}
+
+	function getDefaultFlairHTML() {
+		return "<i class='fa fa-$this->default_flair'></i>";
 	}
 }

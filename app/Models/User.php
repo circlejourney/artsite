@@ -84,10 +84,6 @@ class User extends Authenticatable
 	public function hasRole($role) {
 		return $this->roles()->pluck("name")->contains($role);
 	}
-	
-	public function hasPermissions($permission) {
-		return $this->roles()->get()->pluck($permission)->contains(true);
-	}
 
 	public function controlsRoles() {
 		if($this->hasRole("founder")) return Role::all();
@@ -97,6 +93,10 @@ class User extends Authenticatable
 	
 	public function getTopRole() {
 		return $this->roles()->orderBy("id", "asc")->first();
+	}
+	
+	public function hasPermissions($permission) {
+		return $this->roles()->get()->pluck($permission)->contains(true);
 	}
 
 	public function getProfileHTML(): string {
