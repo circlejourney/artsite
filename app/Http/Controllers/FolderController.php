@@ -27,6 +27,7 @@ class FolderController extends Controller
 		$query = [
 			"title" => $request->title,
 			"user_id" => $request->user()->id,
+			"privacy_level_id" => $request->privacy_level_id,
 			"parent_folder_id" => $request->parent_folder ?? $request->user()->top_folder_id
 		];
 		
@@ -102,7 +103,7 @@ class FolderController extends Controller
 		$query = [
 			"title" => $request->title,
 			"parent_folder_id" => $request->parent_folder ?? $folder->user()->first()->top_folder_id,
-			"privacy_level_id" => $request->privacy_level
+			"privacy_level_id" => $request->privacy_level_id
 		];
 		
         $folder->update($query);

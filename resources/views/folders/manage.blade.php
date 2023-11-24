@@ -17,6 +17,7 @@
 					<input name="title" class="form-control" placeholder="Folder name" required>
 					<label for="parent_folder">Parent folder</label>
 					@component("components.folder-select", ["folderlist" => $folderlist])@endcomponent
+					<x-privacy-select />
 					<button class="button-pill">Create folder</button>
 				</form>
 			</div>
