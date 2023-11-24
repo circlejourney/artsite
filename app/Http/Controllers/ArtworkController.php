@@ -91,8 +91,10 @@ class ArtworkController extends Controller
 
 		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
 			$keepfolders = $artwork->folders()->get()
-				->diff( $request->user()->folders )->push($request->parent_folder)
-				->map(function($i) { return intval($i); });
+				->diff( $request->user()->folders() )
+				->pluck("id")
+				->push( $request->parent_folder );
+			error_log($keepfolders);
 			$artwork->folders()->sync($keepfolders);
 		}
 
