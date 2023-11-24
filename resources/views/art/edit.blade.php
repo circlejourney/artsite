@@ -41,12 +41,18 @@
 		<div class="col">
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
 			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text', $text ) }}</textarea>
-			@foreach( $artwork->users()->get()->filter(function($user) {
-				return Auth::check() && $user->id !== Auth::user()->id;
-			}) as $user)
-				<input class="form-control" type="text" name="artist[]" placeholder="Collaborator" value="{{ $user["name"] }}">
-			@endforeach
 			@include("components.folder-select", ["folderlist" => $folderlist])
+
+			<div id="artist-inputs">
+				@foreach( $artwork->users()->get()->filter(function($user) {
+					return Auth::check() && $user->id !== Auth::user()->id;
+				}) as $user)
+					<input class="form-control" type="text" name="artist[]" placeholder="Collaborator" value="{{ $user["name"] }}">
+				@endforeach
+			</div>
+			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
+			
+			<br>
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>

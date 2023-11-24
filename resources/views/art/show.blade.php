@@ -20,7 +20,7 @@
 		<div>
 			Inside folder(s):
 			@foreach($folders as $folder)
-			<a href="{{ $folder->user()->first()->name }}">{{$folder->user()->first()->name}}</a>
+			<a href="{{ route("user", ["username" => $folder->user()->first()->name]) }}">{{$folder->user()->first()->name}}</a>
 			>
 			<a href="{{ route("folders.show", ["username" => $folder->user()->first()->name, "folder"=>$folder]) }}">{{ $folder->title }}</a>
 			@endforeach

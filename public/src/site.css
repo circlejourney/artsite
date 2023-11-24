@@ -27,6 +27,7 @@ body {
 .button-pill {
   min-width: 10rem;
   border: none;
+  cursor: pointer;
 }
 .button-pill:hover {
   text-decoration: none;

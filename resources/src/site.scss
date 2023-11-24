@@ -64,6 +64,8 @@ body {
 	@extend %button;
 	min-width: 10rem;
 	border: none;
+	cursor: pointer;
+
 	&:hover {
 		text-decoration: none;
 		color: initial;

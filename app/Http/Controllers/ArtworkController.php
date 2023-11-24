@@ -73,6 +73,8 @@ class ArtworkController extends Controller
 	/* Artwork edit form */
 	public function edit(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
+		if($artwork->users()->get()->doesntContain($request->user())) abort(403);
+
 		$folderlist = Folder::getUserFolder($request->user());
 		$text = $artwork->getText();
 		$image_urls = $this->getImageURLs($artwork->images);
@@ -83,6 +85,40 @@ class ArtworkController extends Controller
 	/* Update the artwork */
 	public function update(string $path, Request $request) {
 		$artwork = Artwork::byPath($path);
+		if($artwork->users()->get()->doesntContain($request->user())) abort(403);
+
+		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
+			$keepfolders = $artwork->folders()->get()
+				->diff( $request->user()->folders )->push($request->parent_folder)
+				->map(function($i) { return intval($i); });
+			$artwork->folders()->sync($keepfolders);
+		}
+
+		$artwork->title = $request->title;
+		$artwork->updateText($request->text ?? "");
+		
+		if($request->artist) {
+			$currentartists = $artwork->users()->get()->map(function($i){ return $i->name; });
+			$incomingartists = collect($request->artist)->push($request->user()->name);
+			$removeArtists = $currentartists->diff($incomingartists);
+			$addArtists = $incomingartists->diff($currentartists);
+			if($removeArtists) {
+				foreach($removeArtists as $artistname) {
+					if(!$artistname) continue;
+					if(!$artist = User::where("name", $artistname)->first()) continue;
+					$artwork->removeForeignUser($artist);
+				}
+			}
+			if($addArtists) {
+				foreach($request->artist as $artistname) {
+					// Loop through guest artists (not the user making the request)
+					if(!$artistname) continue;
+					if(!$artist = User::where("name", $artistname)->first()) continue;
+					if($artwork->users()->get()->contains($artist)) continue;
+					$artwork->addForeignUser($artist);
+				}	
+			}
+		}
 
 		if($request->images) {
 			foreach($request->images as $i => $image) {
@@ -101,15 +137,6 @@ class ArtworkController extends Controller
 			$artwork->generateThumbnail()->save();
 		}
 
-		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
-			$keepfolders = $artwork->folders()->get()
-				->diff( $request->user()->folders )->push($request->parent_folder)
-				->map(function($i) { return intval($i); });
-			$artwork->folders()->sync($keepfolders);
-		}
-
-		$artwork->title = $request->title;
-		$artwork->updateText($request->text ?? "");
 		$artwork->save();
 
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');

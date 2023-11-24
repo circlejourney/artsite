@@ -86,6 +86,10 @@ class User extends Authenticatable
 		return $hasRole;
 	}
 
+	public function controlsRoles() {
+		return $this->roles()->orderBy("role_id", "asc")->skip(1)->get();
+	}
+
 	public function getProfileHTML(): string {
 		if(!$this->profile_html) return "";
 		$profile_html_content = Storage::get($this->profile_html);

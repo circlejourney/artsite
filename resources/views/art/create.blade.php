@@ -23,12 +23,13 @@
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title') }}" required>
 			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text') }}</textarea>
 			
+			@include("components.folder-select", ["folderlist" => $folderlist])
+
 			<div id="artist-inputs">
 				<input class="artist-input form-control" type="text" name="artist[]" value="{{ old('artist.0') }}" placeholder="Collaborator">
 			</div>
-
 			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
-			@include("components.folder-select", ["folderlist" => $folderlist])
+			<br>
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>

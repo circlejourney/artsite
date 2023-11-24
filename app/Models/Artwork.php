@@ -69,6 +69,21 @@ class Artwork extends Model
 		return $this;
 	}
 
+	public function addForeignUser(User $user) {
+		// This is just a helper function, verification that the user isn't already an owner should happen in the controller logic
+		$this->users()->attach($user);
+		$userfolder = Folder::where("id", $user->top_folder_id)->firstOrFail();
+		$this->folders()->attach($userfolder);
+		return $this;
+	}
+
+	public function removeForeignUser(User $user) {
+		$this->users()->detach($user);
+		$updatedFolders = $this->folders()->get()->reject(function($i) use($user){ return $i->user == $user; });
+		$this->folders()->sync($updatedFolders);
+		return $this;
+	}
+
 	public function writeImage(int $i, UploadedFile $image, User $user) {
 		if(isset($this->images[$i]) && $relative_path = $this->images[$i]) Storage::delete($relative_path);
 		$imageupload = UploadService::upload($image, "art/".$user->id);
