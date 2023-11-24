@@ -55,7 +55,7 @@ class FolderController extends Controller
 		$user = User::where("name", $username)->firstOrFail();
 		if(!$user->folders()->get()->contains($folder)) abort(404);
 		
-		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), [$user->id]);
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
 		
 		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
 		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);

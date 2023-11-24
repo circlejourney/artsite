@@ -154,6 +154,7 @@ nav .search-form button {
 }
 nav .collapse-container {
   position: absolute !important;
+  z-index: 10;
   width: 100%;
   left: 0;
   top: 100%;
