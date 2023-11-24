@@ -9,32 +9,22 @@
 			-->@if(!$folder->isTopFolder()): {{$folder->title}} @endif
 		</h1>
 		
-		@if($folder->parent)
-		<a href="{{
-			$folder->parent()->first()->isTopFolder() ?
-				route("folders.index", ["username" => $user->name])
-				:
-				route("folders.show", ["username" => $user->name, "folder" => $folder->parent])
-		}}">
-			Back to {{ $folder->parent()->first()->getDisplayName() }}
-		</a>
-		@endif
-		
 		<div class="row">
 		
 		<div class="col-12 col-md-3">
-			<h2>Folder tree</h2>
+			<h2>Folders</h2>
 			<div>
 				<div>
-					<a href="{{ route("folders.index", ["username"=>$user->name]) }}">
+					<a href="{{ route("folders.index", ["username"=>$user->name]) }}"
+						@if($folder->isTopFolder()) class="link-current" @endif>
 						{{ $user->getTopFolder()->getDisplayName() }}
 					</a>
 				</div>
 				@foreach($folderlist as $listfolder)
 					<div>
 						<a style="margin-left: {{ ($listfolder["depth"])*1.2 }}rem" href="{{ route("folders.show", ["username" => $user->name, "folder" => $listfolder["id"]]) }}"
-							@if($listfolder["id"] == $folder->id) class="font-weight-bold" @endif>
-							&#x2937;{{ $listfolder["title"] }}
+							@if($listfolder["id"] == $folder->id) class="link-current" @endif>
+							&#x2937; {{ $listfolder["title"] }}
 						</a>
 					</div>
 				@endforeach

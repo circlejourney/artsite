@@ -5,8 +5,7 @@
 
 @section('body')
 <div class="p-4">
-	<h1>Dashboard</h1>
-	<p>Welcome back to {{ config("app.name") }}, {{ auth()->user()->name }}!</p>
+	<h1>Welcome back to {{ config("app.name") }}, {{ auth()->user()->name }}!</h1>
 	<ul>
 		<li>
 			<a href="/{{ auth()->user()->name }}">View your profile</a>

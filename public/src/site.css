@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   font-family: "Lato";
   background: #eee;
@@ -11,6 +12,13 @@ body {
   body {
     font-size: 13pt;
   }
+}
+
+a.link-current {
+  font-weight: bold;
+}
+a.link-current::after {
+  content: "◀";
 }
 
 /* GLOBAL STYLES */

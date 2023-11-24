@@ -81,9 +81,11 @@ class ArtworkController extends Controller
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);
 
 		$folderlist = $request->user()->getFolderTree();
+		$selectedfolder = $artwork->folders()->get()
+			->intersect($request->user()->folders()->get())->first()->id;
 		$text = $artwork->getText();
 		$image_urls = $this->getImageURLs($artwork->images);
-		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls, "folderlist" => $folderlist, "text" => $text]);
+		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls, "folderlist" => $folderlist, "text" => $text, "selectedfolder" => $selectedfolder]);
 	}
 
 	

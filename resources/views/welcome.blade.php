@@ -6,8 +6,8 @@
 
 @section("body")
 <div class="p-4">
-    <h1>Art Site</h1>
-    <p>Welcome to {{ config("app.name") }}! A cool art site with groups, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
+    <h1>Welcome to {{ config("app.name") }}!</h1>
+	<p>A cool art site with groups, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
     
     @unless(Auth::check())
     <p>

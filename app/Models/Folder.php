@@ -20,7 +20,8 @@ class Folder extends Model
 	protected $fillable = [
 		"title",
 		"user_id",
-		"parent_folder_id"
+		"parent_folder_id",
+		"privacy_level_id"
 	];
 
 	public function artworks() : BelongsToMany {

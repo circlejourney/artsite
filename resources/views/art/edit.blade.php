@@ -41,7 +41,7 @@
 		<div class="col">
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
 			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text', $text ) }}</textarea>
-			@include("components.folder-select", ["folderlist" => $folderlist])
+			@include("components.folder-select", ["folderlist" => $folderlist, "selected" => $selectedfolder])
 
 			<div id="artist-inputs">
 				@forelse( $artwork->users()->get() as $i=>$user)

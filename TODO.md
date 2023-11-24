@@ -15,3 +15,4 @@
 - Set order of folders, images, and other stuff
 - Drag and drop reordering
 - Thumbnail cropping
+- Validate that every artwork has either text or an image.

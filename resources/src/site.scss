@@ -50,6 +50,13 @@ body {
     }
 }
 
+a.link-current {
+	font-weight: bold;
+	&::after {
+		content: "◀";
+	}
+}
+
 /* GLOBAL STYLES */
 
 %button {

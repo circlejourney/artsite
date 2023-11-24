@@ -5,21 +5,12 @@
 		<h1>Manage Art Folders</h1>
 		<div class="row">
 
-			<div class="col-12 col-md-6">
+			<div class="col-12 col-md-4">
 				<h2>Edit folders</h2>
-				<div class="folder-list">
-					@foreach($folderlist as $folder)
-					<div>
-						<a style="margin-left: {{ ($folder["depth"]-1)*1.2 }}rem" href="{{ route("folders.edit", ["folder" => $folder["id"]]) }}">
-							@if($folder["depth"] > 1) &#x2937; @endif
-							{{ $folder["title"] }}
-						</a>
-					</div>
-					@endforeach
-				</div>
+				@include("components.manage-folderlist", ["folderlist" => $folderlist])
 			</div>
 			
-			<div class="col-12 col-md-6">
+			<div class="col">
 				<h2>Create new folder</h2>
 				<form method="POST">
 					@csrf
