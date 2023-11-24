@@ -44,12 +44,10 @@
 			@include("components.folder-select", ["folderlist" => $folderlist])
 
 			<div id="artist-inputs">
-				@forelse( $artwork->users()->get()->filter(function($user) {
-					return Auth::check() && $user->id !== Auth::user()->id;
-				}) as $i=>$user)
-					<input class="form-control" type="text" name="artist[]" placeholder="Collaborator" value="{{ old("artist.".$i, $user["name"]) }}">
+				@forelse( $artwork->users()->get() as $i=>$user)
+					<input class="form-control artist-input" type="text" name="artist[]" placeholder="Collaborator" value="{{ old("artist.".$i, $user["name"]) }}">
 				@empty
-					<input class="form-control" type="text" name="artist[]" placeholder="Collaborator">
+					<input class="form-control artist-input" type="text" name="artist[]" placeholder="Collaborator">
 				@endforelse
 			</div>
 			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>

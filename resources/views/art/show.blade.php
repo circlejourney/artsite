@@ -41,7 +41,7 @@
 		
 		<br>
 		
-		@if(Auth::check() && $owner_ids->contains(Auth::user()->id))
+		@if(auth()->check() && ($owner_ids->contains(auth()->user()->id) || auth()->user()->hasPermissions("manage_artworks")))
 		<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
 			Edit artwork
 		</a>

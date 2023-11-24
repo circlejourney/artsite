@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'site_closed' => \App\Http\Middleware\PreventRegistrationWhenSiteClosed::class,
 		'role' => \App\Http\Middleware\VerifyUserRole::class,
+		'permissions' => \App\Http\Middleware\VerifyUserPermissions::class,
     ];
 }

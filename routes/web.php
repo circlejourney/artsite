@@ -22,13 +22,24 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware("role:admin,mod")->group(function(){
+	Route::get("/admin", [AdminPageController::class, 'index'])->name("admin");
+});
 
-Route::middleware("role:admin")->group(function(){
+Route::middleware("permissions:manage_users")->group(function(){
 	Route::get("/admin/users", [AdminPageController::class, 'index_users'])->name("admin.user.index");
 	Route::get("/admin/users/{user}", [AdminPageController::class, 'edit_user'])->name("admin.user.edit");
 	Route::put("/admin/users/{user}", [AdminPageController::class, 'update_user']);
+});
+
+Route::middleware("permissions:manage_roles")->group(function(){
 	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
 	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
+});
+
+Route::middleware("permissions:manage_artworks")->group(function(){
+	Route::get("/admin/works", [AdminPageController::class, 'index_artworks'])->name("admin.art.index");
+	Route::get("/admin/works/{role}", [AdminPageController::class, 'edit_artworks'])->name("admin.art.edit");
 });
 
 Route::middleware('auth')->group(function () {
@@ -41,12 +52,12 @@ Route::middleware('auth')->group(function () {
 	Route::get("/profile/customise", [UserPageController::class, 'edit'])->name('profile.html.edit');
 	Route::patch("/profile/customise", [UserPageController::class, 'update']);
 	
-	Route::get("/work/new", [ArtworkController::class, 'create'])->name('art.create');
-	Route::post("/work/new", [ArtworkController::class, 'store']);
-	Route::get("/work/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
-	Route::delete("/work/{path}/delete", [ArtworkController::class, 'delete']);
-	Route::get("/work/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
-	Route::put("/work/{path}/edit", [ArtworkController::class, 'update']);
+	Route::get("/post/new", [ArtworkController::class, 'create'])->name('art.create');
+	Route::post("/post/new", [ArtworkController::class, 'store']);
+	Route::get("/post/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
+	Route::delete("/post/{path}/delete", [ArtworkController::class, 'delete']);
+	Route::get("/post/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
+	Route::put("/post/{path}/edit", [ArtworkController::class, 'update']);
 
 	Route::get("/manage-folders", [FolderController::class, 'index_manage'])->name("folders.manage");
 	Route::post("/manage-folders", [FolderController::class, 'store']);
@@ -57,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get("/work/{path}", [ArtworkController::class, 'show'])->name("art");
+Route::get("/post/{path}", [ArtworkController::class, 'show'])->name("art");
 Route::get("/{username}/folders", [FolderController::class, 'index_user'])->name("folders.index");
 Route::get("/{username}/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');

@@ -82,12 +82,16 @@ class User extends Authenticatable
 	}
 	
 	public function hasRole($role) {
-		$hasRole = $this->roles()->where("name", $role)->get()->count();
-		return $hasRole;
+		return $this->roles()->pluck("name")->contains($role);
+	}
+	
+	public function hasPermissions($permission) {
+		return $this->roles()->get()->pluck($permission)->contains(true);
 	}
 
 	public function controlsRoles() {
-		return $this->roles()->orderBy("role_id", "asc")->skip(1)->get();
+		$toproleid = $this->roles()->orderBy("id", "asc")->first()->id;
+		return Role::all()->sortBy("id")->slice($toproleid);
 	}
 
 	public function getProfileHTML(): string {

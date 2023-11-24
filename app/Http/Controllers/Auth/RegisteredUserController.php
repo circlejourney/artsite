@@ -48,13 +48,13 @@ class RegisteredUserController extends Controller
 		]);
 		
 		$user->createTopFolder();
-		$user->roles()->attach($user_role);
+		$user->roles()->attach($user_role);	
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route("home"));
+        return redirect(RouteServiceProvider::HOME);
     }
 
 	public function messages() {

@@ -6,17 +6,17 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class VerifyUserRole
+class VerifyUserPermissions
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string ...$rolequery): Response
+    public function handle(Request $request, Closure $next, string ...$permissionkeys): Response
     {
-		foreach($rolequery as $role) {
-			if($request->user()->hasRole($role)) {
+		foreach($permissionkeys as $key) {
+			if($request->user()->hasPermissions($key)) {
 				return $next($request);
 			}
 		}

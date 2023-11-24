@@ -73,7 +73,8 @@ class ArtworkController extends Controller
 	/* Artwork edit form */
 	public function edit(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
-		if($artwork->users()->get()->doesntContain($request->user())) abort(403);
+		if($artwork->users()->get()->doesntContain($request->user())
+			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);
 
 		$folderlist = Folder::getUserFolder($request->user());
 		$text = $artwork->getText();
@@ -85,7 +86,8 @@ class ArtworkController extends Controller
 	/* Update the artwork */
 	public function update(string $path, Request $request) {
 		$artwork = Artwork::byPath($path);
-		if($artwork->users()->get()->doesntContain($request->user())) abort(403);
+		if($artwork->users()->get()->doesntContain($request->user())
+			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);	
 
 		if($request->parent_folder && $request->user()->folders()->get()->contains($request->parent_folder)) {
 			$keepfolders = $artwork->folders()->get()
@@ -99,7 +101,7 @@ class ArtworkController extends Controller
 		
 		if($request->artist) {
 			$currentartists = $artwork->users()->get()->map(function($i){ return $i->name; });
-			$incomingartists = collect($request->artist)->push($request->user()->name);
+			$incomingartists = collect($request->artist);
 			$removeArtists = $currentartists->diff($incomingartists);
 			$addArtists = $incomingartists->diff($currentartists);
 			if($removeArtists) {
