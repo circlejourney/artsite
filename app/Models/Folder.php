@@ -44,13 +44,25 @@ class Folder extends Model
 		return $this->children()->with("allChildren");
 	}
 
-	public function getTree($includeRoot): Collection {
-		return FolderListService::class($this)->tree($includeRoot);
+	public function ancestors() {
+		return $this->parent()->with("ancestors");
+	}
+
+	public function getTree($includeRoot, $maxPrivacyAllowed=5): Collection {
+		return FolderListService::class($this)->tree($includeRoot, $maxPrivacyAllowed);
+	}
+
+	public function getLineage() {
+		return FolderListService::class($this)->lineage();
+	}
+
+	public function getLineagePrivacyLevel() {
+		return $this->getLineage()->pluck("privacy_level_id")->max();
 	}
 
 	public function getChildKeys(): Collection {
 		$thisfolder = $this->with("allChildren")->first();
-		return FolderListService::class($thisfolder)->tree(false);
+		return FolderListService::class($thisfolder)->tree(false, 5);
 	}
 
 	public function isTopFolder() {

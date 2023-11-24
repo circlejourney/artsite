@@ -9,13 +9,19 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ArtworkRequest;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
-use App\Services\FolderListService;
-use Illuminate\Support\Facades\Auth;
+use App\Services\PrivacyLevelService;
 
 class ArtworkController extends Controller
 {
-    public function show(string $path) {
+    public function show(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
+		$ownerIDs = $artwork->users()->get()->pluck("id");
+		
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed($request->user(), $ownerIDs);
+		$artworkprivacy = $artwork->folders()->get()->map(function($i) { return $i->getLineagePrivacyLevel(); })->max();
+
+		if($artworkprivacy > $maxPrivacyAllowed) abort(401);
+
 		$folders = $artwork->folders()
 			->orderBy("artwork_folder.created_at")
 			->get()
@@ -27,7 +33,7 @@ class ArtworkController extends Controller
 	}
 	
 	public function create(Request $request) {
-		$folderlist = $request->user()->getFolderTree();
+		$folderlist = $request->user()->getFolderTree(false);
 		return view("art.create", ["folderlist" => $folderlist]);
 	}
 
@@ -80,7 +86,7 @@ class ArtworkController extends Controller
 		if($artwork->users()->get()->doesntContain($request->user())
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);
 
-		$folderlist = $request->user()->getFolderTree();
+		$folderlist = $request->user()->getFolderTree(false);
 		$selectedfolder = $artwork->folders()->get()
 			->intersect($request->user()->folders()->get())->first()->id;
 		$text = $artwork->getText();

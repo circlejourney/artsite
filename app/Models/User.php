@@ -15,6 +15,7 @@ use App\Models\Folder;
 use App\Models\Role;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
+use App\Services\FolderListService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -86,8 +87,8 @@ class User extends Authenticatable
 		return Folder::where("id", $this->top_folder_id)->first();
 	}
 
-	public function getFolderTree($includeRoot): Collection {
-		return $this->getTopFolder()->getTree($includeRoot);
+	public function getFolderTree($includeRoot, $maxPrivacyAllowed=5): Collection {
+		return FolderListService::class($this->getTopFolder())->tree($includeRoot, $maxPrivacyAllowed);
 	}
 	
 	public function hasRole($role) {

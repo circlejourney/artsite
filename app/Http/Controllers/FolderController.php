@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\FolderListService;
 use Illuminate\Support\Facades\Redirect;
+use App\Services\PrivacyLevelService;
 
 class FolderController extends Controller
 {
@@ -36,10 +37,13 @@ class FolderController extends Controller
     /**
      * Display a listing of the selected user's folders.
      */
-	public function index_user(string $username) {
+	public function index_user(Request $request, string $username) {
 		$user = User::where("name", $username)->firstOrFail();
-		$artworks = $user->artworks()->get();
-		$sorted = $user->getFolderTree(true);
+
+		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->orderBy("created_at", "desc")->get() );
+
+		$maxPrivacyAllowed = auth()->user() ? 2 : 1;
+		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);
 		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $sorted]);
 	}
 
@@ -49,8 +53,11 @@ class FolderController extends Controller
 	public function show(string $username, Folder $folder) {
 		$user = User::where("name", $username)->firstOrFail();
 		if(!$user->folders()->get()->contains($folder)) abort(404);
-
-		$sorted = $user->getFolderTree(true);
+		
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), [$user->id]);
+		
+		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
+		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);
 		return view("folders.show", ["user" => $user, "folder" => $folder, "folderlist" => $sorted]);
 	}
 
@@ -68,8 +75,6 @@ class FolderController extends Controller
      */
     public function edit(Folder $folder, Request $request)
     {
-		/*$topfolder = Folder::with("allChildren")->where("id", $request->user()->top_folder_id)->first();
-		$sorted = FolderListService::class($topfolder)->tree(false);*/
 		$sorted = $request->user()->getFolderTree(false);
 		
 		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
@@ -112,9 +117,9 @@ class FolderController extends Controller
 		$owner = $folder->user;
 		$artworks = $folder->artworks;
 		foreach($artworks as $artwork) {
-			$artwork->update(["folder_id" => $owner->top_folder_id]);
+			$artwork->folders()->attach($owner->top_folder_id);
 		}
         Folder::destroy($folder->id);
-		return redirect( route("folders") );
+		return redirect( route("folders.manage") );
     }
 }

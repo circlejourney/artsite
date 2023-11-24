@@ -13,13 +13,14 @@ class FolderListService {
 		return new folderListService($folder);
 	}
 
-	public function tree($includeRoot) {
+	public function tree($includeRoot, $maxPrivacyAllowed=5) {
 		$accumulator = collect([]);
-		$sorted = $this->recursivePush($this->folder, 0+intval($includeRoot), $accumulator);
+		$sorted = $this->recursivePush($this->folder, 0+intval($includeRoot), $accumulator, $maxPrivacyAllowed);
 		return $sorted;
-	}	
+	}
 	
-	public function recursivePush($folder, $depth, $accumulator) {
+	public function recursivePush($folder, $depth, $accumulator, $maxPrivacyAllowed) {
+		if($folder->privacy_level_id > $maxPrivacyAllowed) return $accumulator;
 		if($depth > 0) {
 			$attributes = collect([
 				"id" => $folder->id,
@@ -33,14 +34,25 @@ class FolderListService {
 		$children = $folder->allChildren;
 		if($children->count() > 0) {
 			foreach($children as $child) {
-				$this->recursivePush($child, $depth+1, $accumulator);
+				$this->recursivePush($child, $depth+1, $accumulator, $maxPrivacyAllowed);
 			}
 		}
 		return $accumulator;
 	}
 
-	public function listChildren() {
-		
+	public function lineage() {
+		$ancestor = $this->folder;
+		$accumulator = collect([]);
+		while($ancestor !== null) {
+			$attributes = collect([
+				"id" => $ancestor->id,
+				"title" => $ancestor->title,
+				"privacy_level_id" => $ancestor->privacy_level_id
+			]);
+			$accumulator->push($attributes);
+			$ancestor = $ancestor->ancestors;
+		}
+		return $accumulator;
 	}
 	
 }

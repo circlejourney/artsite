@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserPageUpdateRequest;
+use App\Models\PrivacyLevel;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
+use App\Services\PrivacyLevelService;
 
 class UserPageController extends Controller
 {
-    public function show(string $username) {
+    public function show(Request $request, string $username) {
         $user = User::where("name", $username)->first();
 		if(!$user) abort(404);
 		$avatar_url = $user->avatar ? Storage::url($user->avatar) : "/images/user.png";
-		$preview_artworks = $user->artworks()->limit(10)->orderBy("created_at", "desc")->get();
+		
+		$preview_artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->limit(10)->orderBy("created_at", "desc")->get());
+		
 		$profile_html = $user->getProfileHTML() ?? "";
         return view("profile.show", ["user" => $user, "avatar_url" => $avatar_url, "artworks" => $preview_artworks, "profile_html" => $profile_html]);
     }
