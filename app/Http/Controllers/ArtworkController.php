@@ -16,10 +16,14 @@ class ArtworkController extends Controller
 {
     public function show(string $path) {
 		$artwork = Artwork::byPath($path);
+		$folders = $artwork->folders()
+			->orderBy("artwork_folder.created_at")
+			->get()
+			->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; });
 		$image_urls = $this->getImageURLs($artwork->images);
 		$owner_ids = $this->getOwners($artwork);
 		$artwork_text = $artwork->getText();
-		return view("art.show", ["artwork" => $artwork, "text" => $artwork_text, "image_urls" => $image_urls ,"owner_ids" => $owner_ids]);
+		return view("art.show", ["artwork" => $artwork, "text" => $artwork_text, "image_urls" => $image_urls ,"owner_ids" => $owner_ids, "folders" => $folders]);
 	}
 	
 	public function create(Request $request) {
@@ -89,13 +93,15 @@ class ArtworkController extends Controller
 		if($artwork->users()->get()->doesntContain($request->user())
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);	
 
-		$parentfolderID = intval($request->parent_folder);
-		if($request->parent_folder && $request->user()->folders()->get()->contains($parentfolderID)) {
+		$parentfolderID = $request->parent_folder ? intval($request->parent_folder) : $request->user()->top_folder_id;
+		error_log($parentfolderID);
+		if($request->user()->folders()->get()->contains($parentfolderID)) {
 			$keepfolders = $artwork->folders()->get()
 				->diff( $request->user()->folders()->get() )
 				->pluck("id")
 				->push( $parentfolderID );
 			$artwork->folders()->sync($keepfolders);
+			error_log($keepfolders);
 		}
 
 		$artwork->title = $request->title;

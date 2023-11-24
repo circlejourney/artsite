@@ -37,7 +37,7 @@ class Artwork extends Model
 	}
 
 	public function folders(): BelongsToMany {
-		return $this->belongsToMany(Folder::class);
+		return $this->belongsToMany(Folder::class)->withTimestamps();
 	}
 
 	public static function byPath($path) : Artwork {

@@ -14,7 +14,7 @@
 					-->@if(!$loop->last), @endif
 		@endforeach
 		
-		<?php $folders = $artwork->folders->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; }) ?>
+		<?php $folders = $folders->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; }) ?>
 		@if(sizeof($folders) > 0)
 		<div>
 			Inside folder(s):
@@ -43,7 +43,7 @@
 		
 		<br>
 		
-		@if(auth()->check() && ($owner_ids->contains(auth()->user()->id) || auth()->user()->hasPermissions("manage_artworks")))
+		@if(auth()->check() && ($owner_ids->contains(auth()->user()->id)))
 		<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
 			Edit artwork
 		</a>

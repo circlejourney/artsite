@@ -24,7 +24,7 @@ class Folder extends Model
 	];
 
 	public function artworks() : BelongsToMany {
-		return $this->belongsToMany(Artwork::class);
+		return $this->belongsToMany(Artwork::class)->withTimestamps();
 	}
 	
 	public function user() : BelongsTo {
