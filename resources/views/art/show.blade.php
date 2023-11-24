@@ -20,7 +20,7 @@
 			Inside folder(s):
 			@foreach($folders as $folder)
 				<a href="{{ route("user", ["username" => $folder->user()->first()->name]) }}">
-					{!! $folder->user()->first()->getFlairHTML() !!} {{$folder->user()->first()->name}}</a>'s
+					{{$folder->user()->first()->name}}</a>'s
 				<a href="{{ route("folders.show", ["username" => $folder->user()->first()->name, "folder"=>$folder]) }}">
 					{{ $folder->title }}</a><!--
 				-->@if(!$loop->last), @endif

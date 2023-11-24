@@ -11,13 +11,13 @@
 			<a href="/{{ auth()->user()->name }}">View your profile</a>
 		</li>
 		<li>
-			<a href="{{ route("profile.html.edit") }}">Customise your profile</a>
+		<a href="{{ route("profile.edit") }}">Account settings</a>
+		</li>
+		<li>
+			<a href="{{ route("profile.html.edit") }}">Customise profile</a>
 		</li>
 		<li>
 		<a href="{{ route("folders.manage") }}">Manage art folders</a>
-		</li>
-		<li>
-		<a href="{{ route("profile.edit") }}">Update your settings</a>
 		</li>
 		<li>
 		@include("components.logout-form")

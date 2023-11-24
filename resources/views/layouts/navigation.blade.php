@@ -19,9 +19,9 @@
                 @if(Auth::check())
 
                     <a class="menu-item" href="/{{ Auth::user()->name }}">{{ Auth::user()->name }}</a>
+                    <a class="menu-item" href="{{route('profile.edit')}}">Account settings</a>
 					<a class="menu-item" href="{{route('profile.html.edit')}}">Customise profile</a>
 					<a class="menu-item" href="{{route('folders.manage')}}">Manage folders</a>
-                    <a class="menu-item" href="{{route('profile.edit')}}">Settings</a>
                     <!-- Authentication -->
                     @include("components.logout-form")
 

@@ -36,7 +36,8 @@ class User extends Authenticatable
         'password',
 		'display_name',
 		'avatar',
-		'profile_html'
+		'profile_html',
+		'custom_flair'
     ];
 
     /**
@@ -117,8 +118,8 @@ class User extends Authenticatable
 	}
 
 	public function getFlairHTML(): string {
-		$toprole = $this->getTopRole();
-		return "<i class='user-flair fa fa-$toprole->default_flair'></i>";
+		$faString = $this->custom_flair ?? $this->getTopRole()->default_flair;
+		return "<i class='user-flair fa fa-$faString'></i>";
 	}
 
 	public function updateProfileHTML(string $profile_html) {
