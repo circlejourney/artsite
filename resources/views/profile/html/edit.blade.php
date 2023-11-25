@@ -48,7 +48,7 @@
 @endpush
 
 @section("body")
-	<div class="p-4">
+	<div class="page-block">
 		<h1>Edit Profile HTML</h1>
 
 		<form method="POST" enctype="multipart/form-data">
@@ -57,6 +57,7 @@
 			
 			<h2>Avatar</h2>
 			<input type="file" name="avatar" id="avatar" onchange="updatePreview(this, $('.avatar-image-preview'))">
+			<br>
 			<img class="image-preview avatar-image-preview" src="{{ $user->getAvatarURL() }}">
 
 			<h2>Banner</h2>

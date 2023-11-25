@@ -9,6 +9,7 @@ $form-input-bg: white;
 $button-padding: 0.2rem;
 $main-width: 1200px;
 $global-padding: 3rem;
+$header-spacing: 2rem;
 
 @mixin screen-sm {
     @media screen and (max-width: 768px) {
@@ -51,6 +52,10 @@ body {
     @include screen-sm {
         font-size: 13pt;
     }
+}
+
+h1, h2, h3 {
+	margin-top: $header-spacing;
 }
 
 a.link-current {
@@ -337,6 +342,9 @@ main {
 	}
 
 	.banner-image-preview {
+		margin-top: $global-padding;
+		margin-bottom: $global-padding;
+		margin-left: -$global-padding;
 		object-fit: cover;
 		object-position: center;
 	}
@@ -360,6 +368,7 @@ main {
 	}
 
 	/* FOLDER PAGE */
+
 	.folder-row {
 		$folder-height: 220px;
 		overflow-x: auto;
@@ -401,6 +410,10 @@ main {
 		padding: $button-padding;
 		color: #767676;
 	}
+	
+	.collapse-link {
+		@extend h3;
+	}
 
 	.tag {
 		@extend .button-pill;
@@ -410,7 +423,7 @@ main {
 	}
 
 	div[class$="-section"] {
-		margin: $profile-padding 0;
+		margin: $header-spacing 0;
 	}
 
 	.gallery {

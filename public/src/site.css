@@ -15,6 +15,10 @@ body {
   }
 }
 
+h1, h2, h3, main .collapse-link {
+  margin-top: 2rem;
+}
+
 a.link-current {
   font-weight: bold;
 }
@@ -283,6 +287,9 @@ main .image-preview {
   width: 150px;
 }
 main .banner-image-preview {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  margin-left: -3rem;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center;
@@ -343,7 +350,7 @@ main .tag {
   padding: 0.2rem 0.8rem;
 }
 main div[class$=-section] {
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 main .gallery {
   display: flex;
