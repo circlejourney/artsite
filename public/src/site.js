@@ -11,7 +11,6 @@ function updatePreview(input, target, bg=false) {
 	const reader = new FileReader();
 	reader.readAsDataURL(file);
 	reader.onload = function(){
-		console.log(this.result);
 		if(!bg) $(target).attr("src", this.result);
 		else $(target).css("background-image", "url("+this.result+")");
 	}
