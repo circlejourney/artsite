@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Services\FolderListService;
 use Illuminate\Support\Facades\Redirect;
 use App\Services\PrivacyLevelService;
-use App\Services\TaggerService;
 
 class FolderController extends Controller
 {

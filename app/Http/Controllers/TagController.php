@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use App\Models\User;
-use App\Services\TaggerService;
+use App\Services\PrivacyLevelService;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -26,9 +26,16 @@ class TagController extends Controller
 	public function show_user(string $username, Tag $tag)
 	{
 		$user = User::where("name", $username)->firstOrFail();
+
 		$taggedArtworks = $user->artworks()->whereHas("tags", function($q) use($tag) {
 			return $q->where("id", $tag->id);
-		})->get();
+		})->get()->reject(function($artwork){
+			$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
+			$artworkPrivacy = $artwork->folders()->get()->reduce(function($carry, $folder) {
+				return max($folder->privacy_level_id, $carry);
+			});
+			return $artworkPrivacy > $maxPrivacyAllowed;
+		});
 		
 		return view("tags.show", ["user" => $user, "tag" => $tag, "artworks" => $taggedArtworks]);
 	}
