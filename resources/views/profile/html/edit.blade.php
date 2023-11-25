@@ -1,4 +1,4 @@
-@extends("layouts.site", "metatitle" => "Customise Profile")
+@extends("layouts.site", ["metatitle" => "Customise Profile"])
 @push("head")
 	<link rel="stylesheet" href="/src/ace.css">
 	<script src="/src/ace/ace.js"></script>
