@@ -1,5 +1,4 @@
-@extends("layouts.site")
-@push("metatitle"){{ "Manage Folders" }}@endpush
+@extends("layouts.site", ["metatitle" => "Manage Folders"])
 @section('body')
 	<div class="page-block">
 		<h1>Manage Art Folders</h1>

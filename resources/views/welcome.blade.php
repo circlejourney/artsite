@@ -1,6 +1,4 @@
-@extends('layouts.site')
-
-@push("metatitle"){{ "Home" }}@endpush
+@extends('layouts.site', ["metatitle" => "Home"])
 @push("title"){{ "Home" }}@endpush
 @push("metadescription"){{ "A cool art site with groups and more." }}@endpush
 

@@ -1,6 +1,4 @@
-@extends("layouts.site")
-
-@push("metatitle"){{ "Login" }}@endpush
+@extends("layouts.site", ["metatitle" => "Login"])
 @push("title"){{ "Log into your account" }}@endpush
 
 @section('body')    

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Art Site: @stack("metatitle")</title>
+    <title>Art Site @isset($metatitle)- {{ $metatitle }} @endisset</title>
     <meta name="description" content="@stack("metadescription")">
 
     <!-- JQUERY -->

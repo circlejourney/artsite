@@ -1,6 +1,4 @@
-@extends("layouts.site")
-
-@push("metatitle"){{ "Edit HTML" }}@endpush
+@extends("layouts.site", "metatitle" => "Customise Profile")
 @push("head")
 	<link rel="stylesheet" href="/src/ace.css">
 	<script src="/src/ace/ace.js"></script>

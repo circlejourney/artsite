@@ -1,5 +1,4 @@
-@extends("layouts.site")
-@push("metatitle"){{ "Account Delete Confirmation" }}@endpush
+@extends("layouts.site", ["metatitle" => "Account Delete Confirmation"])
 
 @section('body')
 	<div class="p-4">

@@ -1,6 +1,5 @@
-@extends("layouts.site")
+@extends("layouts.site", [ "metatitle" => "Dashboard" ])
 
-@push("metatitle"){{ "Dashboard" }}@endpush
 @push("title"){{ "Dashboard" }}@endpush
 
 @section('body')

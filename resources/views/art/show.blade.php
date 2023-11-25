@@ -1,7 +1,4 @@
-@extends("layouts.site")
-
-@push("metatitle"){{ $artwork->title }}@endpush
-
+@extends("layouts.site",, ["metatitle" => $artwork->title])
 @section('body')
 	<div class="page-block">
 		<h1>{{ $artwork->title }}</h1>

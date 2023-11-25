@@ -1,6 +1,4 @@
-@extends("layouts.profile", ["user" => $user])
-
-@push("metatitle"){{ $user->display_name }}@endpush
+@extends("layouts.profile", ["user" => $user, "metatitle" => $user->name])
 
 @section('profile-body')
 	<div class="profile-highlight">

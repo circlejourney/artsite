@@ -1,6 +1,4 @@
-@extends("layouts.site")
-@push("metatitle"){{ "Settings" }}@endpush
-
+@extends("layouts.site", ["metatitle" => "Settings"])
 @section('body')
 <h1>User Settings</h1>
 <div class="py-12">

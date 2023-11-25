@@ -1,6 +1,4 @@
-@extends("layouts.site")
-
-@push("metatitle"){{ "Edit ".$artwork->title }}@endpush
+@extends("layouts.site", ["metatitle" => "Edit ".$artwork->title])
 
 @push("head")
 	<script src="/src/extend_form.js"></script>

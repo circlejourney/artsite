@@ -1,4 +1,4 @@
-@extends("layouts.profile", ["user" => $user])
+@extends("layouts.profile", ["user" => $user, "metatitle" => $user->name."'s gallery"])
 
 @section('profile-body')
 	@if(!$folderlist->isEmpty())
