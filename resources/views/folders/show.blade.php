@@ -1,8 +1,6 @@
-@extends("layouts.site")
+@extends("layouts.profile", ["user" => $user])
 
-@section('body')
-	@include("layouts.user-header", ["user" => $user])
-	
+@section('profile-body')
 	<div class="page-block">
 
 		@unless($childfolders->isEmpty())

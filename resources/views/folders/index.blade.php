@@ -1,8 +1,6 @@
-@extends("layouts.site")
+@extends("layouts.profile", ["user" => $user])
 
-@section('body')
-	@include("layouts.user-header", ["user" => $user])
-
+@section('profile-body')
 	@if(!$folderlist->isEmpty())
 	<div class="folder-section">
 		<a class="collapse-link"

@@ -19,7 +19,7 @@
 
 <ul class="profile-menu">
 	<li>
-		<a href="#">Profile</a>
+		<a href="{{ route("user", ["username" => $user->name]) }}">Profile</a>
 	</li>
 	<li>
 		<a href="{{ route("folders.index", ["username" => $user->name]) }}">Gallery</a>

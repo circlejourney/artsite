@@ -1,6 +1,6 @@
-@extends("layouts.site")
+@extends("layouts.profile", ["user" => $user])
 
-@section('body')
+@section('profile-body')
 	<h1>{{ $user->name }}'s tags</h1>
 	@include('tags.taglist', ["user" => $user, "tags" => $tags])
 @endsection

@@ -1,8 +1,7 @@
 <div class="gallery">
 @forelse($artworks as $artwork) 
-	<a class="gallery-thumbnail" href="{{ route("art", ["path" => $artwork->path]) }}">
+	<a class="gallery-thumbnail" href="{{ route("art", ["path" => $artwork->path]) }}" title="{{ $artwork->title }}">
 		<img src="{{ $artwork->getThumbnailURL() }}">
-		{{ $artwork->title }}
 	</a>
 @empty
 		No art found.

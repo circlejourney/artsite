@@ -1,10 +1,8 @@
-@extends("layouts.site")
+@extends("layouts.profile", ["user" => $user])
 
 @push("metatitle"){{ $user->display_name }}@endpush
 
-@section('body')
-	@include("layouts.user-header", ["user" => $user])
-
+@section('profile-body')
 	<div class="profile-highlight">
 		<img class="" src="/images/300.png">
 		<img src="/images/300.png">
