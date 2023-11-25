@@ -14,7 +14,7 @@ class TaggerService {
 			$incomingtag = Tag::firstOrNew(["id" => $tagstring]);
 			$incomingtag->save();
 			return $tagstring;
-		});
+		})->filter();
 
 		$removeTagsIDs = $artwork->tags()->get()->pluck("id")->diff($incomingtagIDs);
 		$artwork->tags()->sync(
