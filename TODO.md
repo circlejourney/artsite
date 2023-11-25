@@ -1,10 +1,11 @@
 # Loose ends
 - Email verification
-- Delete Users flow from management page -> move to deleted accounts table
+- "Delete Users" interface on management page -> move to deleted accounts table
 - Clean up all files and folders on deleting art
 
 # Features
-- Invites
+- Invites - full CRUD
+- Tidy up folder display with reference to wireframe
 - Tag system...hoo boy + search system
 - Manage artworks page
 - Moderator edit artwork page
