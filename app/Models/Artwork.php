@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use App\Models\Folder;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\UploadService;
@@ -40,6 +41,10 @@ class Artwork extends Model
 		return $this->belongsToMany(Folder::class)->withTimestamps();
 	}
 
+	public function tags(): BelongsToMany {
+		return $this->belongsToMany(Tag::class);
+	}
+
 	public static function byPath($path) : Artwork {
 		return Artwork::Where("path", $path)->first();
 	}
@@ -55,6 +60,11 @@ class Artwork extends Model
 		if(!$relative_path = $this->thumbnail) return "";
 		$thumbnail = Storage::url($relative_path);
 		return $thumbnail ?? "";
+	}
+	
+	public function getJoinedTags() : string {
+		error_log($this->tags()->pluck("tag_id"));
+		return $this->tags()->orderBy("artwork_tag.created_at", "desc")->pluck("tag_id")->join(", ");
 	}
 
 	public function updateText($text) {

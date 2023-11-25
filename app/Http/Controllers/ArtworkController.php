@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 use App\Models\Artwork;
 use App\Models\User;
-use App\Models\Folder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArtworkRequest;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\PrivacyLevelService;
+use App\Services\TaggerService;
 
 class ArtworkController extends Controller
 {
@@ -59,7 +59,7 @@ class ArtworkController extends Controller
 
 		$artistIDs = array( $request->user()->id );
 		foreach($request->artist as $artist) {
-			// Loop through guest artists (not the user making the request)
+			// Loop through guest artists (not the user making the request) and add their top folders
 			if(!$artist) continue;
 			$guestArtist = User::where("name", $artist)->first();
 			$artistIDs[] = $guestArtist->id;
@@ -68,6 +68,8 @@ class ArtworkController extends Controller
 
 		$artwork->users()->attach($artistIDs);
 		$artwork->folders()->attach($folderIDs);
+		
+		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
 		foreach(array_filter($request->images) as $i => $image) {
 			if(!$image) continue;
@@ -102,14 +104,13 @@ class ArtworkController extends Controller
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);	
 
 		$parentfolderID = $request->parent_folder ? intval($request->parent_folder) : $request->user()->top_folder_id;
-		error_log($parentfolderID);
+
 		if($request->user()->folders()->get()->contains($parentfolderID)) {
 			$keepfolders = $artwork->folders()->get()
 				->diff( $request->user()->folders()->get() )
 				->pluck("id")
 				->push( $parentfolderID );
 			$artwork->folders()->sync($keepfolders);
-			error_log($keepfolders);
 		}
 
 		$artwork->title = $request->title;
@@ -137,6 +138,8 @@ class ArtworkController extends Controller
 				}	
 			}
 		}
+
+		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
 		if($request->images) {
 			foreach($request->images as $i => $image) {
@@ -169,6 +172,7 @@ class ArtworkController extends Controller
 
 	public function delete(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
+		TaggerService::tagArtwork($artwork, []);
 		if($artwork->thumbnail) UploadService::find($artwork->thumbnail)->delete();
 		$artwork->deleteText()->deleteThumbnail()->deleteAllImages();
 		Artwork::destroy($artwork->id);

@@ -29,6 +29,7 @@
 				<input class="artist-input form-control" type="text" name="artist[]" value="{{ old('artist.0') }}" placeholder="Collaborator">
 			</div>
 			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
+			<input class="form-control" name="tags" id="tags" placeholder="Tags (comma-separated)" value="{{ old("tags" ) }}">
 			<br>
 			<button class='button-pill'>Submit</button>
 		</div>

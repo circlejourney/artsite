@@ -24,4 +24,10 @@ class SanitiseService {
     return $string;
 	}
 
+	public static function makeTag(string $string, int $maxLength) {
+    	$string = strtolower( preg_replace("/[^A-Za-z0-9]+/", "-", $string) );
+		$string = trim( substr($string, 0, $maxLength), "-");
+    	return $string;
+	}
+
 }

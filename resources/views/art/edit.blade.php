@@ -20,7 +20,6 @@
 	<form method="POST" enctype="multipart/form-data" class="row">
 		@method("PUT")
 		@csrf
-		<div class="col-auto">
 			<div id="image-inputs" class="flex-column">
 				@foreach($image_urls as $i=>$image_url)
 					<div class="image-input-wrapper">
@@ -37,8 +36,7 @@
 				@endforeach
 			</div>
 			<a class='button-pill' onclick="addImageInput('.image-input-wrapper', '#image-inputs')">+</a>
-		</div>
-		<div class="col">
+
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
 			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text', $text ) }}</textarea>
 			@include("components.folder-select", ["folderlist" => $folderlist, "selected" => $selectedfolder])
@@ -51,7 +49,8 @@
 				@endforelse
 			</div>
 			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
-			
+
+			<input class="form-control" name="tags" id="tags" placeholder="Tags (comma-separated)" value="{{ old("tags", $artwork->getJoinedTags() ) }}">
 			<br>
 			<button class='button-pill'>Submit</button>
 		</div>

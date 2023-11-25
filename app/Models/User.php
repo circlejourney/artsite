@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use App\Models\Artwork;
 use App\Models\Folder;
 use App\Models\Role;
+use App\Models\Tag;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\FolderListService;
@@ -62,7 +63,7 @@ class User extends Authenticatable
     ];
 
 	/**
-	 * Get the artworks of the user
+	 * Relations
 	 */
 	public function artworks(): BelongsToMany {
 		return $this->belongsToMany(Artwork::class);
@@ -75,6 +76,13 @@ class User extends Authenticatable
 	public function roles(): BelongsToMany {
 		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
+
+	public function tags() : HasManyThrough {
+		return $this->hasManyThrough(Tag::class, "artworks");
+	}
+
+
+	/* Utility */
 
 	public function createTopFolder() {
 		$top_folder = Folder::create([

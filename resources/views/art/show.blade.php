@@ -14,7 +14,16 @@
 					-->@if(!$loop->last), @endif
 		@endforeach
 		
-		<?php $folders = $folders->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; }) ?>
+		<div>
+		@if($artwork->tags) Tags: @endif
+		@forelse($artwork->tags as $tag)
+			{{ $tag->pivot->tag_id }}<!--
+		-->@if(!$loop->last), @endif
+		@empty
+			No tags found
+		@endforelse
+		</div>
+		
 		@if(sizeof($folders) > 0)
 		<div>
 			Inside folder(s):
