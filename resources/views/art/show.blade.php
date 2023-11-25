@@ -15,7 +15,12 @@
 		
 		@if(sizeof($folders) > 0)
 		<div>
-			Inside folder(s):
+			@if(sizeof($folders) > 1)
+			Folders:
+			@else 
+			Folder:
+			@endif
+
 			@foreach($folders as $folder)
 				<a href="{{ route("user", ["username" => $folder->user()->first()->name]) }}">
 					{{$folder->user()->first()->name}}</a>'s
@@ -28,7 +33,7 @@
 		
 		<div class="art-info">
 			@if($text)
-			<div class="artwork-text">{!! $text !!}</div>
+			<div class="artwork-text">Description: {!! $text !!}</div>
 			@endif
 			
 			<br>
