@@ -265,6 +265,8 @@ main {
 	
     .profile-banner {
         height: 240px;
+		background-size: cover;
+		background-position: center;
 		@include screen-lg {
 			width: 1200px;
 		}
@@ -335,9 +337,8 @@ main {
 	}
 
 	.banner-image-preview {
-		width: 1200px;
-		height: 200px;
-		object-fit: contain;
+		object-fit: cover;
+		object-position: center;
 	}
 
 	/* ART PAGE */

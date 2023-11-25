@@ -1,7 +1,7 @@
-<div class="profile-banner" style="background-image: url(/images/defaultbanner.png)"></div>
+<div class="profile-banner" style="background-image: url({{ $user->getBannerURL() }})"></div>
 	
 <div class="profile-info">
-	<img class="profile-avatar" src="{{ $user->getAvatarURL() ?? '/images/user.png' }}">
+	<img class="profile-avatar" src="{{ $user->getAvatarURL() }}">
 	<div class="profile-details">
 		<div class="display-name">{!! $user->display_name !!}</div>
 		<div class="display-username">{{ "@" . $user->name }} {!! $user->getFlairHTML() !!}</div>

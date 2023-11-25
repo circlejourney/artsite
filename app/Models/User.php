@@ -38,6 +38,7 @@ class User extends Authenticatable
         'password',
 		'display_name',
 		'avatar',
+		'banner',
 		'profile_html',
 		'custom_flair'
     ];
@@ -141,7 +142,7 @@ class User extends Authenticatable
 	}
 
 	public function getBannerURL() {
-		if(!$this->avatar) return "/images/defaultbanner.png";
+		if(!$this->banner) return "/images/defaultbanner.png";
 		return Storage::url($this->banner);
 	}
 
@@ -170,7 +171,7 @@ class User extends Authenticatable
 		if(!$banner_file) return $this;
 		if($this->banner) UploadService::find($this->banner)->delete();
 		$banner = UploadService::upload($banner_file, "banners/".$this->id)
-			->resizeToFit(300)->getRelativePath();
+			->resizeToFit(1200)->getRelativePath();
 		$this->banner = $banner;
 		return $this;
 	}

@@ -35,8 +35,8 @@
 				return timeout;
 			}
 
-			updatePreview( $("#avatar")[0], ".avatar-image-preview");
-			updatePreview( $("#banner")[0], ".banner-image-preview");
+			if($("#avatar").val()) updatePreview( $("#avatar")[0], ".avatar-image-preview");
+			if($("#banner").val()) updatePreview( $("#banner")[0], ".banner-image-preview", true);
 
 		});
 
@@ -57,12 +57,13 @@
 			
 			<h2>Avatar</h2>
 			<input type="file" name="avatar" id="avatar" onchange="updatePreview(this, $('.avatar-image-preview'))">
-			<img class="image-preview avatar-image-preview" src="{{ $user->getAvatarURL() ?? '/images/user.png' }}">
+			<img class="image-preview avatar-image-preview" src="{{ $user->getAvatarURL() }}">
 
 			<h2>Banner</h2>
+			<div>Draggable cropping will be added soon!</div>
 			<input type="file" name="banner" id="banner" onchange="updatePreview(this, $('.banner-image-preview'), true)">
-			<div class="banner-image-preview" style="background-image: url({{ $user->getBannerURL() ?? '/images/defaultbanner.png' }});"></div>
-			
+			<div class="profile-banner banner-image-preview" style="background-image: url({{ $user->getBannerURL() }})"></div>
+
 			<h2>Profile HTML</h2>
 			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $profile_html) }}">
 			<div id="editor"></div>

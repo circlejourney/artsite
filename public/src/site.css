@@ -214,6 +214,8 @@ main .page-block {
 }
 main .profile-banner {
   height: 240px;
+  background-size: cover;
+  background-position: center;
 }
 @media screen and (min-width: 1200px) {
   main .profile-banner {
@@ -281,10 +283,10 @@ main .image-preview {
   width: 150px;
 }
 main .banner-image-preview {
-  width: 1200px;
-  height: 200px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
 }
 main .art-display-container {
   display: flex;

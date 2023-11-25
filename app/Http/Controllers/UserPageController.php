@@ -40,6 +40,10 @@ class UserPageController extends Controller
 		{
 			$request->user()->updateAvatar($request->avatar);
 		}
+		if($request->banner)
+		{
+			$request->user()->updateBanner($request->banner);
+		}
 		$request->user()->save();
 		return Redirect::route('profile.html.edit')->with('status', 'Profile updated successfully.');
 	}
