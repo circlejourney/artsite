@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	if(auth()->check()) return view('dashboard');
-	else return view('welcome');
+	return view('welcome');
 })->name("home");
 
 Route::get('/dashboard', function () {
@@ -46,7 +45,7 @@ Route::middleware("permissions:manage_artworks")->group(function(){
 	Route::get("/admin/works/{role}", [AdminPageController::class, 'edit_artworks'])->name("admin.art.edit");
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
 	/* Self management routes */
     Route::get('/dashboard/account', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/dashboard/account', [ProfileController::class, 'update'])->name('profile.update');

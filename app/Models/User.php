@@ -16,6 +16,7 @@ use App\Models\Role;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\FolderListService;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;

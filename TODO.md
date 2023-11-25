@@ -1,5 +1,7 @@
 # Loose ends
 - Email verification
+ - Add this to User class: `class User extends Authenticatable implements MustVerifyEmail`
+ - Set up mail server
 - "Delete Users" interface on management page -> move to deleted accounts table
 - Clean up all files and folders on deleting art
 
