@@ -11,7 +11,7 @@
 		{!! $profile_html !!}
 	</div>
 	
-	<div class="page-block">
+	<div class="gallery-section">
 		<h2>Gallery</h2>
 		<div class="gallery">
 		@foreach($artworks as $artwork) 
@@ -27,7 +27,7 @@
 		@endforeach
 		</div>
 	</div>
-	<div class="page-block row">
+	<div class="post-section row">
 		<div class="col-12 col-md-6 profile-column">
 			<div class="blog">
 				<h2>Latest Blog</h2>
