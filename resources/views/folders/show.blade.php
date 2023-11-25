@@ -3,29 +3,14 @@
 @section('body')
 	<div class="page-block">
 		<h1>
-				<a href="{{ route("user", ["username" => $user->name]) }}">
-					{!! $user->getFlairHTML() !!} {{$user->name}}
-				</a>'s Gallery<!--
-			-->@if(!$folder->isTopFolder()): {{$folder->title}} @endif
+			<a href="{{ route("user", ["username" => $user->name]) }}">
+				{!! $user->getFlairHTML() !!} {{$user->name}}
+			</a>'s Gallery: {{$folder->getDisplayName() }}
 		</h1>
 		
-		<div class="row">
+		@include("folders.folderlist-display", ["user" => $user, "folderlist" => $folderlist, "selected" => $folder->id, "tag" => $tag])
+		@include("tags.taglist-display", ["user" => $user, "folder" => $folder, "tags" => $tags])
 		
-		<div class="col-12 col-md-3">
-			@include("folders.folderlist-display", ["user" => $user, "folderlist" => $folderlist, "selected" => $folder->id])
-		</div>
-		
-		<div class="col">
-			@forelse($folder->artworks as $artwork) 
-				<div>
-					<a href="{{ route("art", ["path" => $artwork->path]) }}">
-						<img src="{{ $artwork->getThumbnailURL() }}">
-						{{ $artwork->title }}
-					</a>
-				</div>
-			@empty
-				Folder is empty.
-			@endforelse
-		</div>
+		@include("layouts.gallery", ["artworks" => $artworks])
 	</div>
 @endsection

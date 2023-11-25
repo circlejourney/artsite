@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Folder;
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Services\FolderListService;
 use Illuminate\Support\Facades\Redirect;
 use App\Services\PrivacyLevelService;
+use App\Services\TaggerService;
 
 class FolderController extends Controller
 {
@@ -40,26 +42,39 @@ class FolderController extends Controller
      */
 	public function index_user(Request $request, string $username) {
 		$user = User::where("name", $username)->firstOrFail();
-
 		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->orderBy("created_at", "desc")->get() );
 
 		$maxPrivacyAllowed = auth()->user() ? 2 : 1;
 		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);
-		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $sorted]);
+		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $sorted, "tags" => $user->getTags()]);
 	}
 
     /**
      * Display the specified resource.
      */
-	public function show(string $username, Folder $folder) {
+	public function show(string $username, Folder $folder, Tag $tag=null) {
 		$user = User::where("name", $username)->firstOrFail();
 		if(!$user->folders()->get()->contains($folder)) abort(404);
 		
 		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
-		
 		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
+
 		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);
-		return view("folders.show", ["user" => $user, "folder" => $folder, "folderlist" => $sorted]);
+		if($tag) { 
+			$artworks = $folder->artworks()->with("tags")->get();
+			$artworks = $artworks->filter(function($artwork) use($tag){
+				error_log($artwork->tags->pluck("id"));
+				return $artwork->tags->pluck("id")->contains($tag->id);
+			});
+		} else $artworks = $folder->artworks;
+		return view("folders.show", [
+			"user" => $user,
+			"folder" => $folder,
+			"folderlist" => $sorted,
+			"tag" => $tag,
+			"tags" => $user->getTags(),
+			"artworks" => $artworks
+		]);
 	}
 
     /**

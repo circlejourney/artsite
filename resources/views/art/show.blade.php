@@ -14,15 +14,7 @@
 					-->@if(!$loop->last), @endif
 		@endforeach
 		
-		<div>
-		@if($artwork->tags) Tags: @endif
-		@forelse($artwork->tags as $tag)
-			{{ $tag->pivot->tag_id }}<!--
-		-->@if(!$loop->last), @endif
-		@empty
-			No tags found
-		@endforelse
-		</div>
+		@include("tags.taglist-display", ["user"=>$user, "tags"=>$artwork->tags])
 		
 		@if(sizeof($folders) > 0)
 		<div>

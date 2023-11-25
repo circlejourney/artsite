@@ -63,7 +63,6 @@ class Artwork extends Model
 	}
 	
 	public function getJoinedTags() : string {
-		error_log($this->tags()->pluck("tag_id"));
 		return $this->tags()->orderBy("artwork_tag.created_at", "desc")->pluck("tag_id")->join(", ");
 	}
 

@@ -77,8 +77,12 @@ class User extends Authenticatable
 		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
 
-	public function tags() : HasManyThrough {
-		return $this->hasManyThrough(Tag::class, "artworks");
+	public function getTags() {
+		$tags = $this->artworks()->with(["tags"])->get()->pluck("tags")->flatten();
+		$tags = $tags->unique("id")->sortByDesc(function($i) use($tags) {
+			return $tags->pluck("id")->countBy()->get($i->id);
+		})->values();
+		return $tags;
 	}
 
 
