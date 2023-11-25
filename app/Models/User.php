@@ -90,7 +90,7 @@ class User extends Authenticatable
 
 	public function createTopFolder() {
 		$top_folder = Folder::create([
-			"title" => $this->id."_topfolder",
+			"title" => "Unsorted",
 			"user_id" => $this->id
 		]);
 		$this->top_folder_id = $top_folder->id;
@@ -135,6 +135,16 @@ class User extends Authenticatable
 		return "<i class='user-flair fa fa-$faString'></i>";
 	}
 
+	public function getAvatarURL() {
+		if(!$this->avatar) return "/images/user.png";
+		return Storage::url($this->avatar);
+	}
+
+	public function getBannerURL() {
+		if(!$this->avatar) return "/images/defaultbanner.png";
+		return Storage::url($this->banner);
+	}
+
 	public function updateProfileHTML(string $profile_html) {
 		$relative_path = $this->profile_html;
 		if(!$relative_path)
@@ -148,13 +158,20 @@ class User extends Authenticatable
 	}
 
 	public function updateAvatar(UploadedFile $avatar_file) {
-		if($avatar_file)
-		{
-			if($this->avatar) UploadService::find($this->avatar)->delete();
-			$avatar = UploadService::upload($avatar_file, "avatars/".$this->id)
-				->resizeToFit(300)->getRelativePath();
-			$this->avatar = $avatar;
-		}
+		if(!$avatar_file) return $this;
+		if($this->avatar) UploadService::find($this->avatar)->delete();
+		$avatar = UploadService::upload($avatar_file, "avatars/".$this->id)
+			->resizeToFit(300)->getRelativePath();
+		$this->avatar = $avatar;
+		return $this;
+	}
+
+	public function updateBanner(UploadedFile $banner_file) {
+		if(!$banner_file) return $this;
+		if($this->banner) UploadService::find($this->banner)->delete();
+		$banner = UploadService::upload($banner_file, "banners/".$this->id)
+			->resizeToFit(300)->getRelativePath();
+		$this->banner = $banner;
 		return $this;
 	}
 }

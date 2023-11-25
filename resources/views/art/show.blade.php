@@ -14,7 +14,7 @@
 					-->@if(!$loop->last), @endif
 		@endforeach
 		
-		@include("tags.taglist-display", ["user"=>$user, "tags"=>$artwork->tags])
+		@include("tags.taglist", ["user"=>$user, "tags"=>$artwork->tags])
 		
 		@if(sizeof($folders) > 0)
 		<div>

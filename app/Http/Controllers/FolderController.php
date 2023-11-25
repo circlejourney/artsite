@@ -43,10 +43,13 @@ class FolderController extends Controller
 	public function index_user(Request $request, string $username) {
 		$user = User::where("name", $username)->firstOrFail();
 		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->orderBy("created_at", "desc")->get() );
-
-		$maxPrivacyAllowed = auth()->user() ? 2 : 1;
-		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);
-		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $sorted, "tags" => $user->getTags()]);
+		
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
+		
+		$childfolders = $user->getTopFolder()->children()->with("artworks")
+			->get()->reject(function($folder) use($maxPrivacyAllowed) { return $folder->privacy_level_id > $maxPrivacyAllowed; });
+		$folderlist = collect([$user->getTopFolder()])->merge($childfolders);
+		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $folderlist, "tags" => $user->getTags()]);
 	}
 
     /**
@@ -75,6 +78,34 @@ class FolderController extends Controller
 			"tags" => $user->getTags(),
 			"artworks" => $artworks
 		]);
+	}
+
+	public function show_new(string $username, Folder $folder, Tag $tag=null) {
+		$user = User::where("name", $username)->firstOrFail();
+		if(!$user->folders()->get()->contains($folder)) abort(404);
+		
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
+		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
+
+		$childfolders = $folder->children()->with("artworks")->get();
+
+		if($tag) { 
+			$artworks = $folder->artworks()->with("tags")->get();
+			$artworks = $artworks->filter(function($artwork) use($tag){
+				error_log($artwork->tags->pluck("id"));
+				return $artwork->tags->pluck("id")->contains($tag->id);
+			});
+		} else $artworks = $folder->artworks;
+
+		return view("folders.show", [
+			"user" => $user,
+			"folder" => $folder,
+			"childfolders" => $childfolders,
+			"tag" => $tag,
+			"tags" => $user->getTags(),
+			"artworks" => $artworks
+		]);
+		
 	}
 
     /**

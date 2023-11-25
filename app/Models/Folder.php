@@ -70,7 +70,7 @@ class Folder extends Model
 	}
 
 	public function getDisplayName() {
-		if($this->isTopFolder()) return $this->user()->first()->name . "'s Gallery";
+		if($this->isTopFolder()) return "Unsorted"; //return $this->user()->first()->name . "'s Gallery";
 		return $this->title;
 	}
 }

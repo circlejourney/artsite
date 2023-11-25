@@ -7,8 +7,9 @@
 
 # Features
 - Invites - full CRUD
-- Tidy up folder display with reference to wireframe
-- Tag system...hoo boy + search system
+- Button to view all subfolders
+- Search system
+- More complex tag filtering
 - Manage artworks page
 - Moderator edit artwork page
 - Reorder artwork images without reuploading (an additional input value?)

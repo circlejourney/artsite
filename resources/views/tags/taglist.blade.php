@@ -1,6 +1,5 @@
 @isset($tags)
 	<div class="tag-list">
-		Tags: 
 		@foreach ($tags as $tag)
 			<a class="tag" href="{{
 				!isset($user) ?

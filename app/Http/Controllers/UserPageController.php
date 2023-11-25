@@ -18,17 +18,15 @@ class UserPageController extends Controller
     public function show(Request $request, string $username) {
         $user = User::where("name", $username)->first();
 		if(!$user) abort(404);
-		$avatar_url = $user->avatar ? Storage::url($user->avatar) : "/images/user.png";
 		
 		$preview_artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->limit(10)->orderBy("created_at", "desc")->get());
 		
 		$profile_html = $user->getProfileHTML() ?? "";
-        return view("profile.show", ["user" => $user, "avatar_url" => $avatar_url, "artworks" => $preview_artworks, "profile_html" => $profile_html]);
+        return view("profile.show", ["user" => $user, "artworks" => $preview_artworks, "profile_html" => $profile_html]);
     }
 
 	public function edit(Request $request) {
 		$user = $request->user();
-		$user->avatar_url = $user->avatar ? Storage::url($user->avatar) : "/images/user.png";
 		$profile_html = $user->getProfileHTML() ?? "";
 		return view("profile.html.edit", ["user" => $user, "profile_html" => $profile_html]);
 	}

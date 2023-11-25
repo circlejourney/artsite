@@ -35,36 +35,35 @@
 				return timeout;
 			}
 
+			updatePreview( $("#avatar")[0], ".avatar-image-preview");
+			updatePreview( $("#banner")[0], ".banner-image-preview");
+
 		});
 
 		function beforePost() {
 			$("#profile_html").val(editor.getValue());
 		}
 
-		function updatePreview(selector) {
-			if(!event.target.files) return false;
-			const file = event.target.files[0];
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = function(){
-				$(event.target.closest(selector)).attr("src", this.result);
-			}
-		}
 	</script>
 @endpush
 
 @section("body")
 	<div class="p-4">
 		<h1>Edit Profile HTML</h1>
-		
-		<h2>Avatar</h2>
-		<img class="image-preview" src="{{ old("avatar", $user->avatar_url) ?? '/images/user.png' }}">
 
-		<h2>Profile HTML</h2>
 		<form method="POST" enctype="multipart/form-data">
 			@csrf
 			@method("PATCH")
-			<input type="file" name="avatar" onchange="updatePreview(this, $('.image-preview')[0])">
+			
+			<h2>Avatar</h2>
+			<input type="file" name="avatar" id="avatar" onchange="updatePreview(this, $('.avatar-image-preview'))">
+			<img class="image-preview avatar-image-preview" src="{{ $user->getAvatarURL() ?? '/images/user.png' }}">
+
+			<h2>Banner</h2>
+			<input type="file" name="banner" id="banner" onchange="updatePreview(this, $('.banner-image-preview'), true)">
+			<div class="banner-image-preview" style="background-image: url({{ $user->getBannerURL() ?? '/images/defaultbanner.png' }});"></div>
+			
+			<h2>Profile HTML</h2>
 			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $profile_html) }}">
 			<div id="editor"></div>
 			<button class="button-pill" onclick="beforePost()">Update</button>
