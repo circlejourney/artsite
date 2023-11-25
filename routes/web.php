@@ -73,13 +73,13 @@ require __DIR__.'/auth.php';
 
 Route::get("/art/{path}", [ArtworkController::class, 'show'])->name("art");
 
-Route::get("/{username}/gallery/tag:{tag}", [TagController::class, 'show_user'])->name("tags.user.show");
+Route::get("/{username}/gallery/tags:{tag}", [TagController::class, 'show_user'])->name("tags.user.show");
 Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name("folders.index");
 Route::get("/{username}/gallery/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
-Route::get("/{username}/gallery/folder:{folder}/tag:{tag}", [FolderController::class, 'show'])->name("folders.tagged");
+Route::get("/{username}/gallery/folder:{folder}/tags:{tag}", [FolderController::class, 'show'])->name("folders.tagged");
 
-Route::get("/tags", [TagController::class, 'index'])->name("tags.global.index");
-Route::get("/tag:{tag}", [TagController::class, 'show'])->name("tags.global.show");
 Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags.user.index");
+Route::get("/tags", [TagController::class, 'index'])->name("tags.global.index");
+Route::get("/tags:{tag}", [TagController::class, 'show'])->name("tags.global.show");
 
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');

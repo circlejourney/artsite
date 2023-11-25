@@ -8,7 +8,7 @@
 			</a>'s Gallery
 		</h1>
 
-		@include("folders.folderlist-display", ["user"=>$user, "folderlist" => $folderlist, "selected" => $user->top_folder_id])
+		@include("folders.folderlist", ["user"=>$user, "folderlist" => $folderlist, "selected" => $user->top_folder_id])
 		@include("tags.taglist-display", ["user" => $user, "tags" => $tags])
 		
 		@foreach($artworks as $artwork)

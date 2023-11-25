@@ -1,7 +1,8 @@
 @isset($tags)
-	<div>Tags: 
+	<div class="tag-list">
+		Tags: 
 		@foreach ($tags as $tag)
-			<a href="{{
+			<a class="tag" href="{{
 				!isset($user) ?
 				route('tags.global.show', ["tag"=>$tag->id])
 				: (

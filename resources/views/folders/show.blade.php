@@ -8,7 +8,7 @@
 			</a>'s Gallery: {{$folder->getDisplayName() }}
 		</h1>
 		
-		@include("folders.folderlist-display", ["user" => $user, "folderlist" => $folderlist, "selected" => $folder->id, "tag" => $tag])
+		@include("folders.folderlist", ["user" => $user, "folderlist" => $folderlist, "selected" => $folder->id, "tag" => $tag])
 		@include("tags.taglist-display", ["user" => $user, "folder" => $folder, "tags" => $tags])
 		
 		@include("layouts.gallery", ["artworks" => $artworks])
