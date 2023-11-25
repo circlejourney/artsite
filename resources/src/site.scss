@@ -254,6 +254,7 @@ main {
 
 	@include screen-sm {
 		width: 100vw;
+		margin: 0;
 	}
 
 	img {
@@ -429,10 +430,14 @@ main {
 
 	div[class$="-section"] {
 		margin: $header-margin 0;
+		@include screen-sm {
+			padding: $global-padding
+		}
 	}
 
 	.gallery {
 		@include flex-wrap(row);
+		justify-content: center;
 		gap: $profile-padding;
 	}
 	
@@ -457,11 +462,13 @@ footer {
 	@include flex-centre();
 	flex-direction: column;
 	padding: $global-padding;
-	background-color: $base;
+	background-color: $base;;
+	text-align: center;
 
 	.footer-link-wrapper {
 		display: flex;
-		align-items: center;
+		flex-wrap: wrap;
+		align-items: center
 	}
 	
 	.footer-link {

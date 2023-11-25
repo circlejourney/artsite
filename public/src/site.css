@@ -208,6 +208,7 @@ main {
 @media screen and (max-width: 768px) {
   main {
     width: 100vw;
+    margin: 0;
   }
 }
 main img {
@@ -359,10 +360,16 @@ main .tag {
 main div[class$=-section] {
   margin: 2rem 0;
 }
+@media screen and (max-width: 768px) {
+  main div[class$=-section] {
+    padding: 3rem;
+  }
+}
 main .gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
 }
 main .gallery-thumbnail {
@@ -391,9 +398,11 @@ footer {
   flex-direction: column;
   padding: 3rem;
   background-color: #d9d9d9;
+  text-align: center;
 }
 footer .footer-link-wrapper {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 footer .footer-link {
