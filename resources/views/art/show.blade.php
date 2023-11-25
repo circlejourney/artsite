@@ -26,28 +26,28 @@
 		</div>
 		@endif
 		
-	</div>
-	<div class="art-display-container">
-		@foreach($image_urls as $image_url)
-			<img class="art-display" src="{{$image_url}}">
-		@endforeach
+		<div class="art-info">
+			@if($text)
+			<div class="artwork-text">{!! $text !!}</div>
+			@endif
+			
+			<br>
+			
+			@if(auth()->check() && ($owner_ids->contains(auth()->user()->id)))
+			<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
+				Edit artwork
+			</a>
+			<br>
+			<a class="button-pill bg-danger" href="{{ route('art.delete', ['path' => $artwork->path]) }}">
+				Delete artwork
+			</a>
+			@endif
+		</div>
 	</div>
 	
-	<div class="art-info page-block">
-		@if($text)
-		<div class="artwork-text">{!! $text !!}</div>
-		@endif
-		
-		<br>
-		
-		@if(auth()->check() && ($owner_ids->contains(auth()->user()->id)))
-		<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
-			Edit artwork
-		</a>
-		<br>
-		<a class="button-pill bg-danger" href="{{ route('art.delete', ['path' => $artwork->path]) }}">
-			Delete artwork
-		</a>
-		@endif
+	<div class="art-display-container">
+		@foreach($image_urls as $image_url)
+			<a href="{{$image_url}}" target="_blank"><img class="art-display" src="{{$image_url}}"></a>
+		@endforeach
 	</div>
 @endsection
