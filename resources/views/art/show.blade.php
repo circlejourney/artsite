@@ -1,4 +1,4 @@
-@extends("layouts.site",, ["metatitle" => $artwork->title])
+@extends("layouts.site", ["metatitle" => $artwork->title])
 @section('body')
 	<div class="page-block">
 		<h1>{{ $artwork->title }}</h1>
