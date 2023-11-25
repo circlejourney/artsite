@@ -23,9 +23,9 @@
 				href="#tag-wrapper"
 				data-toggle="collapse"
 				onclick="$(this).find('.collapse-arrow').toggleClass('upside-down')">
-				Tags <i class="collapse-arrow fa fa-chevron-down"></i>
+				Tags <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 			</a>
-			<div id="tag-wrapper" class="collapse">
+			<div id="tag-wrapper" class="collapse show active">
 				@include("tags.taglist", ["user" => $user, "folder" => $folder, "tags" => $tags])
 			</div>
 		</div>
