@@ -1,0 +1,1 @@
+@extends("errors.error", [ "statusCode" => $exception->getStatusCode(), "message" => $message])

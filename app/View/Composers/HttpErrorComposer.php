@@ -13,7 +13,8 @@ class HttpErrorComposer
 		403 => "The client does not have access rights to the content.",
 		401 => "The client must authenticate itself to get the requested response.",
 		500 => "The server has encountered a situation it does not know how to handle.",
-		503 => "The server may be down for maintenance or overloaded, and is not ready to handle the request."
+		503 => "The server may be down for maintenance or overloaded, and is not ready to handle the request.",
+		419 => "The CSRF token could not be verified. It may be missing or expired."
 	);
 
     /**
