@@ -22,11 +22,11 @@ class InviteController extends Controller
      */
     public function generate(Request $request)
     {
-		if($request->user()->invite_credits == 0) return redirect()->back()->withErrors("You do not any invite generations available.");
-		
-		$request->user()->update([
-			"invite_credits" => $request->user()->invite_credits-1
-		]);
+		$user = $request->user();
+		if($user->invite_credits == 0 && !$user->hasRole("founder")) return redirect()->back()->withErrors("You do not any invite generations available.");
+
+		$request->user()->invite_credits = $request->user()->invite_credits-1;
+		$request->user()->save();
 
 		Invite::create([
 			"creator_id" => $request->user()->id

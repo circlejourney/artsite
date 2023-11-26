@@ -62,6 +62,17 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+	/* Boot */
+
+	public static function boot() {
+		parent::boot();
+		Static::created(function($model){
+			$model->createTopFolder();
+			$user_role = Role::where("name", "user")->first()->id;
+			$model->roles()->attach($user_role);
+		});
+	}
+
 	/**
 	 * Relations
 	 */

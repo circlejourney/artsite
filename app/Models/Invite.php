@@ -17,6 +17,7 @@ class Invite extends Model
 	protected $keyType = "string";
 
 	protected $fillable = [
+		"id",
 		"creator_id"
 	];
 
@@ -28,7 +29,7 @@ class Invite extends Model
 	{
 		parent::boot();
 		Static::creating(function ($model){
-			$model->id = Str::random(10);
+			if(!$model->id) $model->id = Str::random(10);
 		});
 	}
 }

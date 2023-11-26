@@ -39,6 +39,17 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Invite Code -->
+        <div class="mt-4">
+            <x-input-label for="invite_code" :value="__('Invite Code')" />
+
+            <x-text-input id="invite_code" class="block mt-1 w-full"
+                            type="text"
+                            name="invite_code" required />
+
+            <x-input-error :messages="$errors->get('invite_code')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-end mt-4">
 
             <x-primary-button class="ms-4">

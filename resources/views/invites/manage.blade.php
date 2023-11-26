@@ -3,11 +3,16 @@
 @section('body')
 	<h1>Generate invite</h1>
 	
-	<p>You have {{ $user->invite_credits }} invite generations available.</p>
-	@if($user->invite_credits > 0)
+	@if($user->hasRole("founder"))
+		<p>As a founder, you may generate an infinite number of invite codes.</p>
+	@else
+		<p>You have {{ $user->invite_credits }} invite generations available.</p>
+	@endif
+	
+	@if($user->invite_credits > 0 || $user->hasRole("founder"))
 	<form method="POST">
 		@csrf
-		<button>
+		<button class="button-pill">
 			Generate
 		</button>
 	</form>
