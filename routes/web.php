@@ -57,7 +57,7 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::patch("/dashboard/profile", [UserPageController::class, 'update']);
 
 	Route::get('/dashboard/invites', [InviteController::class, 'manage'])->name('invites');
-	Route::post('/dashboard/invites', [InviteController::class, 'generate'])->name('invites');
+	Route::post('/dashboard/invites', [InviteController::class, 'generate']);
 	
 	Route::get("/dashboard/folders", [FolderController::class, 'index_manage'])->name("folders.manage");
 	Route::post("/dashboard/folders", [FolderController::class, 'store']);

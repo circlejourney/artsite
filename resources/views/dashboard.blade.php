@@ -19,6 +19,9 @@
 		<a href="{{ route("folders.manage") }}">Manage art folders</a>
 		</li>
 		<li>
+			<a href="{{ route("invites") }}">Invites</a>
+		</li>
+		<li>
 		@include("components.logout-form")
 		</li>
 	</ul>
