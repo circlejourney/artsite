@@ -405,15 +405,19 @@ main .gallery-thumbnail img {
   -o-object-position: center top;
      object-position: center top;
 }
-main .gallery-thumbnail .gallery-thumbnail-badge {
+main .gallery-thumbnail .gallery-thumbnail-badgerow {
+  display: flex;
+  gap: 0.3rem;
   position: absolute;
   top: 0.3rem;
   right: 0.3rem;
+}
+main .gallery-thumbnail .gallery-thumbnail-badge {
   border-radius: 10px;
   color: white;
   background-color: #A9A9A9;
   padding: 0 0.3rem;
-  font-size: 11pt;
+  font-size: 10pt;
 }
 
 footer {

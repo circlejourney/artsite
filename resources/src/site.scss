@@ -474,16 +474,21 @@ main {
 			object-fit: cover;
 			object-position: center top;
 		}
-
-		.gallery-thumbnail-badge {
+		
+		.gallery-thumbnail-badgerow {
+			display: flex;
+			gap: $small-padding;
 			position: absolute;
 			top: $small-padding;
 			right: $small-padding;
+		}
+
+		.gallery-thumbnail-badge {
 			border-radius: $border-radius;
 			color: white;
 			background-color: $mid-bg;
 			padding: 0 $small-padding;
-			font-size: 11pt;
+			font-size: 10pt;
 		}
 	}
 }

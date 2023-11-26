@@ -2,11 +2,19 @@
 @forelse($artworks as $artwork) 
 	<a class="gallery-thumbnail" href="{{ route("art", ["path" => $artwork->path]) }}" title="{{ $artwork->title }}">
 		<img src="{{ $artwork->getThumbnailURL() }}">
-		@if(($imagecount = sizeof($artwork->images)) > 1)
-		<div class="gallery-thumbnail-badge">
-			<i class="fa fa-images"></i> {{ $imagecount }}
+		<div class="gallery-thumbnail-badgerow">
+			@if(($artistcount = sizeof($artwork->users)) > 1)
+				<div class="gallery-thumbnail-badge">
+					<i class="fa fa-user-group"></i>
+				</div>
+			@endif
+
+			@if(($imagecount = sizeof($artwork->images)) > 1)
+				<div class="gallery-thumbnail-badge">
+					<i class="fa fa-images"></i> {{ $imagecount }}
+				</div>
+			@endif
 		</div>
-		@endif
 	</a>
 @empty
 	No art found.
