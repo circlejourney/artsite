@@ -1,7 +1,7 @@
 @extends("layouts.site")
 
 @section('body')
-	<h1>Generate invite</h1>
+	<h1>Invites</h1>
 	
 	@if($user->hasRole("founder"))
 		<p>As a founder, you may generate an infinite number of invite codes.</p>
@@ -18,10 +18,13 @@
 	</form>
 	@endif
 
+	@if($user->invites->isNotEmpty())
 	<div>
 		@forelse($user->invites as $invite)
 			<div>{{ $invite->id }}</div>
 		@empty
 		@endforelse
 	</div>
+	@endif
+	
 @endsection

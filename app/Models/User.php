@@ -17,6 +17,7 @@ use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\FolderListService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -39,7 +40,8 @@ class User extends Authenticatable
 		'avatar',
 		'banner',
 		'profile_html',
-		'custom_flair'
+		'custom_flair',
+		'invited_by'
     ];
 
     /**
@@ -90,6 +92,14 @@ class User extends Authenticatable
 
 	public function invites(): HasMany {
 		return $this->hasMany(Invite::class, "creator_id");
+	}
+
+	public function invitees(): HasMany {
+		return $this->hasMany(User::class, "invited_by");
+	}
+
+	public function inviter(): BelongsTo {
+		return $this->belongsTo(User::class, "invited_by");
 	}
 
 	/* Utility */
