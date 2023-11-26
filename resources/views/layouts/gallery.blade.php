@@ -4,7 +4,7 @@
 		<img src="{{ $artwork->getThumbnailURL() }}">
 		<div class="gallery-thumbnail-badgerow">
 			@if(($artistcount = sizeof($artwork->users)) > 1)
-				<div class="gallery-thumbnail-badge">
+				<div class="gallery-thumbnail-badge" data-toggle="tooltip" title="With {{ $artwork->users()->get()->pluck("name")->reject($user->name)->join(", ") }}">
 					<i class="fa fa-user-group"></i>
 				</div>
 			@endif

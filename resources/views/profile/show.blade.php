@@ -13,7 +13,7 @@
 	
 	<div class="gallery-section">
 		<h2>Latest Art</h2>
-		@include("layouts.gallery", ["artworks" => $artworks])
+		@include("layouts.gallery", ["artworks" => $artworks, "user" => $user])
 	</div>
 	<div class="post-section row">
 		<div class="col-12 col-md-6 profile-column">

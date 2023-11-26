@@ -43,6 +43,6 @@
 			@endunless
 
 		</h3>
-		@include("layouts.gallery", ["artworks" => $artworks])
+		@include("layouts.gallery", ["artworks" => $artworks, "user" => $user])
 	</div>
 @endsection

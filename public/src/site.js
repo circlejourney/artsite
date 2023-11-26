@@ -15,3 +15,7 @@ function updatePreview(input, target, bg=false) {
 		else $(target).css("background-image", "url("+this.result+")");
 	}
 }
+
+$(window).on("load", function(){
+	$('[data-toggle="tooltip"]').tooltip();
+})

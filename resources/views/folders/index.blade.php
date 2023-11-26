@@ -29,5 +29,5 @@
 	</div>
 	@endunless
 	
-	@include("layouts.gallery", ["artworks" => $artworks])
+	@include("layouts.gallery", ["artworks" => $artworks, "user" => $user])
 @endsection
