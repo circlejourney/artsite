@@ -12,20 +12,8 @@
 	</div>
 	
 	<div class="gallery-section">
-		<h2>Gallery</h2>
-		<div class="gallery">
-		@foreach($artworks as $artwork) 
-			<a class="gallery-thumbnail" href="{{ route('art', ["path" => $artwork->path]) }}">
-				@if($artwork->thumbnail)
-					<img src="{{ Storage::url($artwork->thumbnail) }}">
-				@else
-					<i class="far fa-newspaper"></i>
-					<br>
-					[Text only]
-				@endif
-			</a>
-		@endforeach
-		</div>
+		<h2>Latest Art</h2>
+		@include("layouts.gallery", ["artworks" => $artworks])
 	</div>
 	<div class="post-section row">
 		<div class="col-12 col-md-6 profile-column">
