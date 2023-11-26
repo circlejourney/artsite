@@ -24,3 +24,7 @@
 - Validate that every artwork has either text or an image.
 - Move FolderListService into Folder model
 - Add links to upload to folder & edit folder from within folder
+
+
+# Meta
+- Discuss how to handle users who close their accounts. Do we want to keep their data around for archival? Should we do cleanup at all?

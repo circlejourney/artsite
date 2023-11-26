@@ -5,6 +5,7 @@ use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::delete('/dashboard/account/delete', [ProfileController::class, 'destroy']);
 	Route::get("/dashboard/profile", [UserPageController::class, 'edit'])->name('profile.html.edit');
 	Route::patch("/dashboard/profile", [UserPageController::class, 'update']);
+
+	Route::get('/dashboard/invites', [InviteController::class, 'manage'])->name('invites');
+	Route::post('/dashboard/invites', [InviteController::class, 'generate'])->name('invites');
 	
 	Route::get("/dashboard/folders", [FolderController::class, 'index_manage'])->name("folders.manage");
 	Route::post("/dashboard/folders", [FolderController::class, 'store']);

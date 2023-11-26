@@ -9,11 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use App\Models\Artwork;
 use App\Models\Folder;
 use App\Models\Role;
-use App\Models\Tag;
+use App\Models\Invite;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\FolderListService;
@@ -78,14 +77,9 @@ class User extends Authenticatable
 		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
 
-	public function getTags() {
-		$tags = $this->artworks()->with(["tags"])->get()->pluck("tags")->flatten();
-		$tags = $tags->unique("id")->sortByDesc(function($i) use($tags) {
-			return $tags->pluck("id")->countBy()->get($i->id);
-		})->values();
-		return $tags;
+	public function invites(): HasMany {
+		return $this->hasMany(Invite::class, "creator_id");
 	}
-
 
 	/* Utility */
 
@@ -118,6 +112,14 @@ class User extends Authenticatable
 	
 	public function getTopRole() {
 		return $this->roles()->orderBy("id", "asc")->first();
+	}
+
+	public function getTags() {
+		$tags = $this->artworks()->with(["tags"])->get()->pluck("tags")->flatten();
+		$tags = $tags->unique("id")->sortByDesc(function($i) use($tags) {
+			return $tags->pluck("id")->countBy()->get($i->id);
+		})->values();
+		return $tags;
 	}
 	
 	public function hasPermissions($permission) {
