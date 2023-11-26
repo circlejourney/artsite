@@ -5,10 +5,11 @@ $base-highlight: #e8e8e8;
 $site-bg: white;
 $main-bg: white;
 $light-bg: #f5f5f5;
+$mid-bg: #A9A9A9;
 $form-input-bg: white;
 $main-width: 1200px;
 $global-padding: 3rem;
-$small-padding: 0.2rem;
+$small-padding: 0.3rem;
 $header-margin: 2rem;
 
 @mixin screen-sm {
@@ -222,18 +223,31 @@ nav {
             justify-content: space-around;
         }
     }
-    
-    .logo {
+
+	%logo-style {
         padding: 0 1rem;
         font-size: 24pt;
         text-transform: uppercase;
         font-weight: bold;
         display: inline-block;
+	}
+    
+    .logo {
+		@extend %logo-style;
 
 		@include screen-sm {
 			display: none;
 		}
     }
+
+	.logo-small {
+		@extend %logo-style;
+
+		display: none;
+		@include screen-sm {
+			display: inline-block;
+		}
+	}
     
     .menu-item {
         display: block;
@@ -429,16 +443,20 @@ main {
 	}
 
 	div[class$="-section"] {
-		margin: $header-margin 0;
+		@include screen-lg {
+			margin: $header-margin 0;
+		}
 		@include screen-sm {
-			padding: $global-padding
+			padding: $small-padding;
 		}
 	}
 
 	.gallery {
 		@include flex-wrap(row);
-		justify-content: center;
 		gap: $profile-padding;
+		@include screen-sm {
+			justify-content: center;
+		}
 	}
 	
 	.gallery-thumbnail {
@@ -448,12 +466,24 @@ main {
 		border: 1px solid $base;
 		border-radius: $border-radius;
 		overflow: hidden;
+		position: relative;
 	
 		img {
 			height: 224px;
 			width: 224px;
 			object-fit: cover;
 			object-position: center top;
+		}
+
+		.gallery-thumbnail-badge {
+			position: absolute;
+			top: $small-padding;
+			right: $small-padding;
+			border-radius: $border-radius;
+			color: white;
+			background-color: $mid-bg;
+			padding: 0 $small-padding;
+			font-size: 11pt;
 		}
 	}
 }
@@ -468,7 +498,8 @@ footer {
 	.footer-link-wrapper {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center
+		align-items: center;
+		justify-content: center;
 	}
 	
 	.footer-link {

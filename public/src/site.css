@@ -106,7 +106,7 @@ nav .nav-left, nav .nav-right {
 }
 nav .search-form, nav .nav-button, nav .menu-toggle-circle, nav .menu-toggle {
   font-size: 16pt;
-  padding: 0.2rem;
+  padding: 0.3rem;
   border-radius: 10px;
 }
 nav .menu-toggle {
@@ -171,7 +171,7 @@ nav .collapse-container {
 nav .collapse-container .collapse.show, nav .collapse-container .collapse.collapsing {
   justify-content: space-around;
 }
-nav .logo {
+nav .logo-small, nav .logo {
   padding: 0 1rem;
   font-size: 24pt;
   text-transform: uppercase;
@@ -183,9 +183,17 @@ nav .logo {
     display: none;
   }
 }
+nav .logo-small {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  nav .logo-small {
+    display: inline-block;
+  }
+}
 nav .menu-item {
   display: block;
-  padding: 0.2rem;
+  padding: 0.3rem;
 }
 nav .menu-form-container {
   display: flex;
@@ -336,41 +344,47 @@ main .folder-row .folder-thumbnail {
   background-color: #e8e8e8;
 }
 main .folder-row .folder-title {
-  padding-top: 0.2rem;
+  padding-top: 0.3rem;
 }
 main .folder-badge-link {
   font-size: small;
   border: 1px solid #767676;
   border-radius: 0.3rem;
-  padding: 0.2rem;
+  padding: 0.3rem;
   color: #767676;
 }
 main .collapse-link {
   color: black;
   font-weight: bold;
   display: block;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.3rem;
   font-size: 15pt;
 }
 main .tag {
   min-width: auto;
   color: black;
-  padding: 0.2rem 0.8rem;
+  padding: 0.3rem 1.2rem;
 }
-main div[class$=-section] {
-  margin: 2rem 0;
+@media screen and (min-width: 1200px) {
+  main div[class$=-section] {
+    margin: 2rem 0;
+  }
 }
 @media screen and (max-width: 768px) {
   main div[class$=-section] {
-    padding: 3rem;
+    padding: 0.3rem;
   }
 }
 main .gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1rem;
+}
+@media screen and (max-width: 768px) {
+  main .gallery {
+    justify-content: center;
+  }
 }
 main .gallery-thumbnail {
   display: flex;
@@ -381,6 +395,7 @@ main .gallery-thumbnail {
   border: 1px solid #d9d9d9;
   border-radius: 10px;
   overflow: hidden;
+  position: relative;
 }
 main .gallery-thumbnail img {
   height: 224px;
@@ -389,6 +404,16 @@ main .gallery-thumbnail img {
      object-fit: cover;
   -o-object-position: center top;
      object-position: center top;
+}
+main .gallery-thumbnail .gallery-thumbnail-badge {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  border-radius: 10px;
+  color: white;
+  background-color: #A9A9A9;
+  padding: 0 0.3rem;
+  font-size: 11pt;
 }
 
 footer {
@@ -404,6 +429,7 @@ footer .footer-link-wrapper {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
 }
 footer .footer-link {
   font-weight: bold;
