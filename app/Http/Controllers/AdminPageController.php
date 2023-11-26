@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Artwork;
+use Illuminate\Support\Facades\Validator;
 
 class AdminPageController extends Controller
 {
@@ -27,11 +28,17 @@ class AdminPageController extends Controller
 	}
 
 	function update_user(User $user, Request $request) {
+		$request->validate([
+			'custom_flair' => ['string', 'max:32', 'regex:/^[a-z\-]*$/']
+		]);
+
 		$controlledRoleIDs = $request->user()->controlsRoles()->pluck("id");
 		foreach($request->roles as $role) {
 			if($controlledRoleIDs->doesntContain(intval($role))) abort(403);
 		}
 		$user->roles()->sync($request->roles);
+		$user->custom_flair = $request->custom_flair;
+		$user->save();
 		return Redirect::back()->with("success", "User roles updated successfully.");
 	}
 
