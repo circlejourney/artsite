@@ -1,6 +1,6 @@
 @extends('layouts.site', ["metatitle" => "Home"])
 @push("title"){{ "Home" }}@endpush
-@push("metadescription"){{ "A cool art site with groups and more." }}@endpush
+@push("metadescription"){{ "A cool art site with collabs, collectives and more." }}@endpush
 
 @section("body")
 <div class="p-4">
@@ -10,7 +10,7 @@
     	<h1>Welcome to {{ config("app.name") }}!</h1>
 	@endauth
 	
-	<p>A cool art site with groups, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
+	<p>A cool art site with collabs, collectives, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
     
     @auth
 		<p>

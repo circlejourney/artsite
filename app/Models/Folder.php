@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Artwork;
 use App\Models\User;
+use App\Models\Collective;
 use App\Services\FolderListService;
 use Illuminate\Support\Collection;
 
@@ -21,7 +22,8 @@ class Folder extends Model
 		"title",
 		"user_id",
 		"parent_folder_id",
-		"privacy_level_id"
+		"privacy_level_id",
+		"collective_id"
 	];
 
 	public function artworks() : BelongsToMany {
@@ -30,6 +32,10 @@ class Folder extends Model
 	
 	public function user() : BelongsTo {
 		return $this->belongsTo(User::class);
+	}
+	
+	public function collective() : BelongsTo {
+		return $this->belongsTo(Collective::class, "top_folder_id");
 	}
 
 	public function parent() : BelongsTo {
