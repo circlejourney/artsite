@@ -16,7 +16,7 @@ class CleanupCustomisedSeeder extends Seeder
     {
 		$users = DB::table("users")->get();
 		foreach($users as $user_row) {
-			$user = User::first("id", $user_row->id);
+			$user = User::where("id", $user_row->id)->first();
 			$user->customised = false;
 			$user->save();
 		}
