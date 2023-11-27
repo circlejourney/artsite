@@ -59,8 +59,11 @@
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
 			<div id="editor"></div>
 			<input type="hidden" id="text" name="text" value="{{ old('text', $text) }}">
+			
+			<div>Folder</div>
 			@include("components.folder-select", ["folderlist" => $folderlist, "selected" => $selectedfolder])
-
+			
+			<div>Artists</div>
 			<div id="artist-inputs">
 				@forelse( $artwork->users()->get() as $i=>$user)
 					<input class="form-control artist-input" type="text" name="artist[]" placeholder="Collaborator" value="{{ old("artist.".$i, $user["name"]) }}">
@@ -70,13 +73,14 @@
 			</div>
 			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
 
+			<div>Tags</div>
 			<input class="form-control" name="tags" id="tags" placeholder="Tags (comma-separated)" value="{{ old("tags", $artwork->getJoinedTags() ) }}">
 			<br>
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>
 
-	<h2>Preview</h2>
+	<h2>HTML Preview</h2>
 	<div id="html-preview"></div>
 	
 </div>

@@ -50,19 +50,23 @@
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title') }}" required>
 			<div id="editor"></div>
 			<input type="hidden" id="text" name="text" value="{{ old('text') }}">
-			
+
+			<div>Folder</div>
 			@include("components.folder-select", ["folderlist" => $folderlist])
 
+			<div>Artists</div>
 			<div id="artist-inputs">
 				<input class="artist-input form-control" type="text" name="artist[]" value="{{ old('artist.0') }}" placeholder="Collaborator">
 			</div>
 			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
+
+			<div>Tags</div>
 			<input class="form-control" name="tags" id="tags" placeholder="Tags (comma-separated)" value="{{ old("tags" ) }}">
 			<br>
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>
-	<h2>Preview</h2>
+	<h2>HTML Preview</h2>
 	<div id="html-preview"></div>
 </div>
 @endsection
