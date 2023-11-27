@@ -375,10 +375,31 @@ main {
 	}
 
 	/* EDIT ART */
+	#image-inputs {
+		max-width: 600px;
+	}
 	.image-input-wrapper {
-		&.deselected {
+		@include flex-wrap(row);
+		align-items: center;
+		padding: 1rem;
+		&.deselected, &.dragging {
 			background-color: $base;
 			opacity: 0.5;
+		}
+		input[type="file"] {
+			flex-grow: 1;
+		}
+		.image-buttons {
+			color: gray;
+		}
+		.image-drag-handle {
+			cursor: grab;
+			padding: 0.5rem;
+		}
+		.image-preview {
+			width: auto;
+			max-height: 150px;
+			max-width: 150px;
 		}
 	}
 

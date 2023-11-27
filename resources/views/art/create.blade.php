@@ -1,6 +1,22 @@
 @extends("layouts.site", ["metatitle" => "Submit New Artwork"])
 @push("head")
 	<script src="/src/extend_form.js"></script>
+	<script src="/src/sortable/Sortable.js"></script>
+	<script>
+		$(window).on("load", function(){
+			const imageInputs = $("#image-inputs")[0];
+			const sortable = new Sortable(imageInputs, {
+				animation: 150,
+				ghostClass: 'dragging',
+				handle: '.image-drag-handle'
+			});
+		});
+
+		function addImageWithDelete() {
+			$( addImageInput('.image-input-wrapper', '#image-inputs', 5) )
+				.find(".image-delete").html('<a onclick=\'this.closest(".image-input-wrapper").remove();\'><i class="fa fa-fw fa-times"></i></a>');
+		}
+	</script>
 @endpush
 
 @section('body')
@@ -11,12 +27,22 @@
 		<div>
 			<div id="image-inputs" class="flex-column">
 				<div class="image-input-wrapper">
+					<div class="image-buttons image-drag-handle">
+						<i class="fa fa-arrows"></i>
+					</div>
+
 					<input type="file" name="images[]" onchange="updatePreview(this, $(this).siblings('.image-preview')[0])" value="{{ old('images.0') }}">
-					<img class="image-preview" src="{{ old('images.0') }}">
-					<a onclick="this.closest('.image-input-wrapper').remove()">x</a>
+					<img class="image-preview"
+						@if(old('images.0'))
+							src="{{ old('images.0') }}"
+						@endif>
+						
+					<div class="image-buttons image-delete">
+						<i class="fa fa-empty fa-fw"></i>
+					</div>
 				</div>
 			</div>
-			<a class='button-pill' onclick="addImageInput('.image-input-wrapper', '#image-inputs', 5)">+</a>
+			<a class='button-pill' onclick="addImageWithDelete()">+</a>
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title') }}" required>
 			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text') }}</textarea>
 			

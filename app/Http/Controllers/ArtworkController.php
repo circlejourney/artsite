@@ -99,9 +99,12 @@ class ArtworkController extends Controller
 	
 	/* Update the artwork */
 	public function update(string $path, Request $request) {
+		
 		$artwork = Artwork::byPath($path);
 		if($artwork->users()->get()->doesntContain($request->user())
-			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);	
+			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);
+		
+		$firstHasChanged = false;
 
 		$parentfolderID = $request->parent_folder ? intval($request->parent_folder) : $request->user()->top_folder_id;
 
@@ -141,24 +144,40 @@ class ArtworkController extends Controller
 
 		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
-		if($request->images) {
-			foreach($request->images as $i => $image) {
-				if(!$image) continue;
-				$artwork->writeImage($i, $image, $request->user())->save();
-			};
-		}
+		$images = $artwork->images;
+		$imageTransforms = collect($request->image_order)->map(function($order) use($images) {
+			return collect([ "old_index" => $order !== "false" ? intval($order) : null, "url" => $images[$order] ?? null ]);
+		});
 
-		if($request->delete_image){
-			foreach($request->delete_image as $i => $delete) {
-				if($delete === "true") $artwork->deleteImage($i)->save();
+		foreach($imageTransforms as $i => $imageTransform) {
+			$toReplace = $imageTransform["old_index"];
+			if($toReplace == null && $request->images && isset($request->images[$i])) {
+				$relpath = $artwork->uploadImage($request->images[$i], $request->user())->getRelativePath();
+				$imageTransforms[$i]->put("url", $relpath);
+				continue;
+			}
+
+			if($request->delete_image && $request->delete_image[$i] == "true") {
+				$artwork->deleteImage($toReplace);
+				$imageTransforms->forget($i);
+				continue;
+			}
+
+			if($request->images && isset($request->images[$i])) {
+				if(isset($images[$toReplace])) {
+					$artwork->deleteImage($toReplace);
+					$relpath = $artwork->uploadImage($request->images[$i], $request->user())->getRelativePath();
+					$imageTransforms[$i]->put("url", $relpath);
+				}
 			}
 		}
-			
-		if($request->images && $request->images[0] !== null || $request->delete_image[0] !== null) {
-			$artwork->generateThumbnail()->save();
-		}
-
+		$newImages = $imageTransforms->pluck("url")->filter()->all();
+		$artwork->images = $newImages;
 		$artwork->save();
+
+		if($newImages[0] !== $images[0]) {
+			$artwork->updateThumbnail()->save();
+		}
 
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}

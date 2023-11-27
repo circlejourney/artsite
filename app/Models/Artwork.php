@@ -102,7 +102,12 @@ class Artwork extends Model
 		return $this;
 	}
 
-	public function generateThumbnail() {
+	public function uploadImage(UploadedFile $image, User $user) {
+		$relative_path = UploadService::upload($image, "art/".$user->id);
+		return $relative_path;
+	}
+
+	public function updateThumbnail() {
 		if(isset($this->images[0])) {
 			if($relative_path = $this->thumbnail) {
 				Storage::delete($relative_path);

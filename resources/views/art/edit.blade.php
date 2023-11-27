@@ -2,34 +2,53 @@
 
 @push("head")
 	<script src="/src/extend_form.js"></script>
+	<script src="/src/sortable/Sortable.js"></script>
+
 	<script>
 		function toggleImageDelete(element){
+			if($(element).siblings(".image_order").val() == "false" && !$(element).siblings("input[type='file']").val()) {
+				element.parentElement.remove();
+			}
+
 			const newval = $(element).find('input').val() == "false";
 			$(element).find('input').val(newval);
 			$(element).closest('.image-input-wrapper').toggleClass('deselected', newval);
 		}
+		$(window).on("load", function(){
+			const imageInputs = $("#image-inputs")[0];
+			const sortable = new Sortable(imageInputs, {
+				animation: 150,
+				ghostClass: 'dragging',
+				handle: '.image-drag-handle'
+			});
+		})
 	</script>
+
 @endpush
 
 @section('body')
 <div class="p-4">
 	<h1>Edit '{{ $artwork->title }}'</h1>
 
-	<form method="POST" enctype="multipart/form-data" class="row">
+	<form method="POST" enctype="multipart/form-data">
 		@method("PUT")
 		@csrf
+		<div>
 			<div id="image-inputs" class="flex-column">
 				@foreach($image_urls as $i=>$image_url)
 					<div class="image-input-wrapper">
+						<div class="image-buttons image-drag-handle">
+							<i class="fa fa-arrows"></i>
+						</div>
 
 						<input type="file" name="images[]" onchange="updatePreview(this, $(this).siblings('.image-preview')[0])">
+						<input type="hidden" class="image_order" name="image_order[]" value="{{$i}}">
 						<img class="image-preview" src="{{ $image_url }}">
-						
-						<a onclick="toggleImageDelete(this)">
-							<input type="hidden" name="delete_image[{{$i}}]" value="false">
-							x
-						</a>
 
+						<div class="image-buttons image-delete" onclick="toggleImageDelete(this)">
+							<input type="hidden" class="delete_image" name="delete_image[]" value="false">
+							<i class="fa fa-times fa-fw"></i>
+						</div>
 					</div>
 				@endforeach
 			</div>
