@@ -362,8 +362,8 @@ $profile-padding: 1rem;
 }
 
 .profile-custom {
-	padding: $profile-padding;
 	&:not(.customised) {
+		padding: $profile-padding;
 	}
 }
 

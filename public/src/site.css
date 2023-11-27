@@ -307,9 +307,10 @@ main .page-block {
   border-radius: 10px;
 }
 
-.profile-custom {
+.profile-custom:not(.customised) {
   padding: 1rem;
 }
+
 /* EDIT PROFILE */
 .image-preview {
   width: 150px;

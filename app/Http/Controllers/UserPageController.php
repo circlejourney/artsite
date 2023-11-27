@@ -35,7 +35,7 @@ class UserPageController extends Controller
 		// Validate HTML
 		$profile_html = $request->validated()["profile_html"] ?? "";
 		$request->user()->updateProfileHTML($profile_html);
-		$request->user()->customised = strlen(trim($profile_html)) > 0;
+		$request->user()->customised = $request->customised == "on";
 		if($request->avatar)
 		{
 			$request->user()->updateAvatar($request->avatar);

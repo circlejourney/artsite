@@ -12,6 +12,11 @@
 			$("#profile_html").val(editor.getValue());
 		}
 
+		function toggleCustomised() {
+			if($("#customised").prop("checked")) $(".profile-custom").addClass("customised");
+			else $(".profile-custom").removeClass("customised");
+		}
+
 	</script>
 @endpush
 
@@ -38,10 +43,13 @@
 
 			<h2>Profile HTML</h2>
 			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $profile_html) }}">
+			<input type="checkbox" name="customised" id="customised" onchange="toggleCustomised()"
+				@checked(old("active", $user->customised))>
+			<label for="customised">Display custom HTML without margins</label>
 			<div id="editor"></div>
 			<button class="button-pill" onclick="beforePost()">Update</button>
 			
 		</form>
 	</div>
-	<div class="profile-custom customised"></div>
+	<div class="profile-custom"></div>
 @endsection
