@@ -3,18 +3,24 @@
 	<div class="page-block">
 		<h1>{{ $artwork->title }}</h1>
 		
-		{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
-		@foreach($artwork->users()->get() as $i => $owner)
-				<a href="{{ route("user", ["username" => $owner->name]) }}">
-					{!! $owner->getFlairHTML() !!}
-					{{ $owner->name }}</a><!--
-					-->@if(!$loop->last), @endif
-		@endforeach
-		
 		
 		<div class="art-info">
+			<div>
+				Posted:
+				<script>
+					const posted = new Date({{ $artwork->created_at->timestamp }}*1000);
+					document.write(posted.toDateString());
+				</script>
+			</div>
+			{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
+			@foreach($artwork->users()->get() as $i => $owner)
+					<a href="{{ route("user", ["username" => $owner->name]) }}">
+						{!! $owner->getFlairHTML() !!}
+						{{ $owner->name }}</a><!--
+						-->@if(!$loop->last), @endif
+			@endforeach
+
 			@include("tags.taglist", ["tags"=>$artwork->tags])
-			
 			@if(sizeof($folders) > 0)
 			<div>
 				@if(sizeof($folders) > 1)
