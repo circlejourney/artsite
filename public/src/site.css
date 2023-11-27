@@ -15,7 +15,7 @@ body {
   }
 }
 
-h1, h2, h3, main .collapse-link {
+h1, h2, h3, .collapse-link {
   margin-top: 2rem;
 }
 
@@ -26,7 +26,7 @@ a.link-current::after {
   content: "◀";
 }
 
-.button-circle, .button-pill, main .tag {
+.button-circle, .button-pill, .tag {
   background-color: #d9d9d9;
   height: 2rem;
   border-radius: 1rem;
@@ -36,12 +36,12 @@ a.link-current::after {
   color: black;
 }
 
-.button-pill, main .tag {
+.button-pill, .tag {
   min-width: 10rem;
   border: none;
   cursor: pointer;
 }
-.button-pill:hover, main .tag:hover {
+.button-pill:hover, .tag:hover {
   text-decoration: none;
   color: initial;
   background-color: #e8e8e8;
@@ -207,11 +207,6 @@ main {
   flex-grow: 1;
   width: 1200px;
   padding-bottom: 3rem;
-  /* PROFILE PAGE */
-  /* EDIT PROFILE */
-  /* ART PAGE */
-  /* EDIT ART */
-  /* FOLDER PAGE */
 }
 @media screen and (max-width: 768px) {
   main {
@@ -225,45 +220,51 @@ main img {
 main .page-block {
   padding: 3rem;
 }
-main .profile-banner {
+
+/* PROFILE PAGE */
+.profile-banner {
   height: 240px;
   background-size: cover;
   background-position: center;
 }
 @media screen and (min-width: 1200px) {
-  main .profile-banner {
+  .profile-banner {
     width: 1200px;
   }
 }
-main .profile-info {
+
+.profile-info {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 0 3rem 1rem;
 }
-main .profile-info .profile-details {
+.profile-info .profile-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 1rem;
 }
-main .profile-info .display-name {
+.profile-info .display-name {
   font-size: 18pt;
 }
-main .profile-avatar {
+
+.profile-avatar {
   height: 150px;
   background-color: #d9d9d9;
   margin-top: -75px;
   border-radius: 10px;
 }
-main .profile-interact {
+
+.profile-interact {
   margin-left: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 }
-main .profile-menu {
+
+.profile-menu {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -271,14 +272,15 @@ main .profile-menu {
   list-style-type: none;
   margin: 0;
 }
-main .profile-menu li {
+.profile-menu li {
   padding: 1rem;
   flex-basis: 0;
 }
-main .profile-menu li a {
+.profile-menu li a {
   color: black;
 }
-main .profile-highlight {
+
+.profile-highlight {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -286,16 +288,19 @@ main .profile-highlight {
   padding: 3rem;
   gap: 3rem;
 }
-main .profile-highlight img {
+.profile-highlight img {
   border-radius: 10px;
 }
-main .profile-custom {
+
+.profile-custom {
   padding: 1rem;
 }
-main .image-preview {
+/* EDIT PROFILE */
+.image-preview {
   width: 150px;
 }
-main .banner-image-preview {
+
+.banner-image-preview {
   margin-top: 3rem;
   margin-bottom: 3rem;
   margin-left: -3rem;
@@ -304,51 +309,65 @@ main .banner-image-preview {
   -o-object-position: center;
      object-position: center;
 }
-main .art-display-container {
+@media screen and (max-width: 768px) {
+  .banner-image-preview {
+    margin-right: -3rem;
+  }
+}
+
+#editor {
+  width: 100%;
+  min-height: 50vh;
+}
+
+/* ART PAGE */
+.art-display-container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
-main .art-display {
+
+.art-display {
   max-width: 100%;
 }
-main #image-inputs {
-  max-width: 600px;
-}
-main .image-input-wrapper {
+
+/* EDIT ART */
+.image-input-wrapper {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   padding: 1rem;
 }
-main .image-input-wrapper.deselected, main .image-input-wrapper.dragging {
+.image-input-wrapper.deselected, .image-input-wrapper.dragging {
   background-color: #d9d9d9;
   opacity: 0.5;
 }
-main .image-input-wrapper input[type=file] {
+.image-input-wrapper input[type=file] {
   flex-grow: 1;
 }
-main .image-input-wrapper .image-buttons {
+.image-input-wrapper .image-buttons {
   color: gray;
 }
-main .image-input-wrapper .image-drag-handle {
+.image-input-wrapper .image-drag-handle {
   cursor: grab;
   padding: 0.5rem;
 }
-main .image-input-wrapper .image-preview {
+.image-input-wrapper .image-preview {
   width: auto;
   max-height: 150px;
   max-width: 150px;
 }
-main .folder-row {
+
+/* FOLDER PAGE */
+.folder-row {
   overflow-x: auto;
   gap: 1rem;
   white-space: nowrap;
   height: 220px;
 }
-main .folder-row .folder {
+.folder-row .folder {
   height: 200px;
   flex-basis: 220px;
   width: 220px;
@@ -361,57 +380,63 @@ main .folder-row .folder {
   white-space: initial;
   vertical-align: top;
 }
-main .folder-row .folder-thumbnail {
+.folder-row .folder-thumbnail {
   flex-grow: 1;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   background-color: #e8e8e8;
 }
-main .folder-row .folder-title {
+.folder-row .folder-title {
   padding-top: 0.3rem;
 }
-main .folder-badge-link {
+
+.folder-badge-link {
   font-size: small;
   border: 1px solid #767676;
   border-radius: 0.3rem;
   padding: 0.3rem;
   color: #767676;
 }
-main .collapse-link {
+
+.collapse-link {
   color: black;
   font-weight: bold;
   display: block;
   margin-bottom: 0.3rem;
   font-size: 15pt;
 }
-main .tag {
+
+.tag {
   min-width: auto;
   color: black;
   padding: 0.3rem 1.2rem;
 }
+
 @media screen and (min-width: 1200px) {
-  main div[class$=-section] {
+  div[class$=-section] {
     margin: 2rem 0;
   }
 }
 @media screen and (max-width: 768px) {
-  main div[class$=-section] {
+  div[class$=-section] {
     padding: 0.3rem;
   }
 }
-main .gallery {
+
+.gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
 }
 @media screen and (max-width: 768px) {
-  main .gallery {
+  .gallery {
     justify-content: center;
   }
 }
-main .gallery-thumbnail {
+
+.gallery-thumbnail {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,7 +447,7 @@ main .gallery-thumbnail {
   overflow: hidden;
   position: relative;
 }
-main .gallery-thumbnail img {
+.gallery-thumbnail img {
   height: 224px;
   width: 224px;
   -o-object-fit: cover;
@@ -430,14 +455,14 @@ main .gallery-thumbnail img {
   -o-object-position: center top;
      object-position: center top;
 }
-main .gallery-thumbnail .gallery-thumbnail-badgerow {
+.gallery-thumbnail .gallery-thumbnail-badgerow {
   display: flex;
   gap: 0.3rem;
   position: absolute;
   top: 0.3rem;
   right: 0.3rem;
 }
-main .gallery-thumbnail .gallery-thumbnail-badge {
+.gallery-thumbnail .gallery-thumbnail-badge {
   border-radius: 10px;
   color: white;
   background-color: #A9A9A9;

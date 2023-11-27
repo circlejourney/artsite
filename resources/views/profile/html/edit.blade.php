@@ -1,42 +1,12 @@
 @extends("layouts.site", ["metatitle" => "Customise Profile"])
 @push("head")
-	<link rel="stylesheet" href="/src/ace.css">
 	<script src="/src/ace/ace.js"></script>
 	<script>
 		let editor;
-		$(window).on("load", ()=>{
 
-			editor = ace.edit("editor");
-			editor.setTheme("ace/theme/katzenmilch");
-			editor.setShowPrintMargin(false);
-			editor.session.setMode("ace/mode/html");
-			editor.session.setUseWrapMode(true);
-			editor.session.on("change", function() {
-				const wait = startIdle();
-				editor.session.on("change", function cancel(){
-					clearTimeout(wait);
-					editor.session.off("change", cancel);
-				})
-			});
-
-			editor.setValue($("#profile_html").val());
-			$(".profile-custom").html(
-				sanitise_html($("#profile_html").val())
-			);
-
-			function startIdle() {
-				const timeout = setTimeout(function() {
-					const html = editor.getValue();
-					$(".profile-custom").html(sanitise_html(html));
-					$("#profile_html").val(html);
-				}, 500);
-				return timeout;
-			}
-
-			if($("#avatar").val()) updatePreview( $("#avatar")[0], ".avatar-image-preview");
-			if($("#banner").val()) updatePreview( $("#banner")[0], ".banner-image-preview", true);
-
-		});
+		$(window).on("load", function(){
+			editor = startAceEditor("#editor", "#profile_html", ".profile-custom");
+		})
 
 		function beforePost() {
 			$("#profile_html").val(editor.getValue());

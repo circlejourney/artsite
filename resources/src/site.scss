@@ -278,239 +278,244 @@ main {
 	.page-block {
 		padding: $global-padding;
 	}
+}
 
-	/* PROFILE PAGE */
-	$profile-gap: 3rem;
-	$profile-padding: 1rem;
-	
-    .profile-banner {
-        height: 240px;
-		background-size: cover;
-		background-position: center;
-		@include screen-lg {
-			width: 1200px;
-		}
-    }
+/* PROFILE PAGE */
+$profile-gap: 3rem;
+$profile-padding: 1rem;
 
-    .profile-info {
-        @include flex-wrap(row);
-		padding: 0 $profile-gap $profile-padding;
-
-        .profile-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-			padding: 0 $profile-padding;
-        }
-
-        .display-name {
-            font-size: 18pt;
-        }
-    }
-
-    .profile-avatar {
-        height: 150px;
-        background-color: $base;
-        margin-top: -75px;
-        border-radius: $border-radius;
-    }
-
-    .profile-interact {
-        margin-left: auto;
-		@include flex-centre();
-		gap: $profile-padding;
-    }
-
-	.profile-menu {
-		@include flex-wrap(row);
-		background-color: $base;
-		list-style-type: none;
-		margin: 0;
-		li {
-			padding: $profile-padding;
-			flex-basis: 0;
-			a {
-				color: black;
-			}
-		}
+.profile-banner {
+	height: 240px;
+	background-size: cover;
+	background-position: center;
+	@include screen-lg {
+		width: 1200px;
 	}
+}
 
-	.profile-highlight {
-		@include flex-wrap(row);
+.profile-info {
+	@include flex-wrap(row);
+	padding: 0 $profile-gap $profile-padding;
+
+	.profile-details {
+		display: flex;
+		flex-direction: column;
 		justify-content: center;
-		padding: $profile-gap;
-		gap: $profile-gap;
-		img {
-			border-radius: $border-radius;
-		}
+		padding: 0 $profile-padding;
 	}
 
-	.profile-custom {
-        padding: $profile-padding;
-		&:not(.customised) {
-		}
+	.display-name {
+		font-size: 18pt;
 	}
-	
-	/* EDIT PROFILE */
-	.image-preview {
-		width: 150px;
-	}
+}
 
-	.banner-image-preview {
-		margin-top: $global-padding;
-		margin-bottom: $global-padding;
-		margin-left: -$global-padding;
-		object-fit: cover;
-		object-position: center;
-	}
+.profile-avatar {
+	height: 150px;
+	background-color: $base;
+	margin-top: -75px;
+	border-radius: $border-radius;
+}
 
-	/* ART PAGE */
-	.art-display-container {
-		@include flex-centre();
-		flex-direction: column;
-	}
+.profile-interact {
+	margin-left: auto;
+	@include flex-centre();
+	gap: $profile-padding;
+}
 
-	.art-display {
-		max-width: 100%;
-	}
-
-	/* EDIT ART */
-	#image-inputs {
-		max-width: 600px;
-	}
-	.image-input-wrapper {
-		@include flex-wrap(row);
-		align-items: center;
-		padding: 1rem;
-		&.deselected, &.dragging {
-			background-color: $base;
-			opacity: 0.5;
-		}
-		input[type="file"] {
-			flex-grow: 1;
-		}
-		.image-buttons {
-			color: gray;
-		}
-		.image-drag-handle {
-			cursor: grab;
-			padding: 0.5rem;
-		}
-		.image-preview {
-			width: auto;
-			max-height: 150px;
-			max-width: 150px;
-		}
-	}
-
-	/* FOLDER PAGE */
-
-	.folder-row {
-		$folder-height: 220px;
-		overflow-x: auto;
-		gap: $profile-padding;
-		white-space: nowrap;
-		height: $folder-height;
-
-		.folder {
-			height: 200px;
-			flex-basis: $folder-height;
-			width: $folder-height;
-			background-color: $base;
-			padding: 13px;
-			border-radius: $border-radius;
-			display: inline-flex;
-			flex-direction: column;
+.profile-menu {
+	@include flex-wrap(row);
+	background-color: $base;
+	list-style-type: none;
+	margin: 0;
+	li {
+		padding: $profile-padding;
+		flex-basis: 0;
+		a {
 			color: black;
-			white-space: initial;
-			vertical-align: top;
 		}
+	}
+}
 
-		.folder-thumbnail {
-			flex-grow: 1;
-			background-size: contain;
-			background-position: center;
-			background-repeat: no-repeat;
-			background-color: $base-highlight;
-		}
-		
-		.folder-title {
-			padding-top: $small-padding;
-		}
-	}
-
-	.folder-badge-link {
-		font-size: small;
-		border: 1px solid #767676;
-		border-radius: $border-radius-small;
-		padding: $small-padding;
-		color: #767676;
-	}
-	
-	.collapse-link {
-		@extend h3;
-		color: black;
-		font-weight: bold;
-		display: block;
-		margin-bottom: $small-padding;
-		font-size: 15pt;
-	}
-
-	.tag {
-		@extend .button-pill;
-		min-width: auto;
-		color: black;
-		padding: $small-padding calc(4 * $small-padding);
-	}
-
-	div[class$="-section"] {
-		@include screen-lg {
-			margin: $header-margin 0;
-		}
-		@include screen-sm {
-			padding: $small-padding;
-		}
-	}
-
-	.gallery {
-		@include flex-wrap(row);
-		gap: $profile-padding;
-		@include screen-sm {
-			justify-content: center;
-		}
-	}
-	
-	.gallery-thumbnail {
-		@include flex-centre();
-		flex-direction: column;
-		font-size: 14pt;
-		border: 1px solid $base;
+.profile-highlight {
+	@include flex-wrap(row);
+	justify-content: center;
+	padding: $profile-gap;
+	gap: $profile-gap;
+	img {
 		border-radius: $border-radius;
-		overflow: hidden;
-		position: relative;
-	
-		img {
-			height: 224px;
-			width: 224px;
-			object-fit: cover;
-			object-position: center top;
-		}
-		
-		.gallery-thumbnail-badgerow {
-			display: flex;
-			gap: $small-padding;
-			position: absolute;
-			top: $small-padding;
-			right: $small-padding;
-		}
+	}
+}
 
-		.gallery-thumbnail-badge {
-			border-radius: $border-radius;
-			color: white;
-			background-color: $mid-bg;
-			padding: 0 $small-padding;
-			font-size: 10pt;
-		}
+.profile-custom {
+	padding: $profile-padding;
+	&:not(.customised) {
+	}
+}
+
+/* EDIT PROFILE */
+.image-preview {
+	width: 150px;
+}
+
+.banner-image-preview {
+	margin-top: $global-padding;
+	margin-bottom: $global-padding;
+	margin-left: -$global-padding;
+	object-fit: cover;
+	object-position: center;
+	@include screen-sm {
+		margin-right: -$global-padding;
+	}
+}
+
+#editor {
+	width: 100%;
+	min-height: 50vh;
+}  
+
+/* ART PAGE */
+.art-display-container {
+	@include flex-centre();
+	flex-direction: column;
+}
+
+.art-display {
+	max-width: 100%;
+}
+
+/* EDIT ART */
+.image-input-wrapper {
+	@include flex-wrap(row);
+	align-items: center;
+	padding: 1rem;
+	&.deselected, &.dragging {
+		background-color: $base;
+		opacity: 0.5;
+	}
+	input[type="file"] {
+		flex-grow: 1;
+	}
+	.image-buttons {
+		color: gray;
+	}
+	.image-drag-handle {
+		cursor: grab;
+		padding: 0.5rem;
+	}
+	.image-preview {
+		width: auto;
+		max-height: 150px;
+		max-width: 150px;
+	}
+}
+
+/* FOLDER PAGE */
+
+.folder-row {
+	$folder-height: 220px;
+	overflow-x: auto;
+	gap: $profile-padding;
+	white-space: nowrap;
+	height: $folder-height;
+
+	.folder {
+		height: 200px;
+		flex-basis: $folder-height;
+		width: $folder-height;
+		background-color: $base;
+		padding: 13px;
+		border-radius: $border-radius;
+		display: inline-flex;
+		flex-direction: column;
+		color: black;
+		white-space: initial;
+		vertical-align: top;
+	}
+
+	.folder-thumbnail {
+		flex-grow: 1;
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-color: $base-highlight;
+	}
+	
+	.folder-title {
+		padding-top: $small-padding;
+	}
+}
+
+.folder-badge-link {
+	font-size: small;
+	border: 1px solid #767676;
+	border-radius: $border-radius-small;
+	padding: $small-padding;
+	color: #767676;
+}
+
+.collapse-link {
+	@extend h3;
+	color: black;
+	font-weight: bold;
+	display: block;
+	margin-bottom: $small-padding;
+	font-size: 15pt;
+}
+
+.tag {
+	@extend .button-pill;
+	min-width: auto;
+	color: black;
+	padding: $small-padding calc(4 * $small-padding);
+}
+
+div[class$="-section"] {
+	@include screen-lg {
+		margin: $header-margin 0;
+	}
+	@include screen-sm {
+		padding: $small-padding;
+	}
+}
+
+.gallery {
+	@include flex-wrap(row);
+	gap: $profile-padding;
+	@include screen-sm {
+		justify-content: center;
+	}
+}
+
+.gallery-thumbnail {
+	@include flex-centre();
+	flex-direction: column;
+	font-size: 14pt;
+	border: 1px solid $base;
+	border-radius: $border-radius;
+	overflow: hidden;
+	position: relative;
+
+	img {
+		height: 224px;
+		width: 224px;
+		object-fit: cover;
+		object-position: center top;
+	}
+	
+	.gallery-thumbnail-badgerow {
+		display: flex;
+		gap: $small-padding;
+		position: absolute;
+		top: $small-padding;
+		right: $small-padding;
+	}
+
+	.gallery-thumbnail-badge {
+		border-radius: $border-radius;
+		color: white;
+		background-color: $mid-bg;
+		padding: 0 $small-padding;
+		font-size: 10pt;
 	}
 }
 

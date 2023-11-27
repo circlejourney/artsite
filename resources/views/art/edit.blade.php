@@ -2,6 +2,7 @@
 
 @push("head")
 	<script src="/src/extend_form.js"></script>
+	<script src="/src/ace/ace.js"></script>
 	<script src="/src/sortable/Sortable.js"></script>
 
 	<script>
@@ -21,13 +22,14 @@
 				ghostClass: 'dragging',
 				handle: '.image-drag-handle'
 			});
+			const editor = startAceEditor("#editor", "#text", "#html-preview");
 		})
 	</script>
 
 @endpush
 
 @section('body')
-<div class="p-4">
+<div class="page-block">
 	<h1>Edit '{{ $artwork->title }}'</h1>
 
 	<form method="POST" enctype="multipart/form-data">
@@ -55,7 +57,8 @@
 			<a class='button-pill' onclick="addImageInput('.image-input-wrapper', '#image-inputs')">+</a>
 
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
-			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text', $text ) }}</textarea>
+			<div id="editor"></div>
+			<input type="hidden" id="text" name="text" value="{{ old('text', $text) }}">
 			@include("components.folder-select", ["folderlist" => $folderlist, "selected" => $selectedfolder])
 
 			<div id="artist-inputs">
@@ -73,5 +76,8 @@
 		</div>
 	</form>
 
+	<h2>Preview</h2>
+	<div id="html-preview"></div>
+	
 </div>
 @endsection

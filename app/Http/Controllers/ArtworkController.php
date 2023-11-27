@@ -76,7 +76,7 @@ class ArtworkController extends Controller
 			$artwork->writeImage($i, $image, $request->user());
 		};
 
-		$artwork->generateThumbnail()->updateText($request->text)->save();
+		$artwork->updateThumbnail()->updateText($request->text)->save();
 
 		return redirect(route("art", ["path" => $path]));
 	}

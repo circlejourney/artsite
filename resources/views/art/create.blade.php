@@ -1,6 +1,7 @@
 @extends("layouts.site", ["metatitle" => "Submit New Artwork"])
 @push("head")
 	<script src="/src/extend_form.js"></script>
+	<script src="/src/ace/ace.js"></script>
 	<script src="/src/sortable/Sortable.js"></script>
 	<script>
 		$(window).on("load", function(){
@@ -10,12 +11,15 @@
 				ghostClass: 'dragging',
 				handle: '.image-drag-handle'
 			});
+
+			const editor = startAceEditor("#editor", "#text", "#html-preview");
+
 		});
 
 		function addImageWithDelete() {
 			$( addImageInput('.image-input-wrapper', '#image-inputs', 5) )
 				.find(".image-delete").html('<a onclick=\'this.closest(".image-input-wrapper").remove();\'><i class="fa fa-fw fa-times"></i></a>');
-		}
+		};
 	</script>
 @endpush
 
@@ -44,7 +48,8 @@
 			</div>
 			<a class='button-pill' onclick="addImageWithDelete()">+</a>
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title') }}" required>
-			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('text') }}</textarea>
+			<div id="editor"></div>
+			<input type="hidden" id="text" name="text" value="{{ old('text') }}">
 			
 			@include("components.folder-select", ["folderlist" => $folderlist])
 
@@ -57,5 +62,7 @@
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>
+	<h2>Preview</h2>
+	<div id="html-preview"></div>
 </div>
 @endsection
