@@ -16,6 +16,7 @@ use App\Models\Invite;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\FolderListService;
+use App\Services\PrivacyLevelService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
@@ -141,6 +142,13 @@ class User extends Authenticatable
 			return $tags->pluck("id")->countBy()->get($i->id);
 		})->values();
 		return $tags;
+	}
+
+	public function getArtWithTag($tag) {
+		$taggedArtworks = $this->artworks()->whereHas("tags", function($q) use($tag) {
+			return $q->where("id", $tag);
+		})->get();
+		return $taggedArtworks;
 	}
 	
 	public function hasPermissions($permission) {

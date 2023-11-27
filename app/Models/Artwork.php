@@ -61,6 +61,13 @@ class Artwork extends Model
 		$thumbnail = Storage::url($relative_path);
 		return $thumbnail ?? "";
 	}
+
+	public function getImageURL(int $index) : string {
+		if(!($images = $this->images) || !isset($images[$index])) return "";
+		error_log(gettype($images));
+		$relative_path = Storage::url($images[$index]);
+		return $relative_path ?? "";
+	}
 	
 	public function getJoinedTags() : string {
 		return $this->tags()->orderBy("artwork_tag.created_at", "desc")->pluck("tag_id")->join(", ");

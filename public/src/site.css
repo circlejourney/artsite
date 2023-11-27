@@ -222,6 +222,17 @@ main .page-block {
 }
 
 /* PROFILE PAGE */
+.owner-only {
+  background-color: #d9d9d9;
+  opacity: 0.8;
+  margin-top: 2rem;
+  padding: 3rem;
+  text-align: center;
+}
+.owner-only h2 {
+  margin-top: 0;
+}
+
 .profile-banner {
   height: 240px;
   background-size: cover;
@@ -289,6 +300,10 @@ main .page-block {
   gap: 3rem;
 }
 .profile-highlight img {
+  width: 300px;
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 10px;
 }
 

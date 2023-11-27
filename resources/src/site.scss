@@ -284,6 +284,18 @@ main {
 $profile-gap: 3rem;
 $profile-padding: 1rem;
 
+.owner-only {
+	background-color: $base;
+	opacity: 0.8;
+	margin-top: $header-margin;
+	padding: $global-padding;
+	text-align: center;
+
+	h2 {
+		margin-top: 0;
+	}
+}
+
 .profile-banner {
 	height: 240px;
 	background-size: cover;
@@ -342,6 +354,9 @@ $profile-padding: 1rem;
 	padding: $profile-gap;
 	gap: $profile-gap;
 	img {
+		width: 300px;
+		height: 300px;
+		object-fit: cover;
 		border-radius: $border-radius;
 	}
 }
