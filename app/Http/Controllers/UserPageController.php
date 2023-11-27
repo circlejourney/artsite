@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Artwork;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserPageUpdateRequest;
 use App\Models\PrivacyLevel;
@@ -16,13 +17,13 @@ use App\Services\PrivacyLevelService;
 class UserPageController extends Controller
 {
     public function show(Request $request, string $username) {
-        $user = User::where("name", $username)->first();
-		if(!$user) abort(404);
+        $user = User::where("name", $username)->firstOrFail();
 		
 		$preview_artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->limit(10)->orderBy("created_at", "desc")->get());
 		
 		$profile_html = $user->getProfileHTML() ?? "";
-        return view("profile.show", ["user" => $user, "artworks" => $preview_artworks, "profile_html" => $profile_html]);
+		$highlights = collect($user->highlights)->map(function($i) { error_log($i); return Artwork::where("id", $i)->first(); })->slice(0,3);
+        return view("profile.show", ["user" => $user, "artworks" => $preview_artworks, "profile_html" => $profile_html, "highlights" => $highlights]);
     }
 
 	public function edit(Request $request) {

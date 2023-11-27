@@ -182,6 +182,18 @@ class ArtworkController extends Controller
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}
 
+	public function manage(Request $request) {
+		$user = $request->user();
+		return view("art.manage", ["user" => $user]);
+	}
+
+	public function put(Request $request) {
+		$request->user()->update([
+			"highlights" => collect($request->update_art)->map(function($i) { return intval($i); })
+		]);
+		return view("art.manage", ["user" => $request->user()]);
+	}
+
 	public function showdelete(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
 		$owner_ids = $this->getOwners($artwork);

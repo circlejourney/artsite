@@ -66,6 +66,9 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::put("/dashboard/folders/folder:{folder}", [FolderController::class, 'update']);
 	Route::delete("/dashboard/folders/folder:{folder}", [FolderController::class, 'destroy']);
 	
+	Route::get("/dashboard/art", [ArtworkController::class, 'manage'])->name("art.manage");
+	Route::put("/dashboard/art", [ArtworkController::class, 'put']);
+	
 	Route::get("/art/new", [ArtworkController::class, 'create'])->name('art.create');
 	Route::post("/art/new", [ArtworkController::class, 'store']);
 	Route::get("/art/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');

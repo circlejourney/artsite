@@ -42,7 +42,8 @@ class User extends Authenticatable
 		'banner',
 		'profile_html',
 		'custom_flair',
-		'invited_by'
+		'invited_by',
+		'highlights'
     ];
 
     /**
@@ -63,6 +64,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'highlights' => 'array'
     ];
 
 	/* Boot */

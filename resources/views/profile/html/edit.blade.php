@@ -39,7 +39,7 @@
 			<div class="profile-banner banner-image-preview" style="background-image: url({{ $user->getBannerURL() }})"></div>
 
 			<h2>Highlight images</h2>
-			<div>To add images to your highlights at the top of your profile, simply tag the desired artwork with <code>highlight</code>.</div>
+			<div>To select highlight images, go to the <a href="{{ route("art.manage", ["user" => $user]) }}">Manage Art dashboard page</a>.</div>
 
 			<h2>Profile HTML</h2>
 			<input type="hidden" id="profile_html" name="profile_html" value="{{ old('profile_html', $profile_html) }}">

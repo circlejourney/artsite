@@ -1,7 +1,7 @@
 @extends("layouts.profile", ["user" => $user, "metatitle" => $user->name])
 
 @section('profile-body')
-	@if(($highlights = $user->getArtWithTag("highlight")->slice(0,3))->count()>0)
+	@if($highlights->count() > 0)
 	<div class="profile-highlight">
 		@foreach($highlights as $highlight)
 		<a href="{{ route("art", ["path" => $highlight->path]) }}">
@@ -13,7 +13,7 @@
 		@if($user == auth()->user())
 		<div class="owner-only">
 			<h2><i class="fa fa-lock"></i> (Private notice) No highlight images found.</h2>
-			<div>To highlight images, simply tag some artwork with <code>highlight</code> and they will show up here. Note that all art tagged with <code>highlight</code> <i>will</i> appear here regardless of privacy level.</div>
+			<div>To highlight images, go to the <a href="{{ route("art.manage", ["user" => $user]) }}">Manage Art dashboard page</a>.</div>
 		</div>
 		@endif
 	@endif
