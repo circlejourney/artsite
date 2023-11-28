@@ -65,6 +65,12 @@ class CollectiveController extends Controller
      */
     public function update(Request $request, string $url)
     {
+		$request->validate([
+			"url" => ["required", "string", "max:255", "regex:/^[\w-]+$/"],
+			"display_name" => ["string", "max:255", "regex:/^[^<>]+$/"],
+			"privacy_level_id" => ["required", "integer"],
+		]);
+		
         $collective = Collective::where("url", $url)->firstOrFail();
 		$collective->update([
 			"privacy_level_id" => $request->privacy_level_id,

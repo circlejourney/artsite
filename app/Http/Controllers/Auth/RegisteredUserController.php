@@ -60,6 +60,10 @@ class RegisteredUserController extends Controller
 			return redirect()->back()->withErrors("Account creation failed: $message. You may try again with the same invite code.");
 		}
 
+		$inviter->update([
+			"invitee_count" => $inviter->invitee_count + 1
+		]);
+
         event(new Registered($user));
 
         Auth::login($user);

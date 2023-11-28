@@ -32,6 +32,17 @@ class Artwork extends Model
 		'searchable' => 'boolean'
     ];
 
+	public static function boot() {
+		parent::boot();
+		
+		Static::deleting(function($model) {
+			foreach($model->users as $user) {
+				$user->artwork_count = $user->artwork_count-1;
+				$user->save();
+			}
+		});
+	}
+
 	/**
 	 * Get the users (creators) of the artwork
 	 */

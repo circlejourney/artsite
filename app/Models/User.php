@@ -43,7 +43,9 @@ class User extends Authenticatable
 		'profile_html',
 		'custom_flair',
 		'invited_by',
-		'highlights'
+		'highlights',
+		'artwork_count',
+		'invitee_count'
     ];
 
     /**

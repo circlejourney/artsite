@@ -72,6 +72,11 @@ class ArtworkController extends Controller
 		$artwork->users()->attach($artistIDs);
 		$artwork->folders()->attach($folderIDs);
 		
+		foreach($artwork->users as $user) {
+			$user->artwork_count = $user->artwork_count+1;
+			$user->save();
+		}
+		
 		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
 		foreach(array_filter($request->images) as $i => $image) {
