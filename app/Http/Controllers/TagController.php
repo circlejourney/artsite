@@ -6,6 +6,7 @@ use App\Models\Artwork;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\PrivacyLevelService;
+use App\Services\SanitiseService;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -27,7 +28,7 @@ class TagController extends Controller
 	}
 
 	public function show_global(Request $request) {
-		$tagID = $request->query("tag");
+		$tagID = SanitiseService::makeTag($request->query("tag"));
 
 		$taggedArtworks = Artwork::whereHas("tags",  function($query) use($tagID){
 			return $query->where("id", $tagID);
