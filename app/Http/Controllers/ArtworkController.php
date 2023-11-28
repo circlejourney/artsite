@@ -49,7 +49,8 @@ class ArtworkController extends Controller
 		$artwork = Artwork::create([
             'title' => $validated["title"],
             'images' => $imagepaths,
-			'path' => $path
+			'path' => $path,
+			'searchable' => !$request->not_searchable
         ]);
 		
 		$folderIDs=[];
@@ -95,7 +96,12 @@ class ArtworkController extends Controller
 			->intersect($request->user()->folders()->get())->first()->id;
 		$text = $artwork->getText();
 		$image_urls = $this->getImageURLs($artwork->images);
-		return view("art.edit", ["artwork" => $artwork, "image_urls" => $image_urls, "folderlist" => $folderlist, "text" => $text, "selectedfolder" => $selectedfolder]);
+		return view("art.edit", [
+			"artwork" => $artwork,
+			"image_urls" => $image_urls,
+			"folderlist" => $folderlist,
+			"text" => $text,
+			"selectedfolder" => $selectedfolder]);
 	}
 
 	
@@ -105,8 +111,6 @@ class ArtworkController extends Controller
 		$artwork = Artwork::byPath($path);
 		if($artwork->users()->get()->doesntContain($request->user())
 			&& !$request->user()->hasPermissions("manage_artworks")) abort(403);
-		
-		$firstHasChanged = false;
 
 		$parentfolderID = $request->parent_folder ? intval($request->parent_folder) : $request->user()->top_folder_id;
 
@@ -119,6 +123,7 @@ class ArtworkController extends Controller
 		}
 
 		$artwork->title = $request->title;
+		$artwork->searchable = !$request->not_searchable;
 		$artwork->updateText($request->text ?? "");
 		
 		if($request->artist) {

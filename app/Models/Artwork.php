@@ -23,7 +23,8 @@ class Artwork extends Model
         'text',
 		'images',
 		'thumbnail',
-		'path'
+		'path',
+		'searchable'
     ];
 
 	protected $casts = [

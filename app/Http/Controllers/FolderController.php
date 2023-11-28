@@ -44,9 +44,9 @@ class FolderController extends Controller
 		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->with("tags")->orderBy("created_at", "desc")->get() );
 		
 		if($request->query("tag")) { 
-			$tag = Tag::where("id", $request->query('tag'))->firstOrFail();
-			$artworks = $artworks->filter(function($artwork) use($tag){
-				return $artwork->tags->pluck("id")->contains($tag->id);
+			$tagID = $request->query('tag');
+			$artworks = $artworks->filter(function($artwork) use($tagID){
+				return $artwork->tags->pluck("id")->contains($tagID);
 			});
 		}
 

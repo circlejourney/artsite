@@ -93,6 +93,6 @@ Route::get("/co/{url}/edit", [CollectiveController::class, 'edit'])->name("colle
 Route::patch("/co/{url}/edit", [CollectiveController::class, 'update']);
 
 Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags.user.index");
-Route::get("/tags:{tag}", [TagController::class, 'show_global'])->name("tags.global.show");
+Route::get("/search", [TagController::class, 'show_global'])->name("tags.global.show");
 
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');

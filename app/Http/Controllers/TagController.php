@@ -20,79 +20,23 @@ class TagController extends Controller
 		
 		return view("tags.index", ["user" => $user, "tags" => $tags]);
     }
-	
-	/**
-	 * Display the specified resource.
-	 */
-	public function show_user(string $username, Tag $tag)
-	{
-		$user = User::where("name", $username)->firstOrFail();
-
-		$taggedArtworks = $user->artworks()->whereHas("tags", function($q) use($tag) {
-			return $q->where("id", $tag->id);
-		})->get()->reject(function($artwork){
-			$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
-			$artworkPrivacy = $artwork->getPrivacyLevel();
-			return $artworkPrivacy > $maxPrivacyAllowed;
-		});
-		
-		return view("tags.show", ["user" => $user, "tag" => $tag, "artworks" => $taggedArtworks]);
-	}
 
 	public function index_global() {
 		$tags = Tag::all();
 		return view("tags.index", ["tags" => $tags]);
 	}
 
-	public function show_global(Tag $tag) {
-		$taggedArtworks = Artwork::whereHas("tags",  function($query) use($tag){
-			return $query->where("id", $tag->id);
+	public function show_global(Request $request) {
+		$tagID = $request->query("tag");
+
+		$taggedArtworks = Artwork::whereHas("tags",  function($query) use($tagID){
+			return $query->where("id", $tagID);
 		})->get()->reject(function($artwork) {
+			if(!$artwork->searchable) return true;
 			$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
 			$artworkPrivacy = $artwork->getPrivacyLevel();
 			return $artworkPrivacy > $maxPrivacyAllowed;
 		});
-		return view("tags.show-global", ["tag" => $tag, "artworks" => $taggedArtworks]);
+		return view("tags.show-global", ["tagID" => $tagID, "artworks" => $taggedArtworks]);
 	}
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tag $tag)
-    {
-        //
-    }
 }

@@ -75,7 +75,12 @@
 
 			<div>Tags</div>
 			<input class="form-control" name="tags" id="tags" placeholder="Tags (comma-separated)" value="{{ old("tags", $artwork->getJoinedTags() ) }}">
+			
+			<input type="checkbox" name="not_searchable" id="not_searchable" @checked( old("active", !$artwork->searchable) )>
+			<label for="not_searchable">Hide art from global tag searches</label>
+			
 			<br>
+			
 			<button class='button-pill'>Submit</button>
 		</div>
 	</form>
