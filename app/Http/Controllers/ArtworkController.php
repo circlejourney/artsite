@@ -189,17 +189,28 @@ class ArtworkController extends Controller
 		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
 	}
 
+
 	public function manage(Request $request) {
 		$user = $request->user();
 		return view("art.manage", ["user" => $user]);
 	}
 
+	
 	public function put(Request $request) {
-		$request->user()->update([
-			"highlights" => collect($request->update_art)->map(function($i) { return intval($i); })
-		]);
+		$request->user()->syncHighlights($request->set_highlight);
+		
+		if($request->set_searchable) {
+			foreach($request->set_searchable as $id => $value) {
+				Artwork::find($id)->update([
+					"searchable" => !$value
+				]);
+			}
+		}
+		
+		$request->user()->update();
 		return view("art.manage", ["user" => $request->user()]);
 	}
+	
 
 	public function showdelete(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
@@ -207,6 +218,7 @@ class ArtworkController extends Controller
 		if(!$owner_ids->contains($request->user()->id)) return route("art",["path" => $artwork->path]);
 		return view("art.delete", ["artwork" => $artwork]);
 	}
+
 
 	public function delete(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);

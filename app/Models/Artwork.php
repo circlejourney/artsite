@@ -28,7 +28,8 @@ class Artwork extends Model
     ];
 
 	protected $casts = [
-        'images' => 'array'
+        'images' => 'array',
+		'searchable' => 'boolean'
     ];
 
 	/**

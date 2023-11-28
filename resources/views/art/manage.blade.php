@@ -4,19 +4,33 @@
 <form method="POST">
 	@csrf
 	@method("PUT")
-	<select name="transformation">
-		<option value="set_highlight">Set as highlights</option>
-	</select>
 	<button>Update</button>
-	<br>
+	<div class="gallery">
 	@foreach($user->artworks as $artwork)
-		<input type="checkbox" name="update_art[]" value="{{ $artwork->id }}" id="update-art-{{ $artwork->id }}"
-			@checked(collect($user->highlights)->contains($artwork->id))>
-		
-		<label for="update-art-{{ $artwork->id }}">
-			<img src="{{ $artwork->getThumbnailURL() }}">
-		</label>
+		<div class="gallery-thumbnail">
+			<a href="{{ route("art", ["path" => $artwork->path]) }}">
+				<img src="{{ $artwork->getThumbnailURL() }}">
+			</a>
+			<div>
+				<input type="hidden" name="set_highlight[{{ $artwork->id }}]" value="0">
+				<input type="checkbox" name="set_highlight[{{ $artwork->id }}]" value="1" id="set-highlight-{{ $artwork->id }}"
+					@checked(collect($user->highlights)->contains($artwork->id))>
+				<label for="set-highlight-{{ $artwork->id }}">
+					Set as highlight
+				</label>
+			</div>
+			
+			<div>
+				<input type="hidden" name="set_searchable[{{ $artwork->id }}]" value="0">
+				<input type="checkbox" name="set_searchable[{{ $artwork->id }}]" value="1" id="set-searchable-{{ $artwork->id }}"
+					@checked(!$artwork->searchable)>
+				<label for="set-searchable-{{ $artwork->id }}">
+					Hide from global tag searches
+				</label>
+			</div>
+		</div>
 	@endforeach
-
+	</div>
+	<button>Update</button>
 </form>
 @endsection

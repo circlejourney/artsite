@@ -208,4 +208,16 @@ class User extends Authenticatable
 		$this->banner = $banner;
 		return $this;
 	}
+
+	public function syncHighlights(array $toSync) {
+		$highlights = $this->highlights;
+		foreach($toSync as $id => $doHighlight) {
+			if($doHighlight && !in_array($id, $highlights)) array_push($highlights, $id);
+			else if(!$doHighlight && $index = array_search($id, $highlights)) unset($highlights[$index]);
+		}
+		$this->update([
+			"highlights" => $highlights
+		]);
+		return $this;
+	}
 }

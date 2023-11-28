@@ -81,7 +81,7 @@
 			
 			<br>
 			
-			<button class='button-pill'>Submit</button>
+			<button class='button-pill'>Update</button>
 		</div>
 	</form>
 
