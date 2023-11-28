@@ -1,19 +1,27 @@
 @extends('layouts.site')
 
+@push('head')
+	<script src="/src/notification-delete.js"></script>
+@endpush
+
 @section('body')
 	<h1>Notifications</h1>
-	<ul>
-		<?php error_log($user->notifications) ?>
-		@foreach($user->notifications as $notification)
-			<li>
-				<a href="{{ route("user", ["username" => $notification->sender->name]) }}">
-					{{ $notification->sender->name }}
-				</a>
-				favorited your artwork 
-				<a href="{{ route("art", ["path" => $notification->artwork->path]) }}">
-					{{ $notification->artwork->title }}
-				</a>
-			</li>
+	<form method="POST">
+		@csrf
+		@method("DELETE")
+		@foreach($notifications = $user->notifications as $notification)
+			<div id="delete-{{ $notification->id }}">
+				<input type="hidden" name="notifications[]" value="{{ $notification->id }}">
+				<button nam="delete" value="{{ $notification->id }}" data-action="/notification-ajax/{{ $notification->id }}" onclick="delete_one()">
+					<i class="fa fa-times"></i>
+				</button>
+				{!! $notification->getDisplayHTML() !!}
+			</div>
 		@endforeach
-	</ul>
+		@if($notifications->count() > 0)
+			<button>Delete all</button>
+		@else
+			No notifications found.
+		@endif
+	</form>
 @endsection

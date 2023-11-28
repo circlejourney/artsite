@@ -5,15 +5,14 @@
 			method: "POST",
 			url: event.target.action, 
 			headers: { "X-CSRF-TOKEN": $(event.target).find("input[name='_token']").val() },
-			complete: function(response) { console.log(response); },
 			success: function(response) {
 				if(response.action === 1) {
 					$("#fave-" + response.artwork).find(".fave-icon").removeClass("far").addClass("fas");
-					$("#fave-" + response.artwork).find(".fave-text").text("Favorited");
 				} else {
 					$("#fave-" + response.artwork).find(".fave-icon").removeClass("fas").addClass("far");
-					$("#fave-" + response.artwork).find(".fave-text").text("Favorite");
 				}
+				const newFaves = parseInt($("#fave-" + response.artwork).find(".fave-text").text());
+				$("#fave-" + response.artwork).find(".fave-text").text(newFaves + response.action);
 			}
 		});
 	}
@@ -22,6 +21,6 @@
 	@csrf
 	<button class="fave-button">
 		<i class="fave-icon fa{{ auth()->user()->faves->contains($artwork) ? "s" : "r" }} fa-heart"></i>
-		<span class="fave-text">{{ auth()->user()->faves->contains($artwork) ? "Favorited" : "Favorite" }}</span>
+		<span class="fave-text">{{ $artwork->faved_by->count() }}</span>
 	</button>
 </form>

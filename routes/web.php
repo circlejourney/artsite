@@ -7,6 +7,7 @@ use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\CollectiveController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,9 +77,11 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::get("/art/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
 	Route::put("/art/{path}/edit", [ArtworkController::class, 'update']);
 
-	Route::get("/notifications", function(){
-		return view("notifications.index", ["user" => auth()->user()]);
-	})->name("notifications");
+	Route::controller(NotificationController::class)->group(function() {
+		Route::get("/notifications", "index")->name("notifications");
+		Route::delete("/notifications", "destroy");
+		Route::delete("/notification-ajax/{notification}", "delete_one")->name('delete_one');
+	});
 });
 
 require __DIR__.'/auth.php';
