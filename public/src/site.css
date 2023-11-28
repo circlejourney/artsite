@@ -304,6 +304,8 @@ main .page-block {
   height: 300px;
   -o-object-fit: cover;
      object-fit: cover;
+  -o-object-position: center top;
+     object-position: center top;
   border-radius: 10px;
 }
 

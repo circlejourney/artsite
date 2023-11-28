@@ -12,7 +12,7 @@
 				Folders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 			</a>
 			<div id="folder-wrapper" class="collapse show active">
-				@include("folders.folderrow", ["folderlist" => $childfolders, "tag" => $tag])
+				@include("folders.folderrow", ["folderlist" => $childfolders, "tag" => $tag ?? null])
 			</div>
 		</div>
 		@endunless
@@ -26,7 +26,7 @@
 				Tags <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 			</a>
 			<div id="tag-wrapper" class="collapse show active">
-				@include("tags.taglist", ["user" => $user, "folder" => $folder, "tags" => $tags])
+				@include("tags.taglist", ["user" => $user, "folder" => $folder, "tags" => $tags ?? null])
 			</div>
 		</div>
 		@endunless
@@ -36,9 +36,7 @@
 			
 			@unless($folder->isTopFolder())
 				<a class="folder-badge-link" href="{{
-					isset($tag) ?
-					route("folders.tagged", ["username" => $user->name, "folder" => $folder->parent()->first(), "tag" => $tag])
-					: route("folders.show", ["username" => $user->name, "folder" => $folder->parent()->first(), "tags" => $tag])
+					route("folders.show", ["username" => $user->name, "folder" => $folder->parent()->first(), "tag" => $tag ?? null])
 				}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
 			@endunless
 

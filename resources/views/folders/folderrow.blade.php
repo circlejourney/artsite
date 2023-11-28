@@ -2,7 +2,7 @@
 	@foreach($folderlist as $folder)
 		<a class="folder" href="{{
 			isset($tag) ?
-				route("folders.tagged", ["username" => $user->name, "folder" => $folder, "tag" => $tag])
+				route("folders.show", ["username" => $user->name, "folder" => $folder, "tag" => $tag])
 				:
 				route("folders.show", ["username" => $user->name, "folder" => $folder])
 		}}">

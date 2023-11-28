@@ -16,6 +16,9 @@
 			<a href="{{ route("profile.html.edit") }}">Customise profile</a>
 		</li>
 		<li>
+		<a href="{{ route("art.manage") }}">Manage art</a>
+		</li>
+		<li>
 		<a href="{{ route("folders.manage") }}">Manage art folders</a>
 		</li>
 		<li>

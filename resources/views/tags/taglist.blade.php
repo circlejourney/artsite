@@ -6,8 +6,8 @@
 				route('tags.global.show', ["tag"=>$tag->id])
 				: (
 					isset($folder) ?
-					route('folders.tagged', ["username" => $user->name, "folder" => $folder->id, "tag" => $tag->id])
-					: route('tags.user.show', ["username"=>$user->name, "tag"=>$tag->id])
+					route('folders.show', ["username" => $user->name, "folder" => $folder->id, "tag" => $tag->id])
+					: route('folders.index', ["username"=>$user->name, "tag"=>$tag->id])
 				)
 			}}">
 				{{ $tag->id }}</a>

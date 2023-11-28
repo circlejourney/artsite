@@ -82,10 +82,8 @@ require __DIR__.'/auth.php';
 Route::get("/art/{path}", [ArtworkController::class, 'show'])->name("art");
 
 /* Artist's gallery */
-Route::get("/{username}/gallery/tags:{tag}", [TagController::class, 'show_user'])->name("tags.user.show");
 Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name("folders.index");
-Route::get("/{username}/gallery/folder:{folder}", [FolderController::class, 'show_new'])->name("folders.show");
-Route::get("/{username}/gallery/folder:{folder}/tags:{tag}", [FolderController::class, 'show_new'])->name("folders.tagged");
+Route::get("/{username}/gallery/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
 
 /* Groups */
 Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
@@ -95,7 +93,6 @@ Route::get("/co/{url}/edit", [CollectiveController::class, 'edit'])->name("colle
 Route::patch("/co/{url}/edit", [CollectiveController::class, 'update']);
 
 Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags.user.index");
-Route::get("/tags", [TagController::class, 'index'])->name("tags.global.index");
 Route::get("/tags:{tag}", [TagController::class, 'show_global'])->name("tags.global.show");
 
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');

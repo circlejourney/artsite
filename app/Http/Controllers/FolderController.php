@@ -41,45 +41,29 @@ class FolderController extends Controller
      */
 	public function index_user(Request $request, string $username) {
 		$user = User::where("name", $username)->firstOrFail();
-		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->orderBy("created_at", "desc")->get() );
+		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->with("tags")->orderBy("created_at", "desc")->get() );
 		
+		if($request->query("tag")) { 
+			$tag = Tag::where("id", $request->query('tag'))->firstOrFail();
+			$artworks = $artworks->filter(function($artwork) use($tag){
+				return $artwork->tags->pluck("id")->contains($tag->id);
+			});
+		}
+
 		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
 		
 		$childfolders = $user->getTopFolder()->children()->with("artworks")
 			->get()->reject(function($folder) use($maxPrivacyAllowed) { return $folder->privacy_level_id > $maxPrivacyAllowed; });
 		$folderlist = collect([$user->getTopFolder()])->merge($childfolders);
+		
 		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $folderlist, "tags" => $user->getTags()]);
 	}
 
     /**
      * Display the specified resource.
      */
-	public function show(string $username, Folder $folder, Tag $tag=null) {
-		$user = User::where("name", $username)->firstOrFail();
-		if(!$user->folders()->get()->contains($folder)) abort(404);
-		
-		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
-		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
 
-		$sorted = $user->getFolderTree(true, $maxPrivacyAllowed);
-		if($tag) { 
-			$artworks = $folder->artworks()->with("tags")->get();
-			$artworks = $artworks->filter(function($artwork) use($tag){
-				error_log($artwork->tags->pluck("id"));
-				return $artwork->tags->pluck("id")->contains($tag->id);
-			});
-		} else $artworks = $folder->artworks;
-		return view("folders.show", [
-			"user" => $user,
-			"folder" => $folder,
-			"folderlist" => $sorted,
-			"tag" => $tag,
-			"tags" => $user->getTags(),
-			"artworks" => $artworks
-		]);
-	}
-
-	public function show_new(string $username, Folder $folder, Tag $tag=null) {
+	public function show(Request $request, string $username, Folder $folder) {
 		$user = User::where("name", $username)->firstOrFail();
 		if(!$user->folders()->get()->contains($folder)) abort(404);
 		
@@ -87,23 +71,26 @@ class FolderController extends Controller
 		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
 
 		$childfolders = $folder->children()->with("artworks")->get();
-
-		if($tag) { 
+		
+		if($request->query("tag")) {
+			$tag = Tag::where("id", $request->query('tag', null))->first();
 			$artworks = $folder->artworks()->with("tags")->get();
 			$artworks = $artworks->filter(function($artwork) use($tag){
-				error_log($artwork->tags->pluck("id"));
 				return $artwork->tags->pluck("id")->contains($tag->id);
 			});
 		} else $artworks = $folder->artworks;
 
-		return view("folders.show", [
+		$params = [
 			"user" => $user,
 			"folder" => $folder,
 			"childfolders" => $childfolders,
-			"tag" => $tag,
 			"tags" => $user->getTags(),
 			"artworks" => $artworks
-		]);
+		];
+		
+		if(isset($tag)) $params["tag"] = $tag;
+
+		return view("folders.show", $params);
 		
 	}
 
