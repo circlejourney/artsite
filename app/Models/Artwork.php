@@ -65,7 +65,6 @@ class Artwork extends Model
 
 	public function getImageURL(int $index) : string {
 		if(!($images = $this->images) || !isset($images[$index])) return "";
-		error_log(gettype($images));
 		$relative_path = Storage::url($images[$index]);
 		return $relative_path ?? "";
 	}

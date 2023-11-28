@@ -22,7 +22,7 @@ class UserPageController extends Controller
 		$preview_artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->limit(10)->orderBy("created_at", "desc")->get());
 		
 		$profile_html = $user->getProfileHTML() ?? "";
-		$highlights = collect($user->highlights)->map(function($i) { error_log($i); return Artwork::where("id", $i)->first(); })->slice(0,3);
+		$highlights = collect($user->highlights)->map(function($i) { return Artwork::where("id", $i)->first(); })->slice(0,3);
         return view("profile.show", ["user" => $user, "artworks" => $preview_artworks, "profile_html" => $profile_html, "highlights" => $highlights]);
     }
 
