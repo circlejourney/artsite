@@ -58,6 +58,10 @@ class Artwork extends Model
 		return $this->belongsToMany(Tag::class);
 	}
 
+	public function faved_by(): BelongsToMany {
+		return $this->belongsToMany(User::class, "faves")->withTimestamps();
+	}
+
 	public static function byPath($path) : Artwork {
 		return Artwork::Where("path", $path)->first();
 	}

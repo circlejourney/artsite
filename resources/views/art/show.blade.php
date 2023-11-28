@@ -1,10 +1,38 @@
 @extends("layouts.site", ["metatitle" => $artwork->title])
+
+@push('head')
+	<script>
+		function fave() {
+			$.ajax({
+				type: "POST",
+				url: "{{ route('fave', ['path' => $artwork->path]) }}", 
+				headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+				success: function(response) {
+					if(response.action === 1) {
+						$(".fave-icon").removeClass("far").addClass("fas");
+						$(".fave-text").text("Favourited");
+					} else {
+						$(".fave-icon").removeClass("fas").addClass("far");
+						$(".fave-text").text("Favourite");
+					}
+				}
+			});
+		}
+	</script>	
+@endpush
+
 @section('body')
 	<div class="page-block">
-		<h1>{{ $artwork->title }}</h1>
-		
+		<h1>{{ $artwork->title }} 	
+		</h1>
 		
 		<div class="art-info">
+			
+			<div class="fave-button" onclick="fave()">
+				<i class="fave-icon fa{{ auth()->user()->faves->contains($artwork) ? "s" : "r" }} fa-heart"></i>
+				<span class="fave-text">{{ auth()->user()->faves->contains($artwork) ? "Favourited" : "Favourite" }}</span>
+			</div>
+
 			<div>
 				Posted:
 				<script>

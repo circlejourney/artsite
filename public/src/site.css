@@ -350,6 +350,16 @@ main .page-block {
   max-width: 100%;
 }
 
+.fave-button {
+  display: inline-block;
+  color: darkred;
+  font-size: 14pt;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
 /* EDIT ART */
 .image-input-wrapper {
   display: flex;

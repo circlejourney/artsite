@@ -100,7 +100,7 @@ class ArtworkController extends Controller
 		$selectedfolder = $artwork->folders()->get()
 			->intersect($request->user()->folders()->get())->first()->id;
 		$text = $artwork->getText();
-		$image_urls = $this->getImageURLs($artwork->images);
+		$image_urls = $artwork->getImageURLs($artwork->images);
 		return view("art.edit", [
 			"artwork" => $artwork,
 			"image_urls" => $image_urls,
@@ -220,7 +220,7 @@ class ArtworkController extends Controller
 
 	public function showdelete(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
-		$owner_ids = $this->getOwners($artwork);
+		$owner_ids = $artwork->getOwners($artwork);
 		if(!$owner_ids->contains($request->user()->id)) return route("art",["path" => $artwork->path]);
 		return view("art.delete", ["artwork" => $artwork]);
 	}
@@ -234,19 +234,19 @@ class ArtworkController extends Controller
 		Artwork::destroy($artwork->id);
 		return redirect(route("user", ["username" => $request->user()->name]));
 	}
-
-	private function getOwners(Artwork $artwork) {
-		$owner_ids = $artwork->users()->get()
-			->map(function($user) {
-				return $user->id;
-			});
-		return $owner_ids;
+	
+	public function fave(Request $request, string $path) {
+		$artwork = Artwork::byPath($path);
+		$user = $request->user();
+		if($artwork->faved_by->doesntContain($user->id)) {
+			$artwork->faved_by()->attach($user->id);
+			error_log("Faved");
+			return response(["action" => 1]);
+		} else {
+			$artwork->faved_by()->detach($user->id);
+			error_log("Unfaved");
+			return response(["action" => -1]);
+		}
 	}
-
-	private function getImageURLs($images) {
-		$image_urls = array_map(function($image){
-			return Storage::url($image);
-		}, $images);
-		return $image_urls;
-	}
+	
 }

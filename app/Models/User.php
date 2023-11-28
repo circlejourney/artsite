@@ -107,6 +107,10 @@ class User extends Authenticatable
 		return $this->belongsTo(User::class, "invited_by");
 	}
 
+	public function faves(): BelongsToMany {
+		return $this->belongsToMany(Artwork::class, "faves")->withTimestamps();
+	}
+
 	/* Utility */
 
 	public function createTopFolder() {
