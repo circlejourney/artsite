@@ -4,7 +4,7 @@
 	<h1>Invites</h1>
 	
 	@if($user->hasRole("founder"))
-		<p>As a founder, you may generate infinite invite codes.</p>
+		<p>As a founder, you may generate an unlimited number of invite codes.</p>
 	@else
 		<p>You may generate <b>{{ $user->invite_credits }}</b> invite codes.</p>
 	@endif

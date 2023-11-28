@@ -38,5 +38,6 @@ class TagController extends Controller
 			return $artworkPrivacy > $maxPrivacyAllowed;
 		});
 		return view("tags.show-global", ["tagID" => $tagID, "artworks" => $taggedArtworks]);
+
 	}
 }

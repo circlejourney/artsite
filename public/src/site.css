@@ -351,6 +351,8 @@ main .page-block {
 }
 
 .fave-button {
+  background: none;
+  border: none;
   display: inline-block;
   color: darkred;
   font-size: 14pt;
@@ -470,7 +472,6 @@ main .page-block {
   justify-content: flex-start;
   text-align: center;
   width: 224px;
-  font-size: 14pt;
   border: 1px solid #d9d9d9;
   border-radius: 10px;
   overflow: hidden;
@@ -485,6 +486,7 @@ main .page-block {
      object-position: center top;
 }
 .gallery-thumbnail .gallery-thumbnail-badgerow {
+  font-size: 14pt;
   display: flex;
   gap: 0.3rem;
   position: absolute;

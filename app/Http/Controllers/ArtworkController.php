@@ -237,15 +237,23 @@ class ArtworkController extends Controller
 	
 	public function fave(Request $request, string $path) {
 		$artwork = Artwork::byPath($path);
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed($request->user(), $artwork->users->pluck("id"));
+		$artworkprivacy = $artwork->getPrivacyLevel();
+		if($artworkprivacy > $maxPrivacyAllowed) abort(403);
+
 		$user = $request->user();
 		if($artwork->faved_by->doesntContain($user->id)) {
 			$artwork->faved_by()->attach($user->id);
-			error_log("Faved");
-			return response(["action" => 1]);
+			return response([
+				"artwork" => $artwork->id,
+				"action" => 1
+			]);
 		} else {
 			$artwork->faved_by()->detach($user->id);
-			error_log("Unfaved");
-			return response(["action" => -1]);
+			return response([
+				"artwork" => $artwork->id,
+				"action" => -1
+			]);
 		}
 	}
 	

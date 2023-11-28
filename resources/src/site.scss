@@ -402,6 +402,8 @@ $profile-padding: 1rem;
 }
 
 .fave-button {
+	background: none;
+	border: none;
 	display: inline-block;
 	color: darkred;
 	font-size: $large-text;
@@ -518,7 +520,6 @@ div[class$="-section"] {
 	justify-content: flex-start;
 	text-align: center;
 	width: 224px;
-	font-size: $large-text;
 	border: 1px solid $base;
 	border-radius: $border-radius;
 	overflow: hidden;
@@ -532,6 +533,7 @@ div[class$="-section"] {
 	}
 	
 	.gallery-thumbnail-badgerow {
+		font-size: $large-text;
 		display: flex;
 		gap: $small-padding;
 		position: absolute;

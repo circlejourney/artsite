@@ -1,24 +1,6 @@
 @extends("layouts.site", ["metatitle" => $artwork->title])
 
 @push('head')
-	<script>
-		function fave() {
-			$.ajax({
-				type: "POST",
-				url: "{{ route('fave', ['path' => $artwork->path]) }}", 
-				headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
-				success: function(response) {
-					if(response.action === 1) {
-						$(".fave-icon").removeClass("far").addClass("fas");
-						$(".fave-text").text("Favorited");
-					} else {
-						$(".fave-icon").removeClass("fas").addClass("far");
-						$(".fave-text").text("Favorite");
-					}
-				}
-			});
-		}
-	</script>	
 @endpush
 
 @section('body')
@@ -28,10 +10,7 @@
 		
 		<div class="art-info">
 			
-			<div class="fave-button" onclick="fave()">
-				<i class="fave-icon fa{{ auth()->user()->faves->contains($artwork) ? "s" : "r" }} fa-heart"></i>
-				<span class="fave-text">{{ auth()->user()->faves->contains($artwork) ? "Favorited" : "Favorite" }}</span>
-			</div>
+			@include("components.fave-button")
 
 			<div>
 				Posted:
@@ -49,8 +28,6 @@
 						-->@if(!$loop->last), @endif
 			@endforeach
 
-			@include("tags.taglist", ["tags"=>$artwork->tags, "user" => $user ?? null ])
-
 			@if(sizeof($folders) > 0)
 			<div>
 				@if(sizeof($folders) > 1)
@@ -67,6 +44,12 @@
 					-->@if(!$loop->last), @endif
 				@endforeach
 			</div>
+			@endif
+			
+			@if(isset($artwork->tags))
+				<div class="tag-list">
+					Tags: @component("tags.taglist", ["tags"=>$artwork->tags, "user" => $user ?? null]) @endcomponent
+				</div>
 			@endif
 
 			@if($text)
