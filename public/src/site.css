@@ -65,6 +65,12 @@ nav .menu-toggle-circle .number-badge {
   transform: rotate(180deg);
 }
 
+.invisible-button, nav .search-form button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 /* BOOTSTRAP */
 .bg-danger {
   color: white;
@@ -165,10 +171,6 @@ nav .search-form input {
   border: none;
   font-size: 14pt;
   width: 100%;
-}
-nav .search-form button {
-  background: none;
-  border: none;
 }
 nav .collapse-container {
   position: absolute !important;
@@ -511,6 +513,7 @@ main .page-block {
   font-size: 10pt;
 }
 
+/* Footer */
 footer {
   display: flex;
   align-items: center;

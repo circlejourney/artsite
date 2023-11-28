@@ -109,6 +109,12 @@ a.link-current {
 	transform: rotate(180deg);
 }
 
+.invisible-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
 /* BOOTSTRAP */
 
 .bg-danger {
@@ -221,8 +227,7 @@ nav {
     }
     
     .search-form button {
-        background: none;
-        border: none;
+        @extend .invisible-button;
     }
 
     .collapse-container {
@@ -561,6 +566,8 @@ div[class$="-section"] {
 		font-size: 10pt;
 	}
 }
+
+/* Footer */
 
 footer {
 	@include flex-centre();

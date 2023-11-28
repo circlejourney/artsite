@@ -23,12 +23,12 @@ class Notification extends Model
 		 * ...more to be added
 		 */
 		if($this->type == "fave") {
-			return "<i class='fa fa-heart'></i> " . $this->getSenderHTML() . " faved your artwork " . $this->getArtworkHTML();
+			return "<i class='fa fa-heart'></i>&emsp;" . $this->getSenderHTML() . " faved your artwork " . $this->getArtworkHTML();
 		}
 	}
 
 	public function getSenderHTML() {
-		return "<a href=".route("user", ["username" => $this->sender->name]).">" . $this->sender->name . "</a>";
+		return "<a href=".route("user", ["username" => $this->sender->name]).">" . $this->sender->getFlairHTML() . " " . $this->sender->name . "</a>";
 	}
 
 	public function getArtworkHTML() {
