@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArtworkRequest;
+use App\Models\Notification;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
 use App\Services\PrivacyLevelService;
@@ -244,6 +245,14 @@ class ArtworkController extends Controller
 		$user = $request->user();
 		if($artwork->faved_by->doesntContain($user->id)) {
 			$artwork->faved_by()->attach($user->id);
+			$notif = Notification::create([
+				"sender_id" => $user->id,
+				"type" => "fave",
+				"artwork_id" => $artwork->id
+			]);
+			$recipients = $artwork->users()->get()->pluck("id")->all();
+			$notif->recipients()->attach($recipients);
+
 			return response([
 				"artwork" => $artwork->id,
 				"action" => 1

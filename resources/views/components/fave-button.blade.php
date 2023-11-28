@@ -5,6 +5,7 @@
 			method: "POST",
 			url: event.target.action, 
 			headers: { "X-CSRF-TOKEN": $(event.target).find("input[name='_token']").val() },
+			complete: function(response) { console.log(response); },
 			success: function(response) {
 				if(response.action === 1) {
 					$("#fave-" + response.artwork).find(".fave-icon").removeClass("far").addClass("fas");

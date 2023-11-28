@@ -75,6 +75,10 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::delete("/art/{path}/delete", [ArtworkController::class, 'delete']);
 	Route::get("/art/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
 	Route::put("/art/{path}/edit", [ArtworkController::class, 'update']);
+
+	Route::get("/notifications", function(){
+		return view("notifications.index", ["user" => auth()->user()]);
+	})->name("notifications");
 });
 
 require __DIR__.'/auth.php';

@@ -43,4 +43,8 @@ class Collective extends Model
 	public function members() : BelongsToMany {
 		return $this->belongsToMany(User::class);
 	}
+
+	public function notifications(): BelongsToMany {
+		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_collective_id")->withTimestamps();
+	}
 }

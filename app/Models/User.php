@@ -95,6 +95,10 @@ class User extends Authenticatable
 		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
 
+	public function notifications(): BelongsToMany {
+		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->withTimestamps();
+	}
+
 	public function invites(): HasMany {
 		return $this->hasMany(Invite::class, "creator_id");
 	}

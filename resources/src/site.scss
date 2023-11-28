@@ -9,6 +9,7 @@ $mid-bg: #A9A9A9;
 $muted: #333;
 $form-input-bg: white;
 $large-text: 14pt;
+$small-text: 9pt;
 $main-width: 1200px;
 $global-padding: 3rem;
 $small-padding: 0.3rem;
@@ -65,6 +66,16 @@ a.link-current {
 	font-weight: bold;
 	&::after {
 		content: "◀";
+	}
+}
+
+%number-badge-container {
+	position: relative;
+	.number-badge {
+		position: absolute;
+		top: -$small-padding;
+		right: -$small-padding;
+		font-size: $small-text;
 	}
 }
 
@@ -165,6 +176,7 @@ nav {
     
     .menu-toggle-circle {
         @extend %nav-block;
+		@extend %number-badge-container;
         background-color: white;
 		@include flex-centre();
         width: 2em;

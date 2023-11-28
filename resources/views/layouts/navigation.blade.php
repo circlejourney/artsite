@@ -36,7 +36,16 @@
     </div>
 
     <div class="nav-right">
-        <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-bell"></i></a>
+        <a href="{{ route("notifications") }}" class="menu-toggle-circle">
+			<i class="far fa-fw fa-bell"></i>
+			@auth
+				@if($notifCount = auth()->user()->notifications->count() > 0)
+					<div class="number-badge badge badge-primary">
+						{{ $notifCount }}
+					</div>
+				@endif
+			@endauth
+		</a>
         <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></a>
     </div>
 </nav>
