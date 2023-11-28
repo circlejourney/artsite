@@ -4,7 +4,14 @@
 		<img src="{{ $artwork->getThumbnailURL() }}">
 		<div class="gallery-thumbnail-badgerow">
 			@if(($artistcount = sizeof($artwork->users)) > 1)
-				<div class="gallery-thumbnail-badge" data-toggle="tooltip" title="With {{ $artwork->users()->get()->pluck("name")->reject($user->name)->join(", ") }}">
+				<div class="gallery-thumbnail-badge"
+					data-toggle="tooltip"
+					@if(isset($user))
+						title="With {{ $artwork->users()->get()->pluck("name")->reject($user->name)->join(", ") }}"
+					@else
+						title="{{ $artwork->users()->get()->pluck("name")->join(", ") }}"
+					@endif
+					>
 					<i class="fa fa-user-group"></i>
 				</div>
 			@endif

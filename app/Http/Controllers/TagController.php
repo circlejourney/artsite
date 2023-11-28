@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artwork;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\PrivacyLevelService;
@@ -31,9 +32,7 @@ class TagController extends Controller
 			return $q->where("id", $tag->id);
 		})->get()->reject(function($artwork){
 			$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
-			$artworkPrivacy = $artwork->folders()->get()->reduce(function($carry, $folder) {
-				return max($folder->privacy_level_id, $carry);
-			});
+			$artworkPrivacy = $artwork->getPrivacyLevel();
 			return $artworkPrivacy > $maxPrivacyAllowed;
 		});
 		
@@ -43,6 +42,17 @@ class TagController extends Controller
 	public function index_global() {
 		$tags = Tag::all();
 		return view("tags.index", ["tags" => $tags]);
+	}
+
+	public function show_global(Tag $tag) {
+		$taggedArtworks = Artwork::whereHas("tags",  function($query) use($tag){
+			return $query->where("id", $tag->id);
+		})->get()->reject(function($artwork) {
+			$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
+			$artworkPrivacy = $artwork->getPrivacyLevel();
+			return $artworkPrivacy > $maxPrivacyAllowed;
+		});
+		return view("tags.show-global", ["tag" => $tag, "artworks" => $taggedArtworks]);
 	}
 
     /**

@@ -84,6 +84,13 @@ class Artwork extends Model
 		return $this->users()->get()->pluck("id");
 	}
 
+	public function getPrivacyLevel() {
+		$artworkPrivacy = $this->folders()->get()->reduce(function($carry, $folder) {
+			return max($folder->privacy_level_id, $carry);
+		});
+		return $artworkPrivacy;
+	}
+
 	public function updateText($text) {
 		if(!$relative_path = $this->text)
 		{
