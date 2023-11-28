@@ -48,4 +48,10 @@ class UserPageController extends Controller
 		$request->user()->save();
 		return Redirect::route('profile.html.edit')->with('status', 'Profile updated successfully.');
 	}
+
+
+	public function show_stats(string $username) {
+		$user = User::where("name", $username)->firstOrFail();
+		return view("stats", ["user" => $user]);
+	}
 }

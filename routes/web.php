@@ -96,3 +96,4 @@ Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags
 Route::get("/search", [TagController::class, 'show_global'])->name("tags.global.show");
 
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');
+Route::get("/{username}/stats", [UserPageController::class, 'show_stats'])->name("stats");

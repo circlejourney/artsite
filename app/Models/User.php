@@ -214,6 +214,7 @@ class User extends Authenticatable
 	public function syncHighlights(array $toSync) {
 		$highlights = $this->highlights;
 		foreach($toSync as $id => $doHighlight) {
+			if($this->artworks->pluck("id")->doesntContain($id)) abort(403);
 			if($doHighlight && !in_array($id, $highlights)) array_push($highlights, $id);
 			else if(!$doHighlight && $index = array_search($id, $highlights)) unset($highlights[$index]);
 		}

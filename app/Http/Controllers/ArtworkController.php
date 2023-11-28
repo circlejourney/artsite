@@ -206,7 +206,8 @@ class ArtworkController extends Controller
 		
 		if($request->set_searchable) {
 			foreach($request->set_searchable as $id => $value) {
-				Artwork::find($id)->update([
+				if(!$artwork = $request->user()->artworks->where("id", $id)->first()) abort(403);
+				$artwork->update([
 					"searchable" => !$value
 				]);
 			}

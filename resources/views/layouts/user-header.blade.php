@@ -34,6 +34,6 @@
 		<a href="#">Commissions</a>
 	</li>
 	<li>
-		<a href="#">Stats</a>
+		<a href="{{ route("stats", ["username" => $user->name]) }}">Stats</a>
 	</li>
 </ul>
