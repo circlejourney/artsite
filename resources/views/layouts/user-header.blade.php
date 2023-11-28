@@ -25,13 +25,13 @@
 		<a href="{{ route("folders.index", ["username" => $user->name]) }}">Gallery</a>
 	</li>
 	<li>
-		<a href="#">Favorites</a>
+		<a href="{{ route("faves", ["username" => $user->name]) }}">Favorites</a>
 	</li>
 	<li>
-		<a href="#">Blog</a>
+		<a class="text-muted">Blog</a>
 	</li>
 	<li>
-		<a href="#">Commissions</a>
+		<a class="text-muted">Commissions</a>
 	</li>
 	<li>
 		<a href="{{ route("stats", ["username" => $user->name]) }}">Stats</a>

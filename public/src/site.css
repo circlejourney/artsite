@@ -466,9 +466,10 @@ main .page-block {
 
 .gallery-thumbnail {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  width: 224px;
   font-size: 14pt;
   border: 1px solid #d9d9d9;
   border-radius: 10px;

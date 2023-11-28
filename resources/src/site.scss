@@ -6,6 +6,7 @@ $site-bg: white;
 $main-bg: white;
 $light-bg: #f5f5f5;
 $mid-bg: #A9A9A9;
+$muted: #333;
 $form-input-bg: white;
 $large-text: 14pt;
 $main-width: 1200px;
@@ -342,7 +343,7 @@ $profile-padding: 1rem;
 	margin: 0;
 	li {
 		padding: $profile-padding;
-		flex-basis: 0;
+		flex-basis: 0; 
 		a {
 			color: black;
 		}
@@ -512,8 +513,11 @@ div[class$="-section"] {
 }
 
 .gallery-thumbnail {
-	@include flex-centre();
+	display: flex;
 	flex-direction: column;
+	justify-content: flex-start;
+	text-align: center;
+	width: 224px;
 	font-size: $large-text;
 	border: 1px solid $base;
 	border-radius: $border-radius;

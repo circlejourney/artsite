@@ -52,6 +52,12 @@ class UserPageController extends Controller
 
 	public function show_stats(string $username) {
 		$user = User::where("name", $username)->firstOrFail();
-		return view("stats", ["user" => $user]);
+		return view("profile.stats", ["user" => $user]);
+	}
+
+
+	public function index_faves(string $username) {
+		$user = User::where("name", $username)->firstOrFail();
+		return view("profile.faves", ["user" => $user]);
 	}
 }

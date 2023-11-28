@@ -10,10 +10,10 @@
 				success: function(response) {
 					if(response.action === 1) {
 						$(".fave-icon").removeClass("far").addClass("fas");
-						$(".fave-text").text("Favourited");
+						$(".fave-text").text("Favorited");
 					} else {
 						$(".fave-icon").removeClass("fas").addClass("far");
-						$(".fave-text").text("Favourite");
+						$(".fave-text").text("Favorite");
 					}
 				}
 			});
@@ -30,7 +30,7 @@
 			
 			<div class="fave-button" onclick="fave()">
 				<i class="fave-icon fa{{ auth()->user()->faves->contains($artwork) ? "s" : "r" }} fa-heart"></i>
-				<span class="fave-text">{{ auth()->user()->faves->contains($artwork) ? "Favourited" : "Favourite" }}</span>
+				<span class="fave-text">{{ auth()->user()->faves->contains($artwork) ? "Favorited" : "Favorite" }}</span>
 			</div>
 
 			<div>
