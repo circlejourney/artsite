@@ -26,10 +26,12 @@ class ArtworkController extends Controller
 			->orderBy("artwork_folder.created_at")
 			->get()
 			->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; });
-		$image_urls = $this->getImageURLs($artwork->images);
-		$owner_ids = $this->getOwners($artwork);
+		$image_urls = $artwork->getImageURLs();
+		$owner_ids = $artwork->getOwners();
 		$artwork_text = $artwork->getText();
-		return view("art.show", ["artwork" => $artwork, "text" => $artwork_text, "image_urls" => $image_urls ,"owner_ids" => $owner_ids, "folders" => $folders]);
+		$params = ["artwork" => $artwork, "text" => $artwork_text, "image_urls" => $image_urls ,"owner_ids" => $owner_ids, "folders" => $folders];
+		if($owner_ids->count() == 1) $params["user"] = $artwork->users()->get()->first();
+		return view("art.show", $params);
 	}
 	
 	public function create(Request $request) {

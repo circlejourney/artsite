@@ -13,6 +13,7 @@
 				</script>
 			</div>
 			{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
+			
 			@foreach($artwork->users()->get() as $i => $owner)
 					<a href="{{ route("user", ["username" => $owner->name]) }}">
 						{!! $owner->getFlairHTML() !!}
@@ -20,7 +21,8 @@
 						-->@if(!$loop->last), @endif
 			@endforeach
 
-			@include("tags.taglist", ["tags"=>$artwork->tags])
+			@include("tags.taglist", ["tags"=>$artwork->tags, "user" => $user ?? null ])
+
 			@if(sizeof($folders) > 0)
 			<div>
 				@if(sizeof($folders) > 1)

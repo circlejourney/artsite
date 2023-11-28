@@ -2,7 +2,7 @@
 	<div class="tag-list">
 		@foreach ($tags as $tag)
 			<a class="tag" href="{{
-				!isset($user) ?
+				!isset($user) || !$user ?
 				route('tags.global.show', ["tag"=>$tag->id])
 				: (
 					isset($folder) ?

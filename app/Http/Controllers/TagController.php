@@ -40,6 +40,11 @@ class TagController extends Controller
 		return view("tags.show", ["user" => $user, "tag" => $tag, "artworks" => $taggedArtworks]);
 	}
 
+	public function index_global() {
+		$tags = Tag::all();
+		return view("tags.index", ["tags" => $tags]);
+	}
+
     /**
      * Show the form for creating a new resource.
      */
