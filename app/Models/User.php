@@ -44,7 +44,6 @@ class User extends Authenticatable
 		'custom_flair',
 		'invited_by',
 		'highlights',
-		'artwork_count',
 		'invitee_count'
     ];
 
