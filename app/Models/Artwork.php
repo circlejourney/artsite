@@ -34,13 +34,6 @@ class Artwork extends Model
 
 	public static function boot() {
 		parent::boot();
-		
-		Static::deleting(function($model) {
-			foreach($model->users as $user) {
-				$user->artwork_count = $user->artwork_count-1;
-				$user->save();
-			}
-		});
 	}
 
 	/**
