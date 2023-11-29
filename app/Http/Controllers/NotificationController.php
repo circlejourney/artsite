@@ -70,7 +70,9 @@ class NotificationController extends Controller
     }
 
 	public function index_follow() {
-		$artworks = Artwork::where("id", [auth()->user()->follows->pluck("id")->all()])->get();
+		$artworks = Artwork::whereHas("users", function($query){
+			$query->where("user_id", auth()->user()->follows->pluck("id")->all());
+		})->get();
 		error_log($artworks);
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
 	}

@@ -541,7 +541,6 @@ div[class$="-section"] {
 }
 
 .wide-gallery {
-	@include flex-wrap(column);
 }
 
 .gallery-thumbnail {

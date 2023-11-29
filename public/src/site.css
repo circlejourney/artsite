@@ -485,12 +485,6 @@ main .page-block {
   }
 }
 
-.wide-gallery {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
 .gallery-thumbnail {
   display: flex;
   flex-direction: column;
