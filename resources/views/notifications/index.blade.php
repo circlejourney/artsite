@@ -2,6 +2,10 @@
 
 @section('body')
 	<h1>Notifications</h1>
+	<ul class="nav nav-pill">
+		<a class="nav-link">Notifications</a>
+		<a href="{{ route("notifications.feed") }}" class="nav-link">Artists You Follow</a>
+	</ul>
 	<form method="POST">
 		@csrf
 		@method("DELETE")
@@ -18,7 +22,7 @@
 				<button class="invisible-button" data-action="{{ route("notifications.delete-one", ["notification" => $notification->id])}}" onclick="delete_one()">
 					<i class="fa fa-times"></i>
 				</button>
-				<span class="small mr-2">
+				<span class="small text-muted mr-2">
 					{{ $notification->created_at->diffForHumans() }}
 				</span>
 				{!! $notification->getDisplayHTML() !!}

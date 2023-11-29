@@ -59,7 +59,9 @@ body {
 }
 
 h1, h2, h3 {
-	margin-top: $header-margin;
+	&:not(.no-margin) {
+		margin-top: $header-margin;
+	}
 }
 
 a.link-current {
@@ -317,10 +319,6 @@ $profile-padding: 1rem;
 	margin-top: $header-margin;
 	padding: $global-padding;
 	text-align: center;
-
-	h2 {
-		margin-top: 0;
-	}
 }
 
 .profile-banner {
@@ -540,6 +538,10 @@ div[class$="-section"] {
 	@include screen-sm {
 		justify-content: center;
 	}
+}
+
+.wide-gallery {
+	@include flex-wrap(column);
 }
 
 .gallery-thumbnail {

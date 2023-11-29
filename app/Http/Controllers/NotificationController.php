@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artwork;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
@@ -67,6 +68,12 @@ class NotificationController extends Controller
 		}
 		return view("notifications.index", ["user" => $user]);
     }
+
+	public function index_follow() {
+		$artworks = Artwork::where("id", [auth()->user()->follows->pluck("id")->all()])->get();
+		error_log($artworks);
+		return view("notifications.follow-feed", ["artworks" => $artworks]);
+	}
 
 	public function delete_one(Request $request, Notification $notification) {
 		$user = $request->user();

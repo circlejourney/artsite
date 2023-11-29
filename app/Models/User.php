@@ -186,6 +186,10 @@ class User extends Authenticatable
 		return "<i class='user-flair fa fa-$faString'></i>";
 	}
 
+	public function getNametag(): string {
+		return "<a href='" . route("user", ["username", $this->name]) . "'>" . $this->getFlairHTML() . " " . $this->name . "</a>";
+	}
+
 	public function getAvatarURL() {
 		if(!$this->avatar) return "/images/user.png";
 		return Storage::url($this->avatar);
