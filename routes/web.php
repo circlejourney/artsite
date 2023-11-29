@@ -79,8 +79,9 @@ Route::middleware('auth', 'verified')->group(function () {
 
 	Route::controller(NotificationController::class)->group(function() {
 		Route::get("/notifications", "index")->name("notifications");
+		Route::get("/notification-count", "get_count")->name("notifications.get_count");
 		Route::delete("/notifications", "destroy");
-		Route::delete("/notification-ajax/{notification}", "delete_one")->name('delete_one');
+		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete_one');
 	});
 });
 

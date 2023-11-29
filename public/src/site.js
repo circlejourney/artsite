@@ -1,3 +1,10 @@
+$(window).on("load", function(){
+	$('[data-toggle="tooltip"]').tooltip();
+	if($(".notifications").length > 0) {
+		fetchNotificationCount();
+	}
+});
+
 function sanitise_html(string) {
 	const blocked = ["script", "style", "link", "meta", "title", "head", "body"].join("|");
 	const re = new RegExp("<\/?(" + blocked + ").*?>", "g");
@@ -15,10 +22,6 @@ function updatePreview(input, target, bg=false) {
 		else $(target).css("background-image", "url("+this.result+")");
 	}
 }
-
-$(window).on("load", function(){
-	$('[data-toggle="tooltip"]').tooltip();
-});
 
 function startAceEditor(editor, inputSync, previewTarget=null) { // All values are jQuery selectors or DOM elements
 	// Init editor if found
@@ -49,4 +52,29 @@ function startAceEditor(editor, inputSync, previewTarget=null) { // All values a
 
 	return editor;
 
+}
+
+function delete_one() {
+	event.preventDefault();
+	$.ajax({
+		method: "DELETE",
+		url: $(event.target).closest("button").data("action"), 
+		headers: { "X-CSRF-TOKEN": $("input[name='_token']").val() },
+		success: function(response) {
+			console.log(response);
+			$("#delete-" + response.notification).remove();
+		}
+	});
+}
+
+function fetchNotificationCount() {
+	const form = $(".notifications")[0];
+	$.get($(form).prop("action"), {
+		"headers": { "X-CSRF-TOKEN": $(form).find("input[name='_token']").val() },
+	}).done(function(response){
+		console.log(response);
+		const badge = $(form).find(".notification-badge").text(response)[0];
+		if(parseInt(response) > 0) $(badge).removeClass("d-none");
+		else $(badge).addClass("d-none");
+	});
 }

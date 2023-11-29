@@ -1,9 +1,5 @@
 @extends('layouts.site')
 
-@push('head')
-	<script src="/src/notification-delete.js"></script>
-@endpush
-
 @section('body')
 	<h1>Notifications</h1>
 	<form method="POST">

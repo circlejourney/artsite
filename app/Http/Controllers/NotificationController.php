@@ -76,4 +76,9 @@ class NotificationController extends Controller
 
 		return response(["notification" => $notificationID]);
 	}
+
+	public function get_count(Request $request) {
+		$user = $request->user();
+		return response($user->notifications->count());
+	}
 }
