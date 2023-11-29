@@ -1,5 +1,10 @@
 @extends("layouts.profile", ["user" => $user, "metatitle" => $user->name."'s gallery"])
 
+@push('head')	
+	<meta name="og:image" content="{{ $user->getAvatarURL() }}">
+	<meta name="og:description" content="{{ $user->name }}'s gallery on {{ config("app.name") }}">
+@endpush
+
 @section('profile-body')
 	@if(!$folderlist->isEmpty())
 	<div class="folder-section">

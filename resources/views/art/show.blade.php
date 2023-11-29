@@ -1,6 +1,8 @@
 @extends("layouts.site", ["metatitle" => $artwork->title])
 
 @push('head')
+	<meta name="og:image" content="{{ $artwork->getThumbnailURL() }}">
+	<meta name="og:description" content="{{ $artwork->title }} by {{ $artwork->users->pluck("name")->join(", ") }} on {{ config("app.name") }}">
 @endpush
 
 @section('body')
