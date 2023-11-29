@@ -15,11 +15,7 @@
 			@include("components.fave-button")
 
 			<div>
-				Posted:
-				<script>
-					const posted = new Date({{ $artwork->created_at->timestamp }}*1000);
-					document.write(posted.toDateString());
-				</script>
+				Posted: <span class="format-date" data-timestamp="{{ $artwork->created_at->timestamp}}"></span>
 			</div>
 			{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
 			

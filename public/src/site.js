@@ -3,6 +3,10 @@ $(window).on("load", function(){
 	if($(".notifications").length > 0) {
 		fetchNotificationCount();
 	}
+
+	$(".format-date").each(function(i, element){
+		formatDateTime(element);
+	})
 });
 
 function sanitise_html(string) {
@@ -89,4 +93,9 @@ function fetchNotificationCount() {
 		if(parseInt(response) > 0) $(badge).removeClass("d-none");
 		else $(badge).addClass("d-none");
 	});
+}
+
+function formatDateTime(target) {
+	const datetime = new Date(parseInt($(target).data("timestamp") * 1000));
+	$(target).text(datetime.toLocaleString());
 }

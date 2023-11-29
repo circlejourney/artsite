@@ -18,8 +18,8 @@
 				<button class="invisible-button" data-action="{{ route("notifications.delete-one", ["notification" => $notification->id])}}" onclick="delete_one()">
 					<i class="fa fa-times"></i>
 				</button>
-				<span class="small monospace mr-2">
-					{{ $notification->created_at }}
+				<span class="small mr-2">
+					{{ $notification->created_at->diffForHumans() }}
 				</span>
 				{!! $notification->getDisplayHTML() !!}
 			</div>
