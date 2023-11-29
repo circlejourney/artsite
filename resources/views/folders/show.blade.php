@@ -1,7 +1,7 @@
 @extends("layouts.profile", ["user" => $user, "metatitle" => $user->name."'s gallery"])
 
 @push('head')
-<meta name="og:image" content="{{ $user->getAvatarURL() }}">
+	<meta name="og:image" content="{{ $user->getAvatarURL() }}">
 	<meta name="og:description" content="{{ $folder->title }} by {{ $user->name }} on {{ config("app.name") }}">
 @endpush
 

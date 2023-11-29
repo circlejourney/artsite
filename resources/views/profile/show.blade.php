@@ -1,5 +1,10 @@
 @extends("layouts.profile", ["user" => $user, "metatitle" => $user->name])
 
+@push('head')	
+	<meta name="og:image" content="{{ $user->getAvatarURL() }}">
+	<meta name="og:description" content="{{ $user->name }} on {{ config("app.name") }}">
+@endpush
+
 @section('profile-body')
 	@if($highlights->count() > 0)
 	<div class="profile-highlight">
