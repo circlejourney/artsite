@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Art Site @isset($metatitle)- {{ $metatitle }} @endisset</title>
+    <title>{{ config("app.name") }}@isset($metatitle) - {{ $metatitle }} @endisset</title>
     <meta name="description" content="@stack("metadescription")">
 
     <!-- JQUERY -->
@@ -23,6 +23,8 @@
     <!-- SITE CSS AND JS -->
     <link rel="stylesheet" href="/src/site.css?v={{ filemtime("src/site.css") }}">
     <script src="/src/site.js?v={{ filemtime("src/site.js") }}"></script>
+
+	<meta name="og:title" content="{{ config("app.name") }}@isset($metatitle) - {{ $metatitle }} @endisset">
     @stack("head")
 
 </head>
