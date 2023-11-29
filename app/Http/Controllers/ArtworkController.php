@@ -245,13 +245,16 @@ class ArtworkController extends Controller
 		$user = $request->user();
 		if($artwork->faved_by->doesntContain($user->id)) {
 			$artwork->faved_by()->attach($user->id);
-			$notif = Notification::create([
-				"sender_id" => $user->id,
-				"type" => "fave",
-				"artwork_id" => $artwork->id
-			]);
-			$recipients = $artwork->users()->get()->pluck("id")->all();
-			$notif->recipients()->attach($recipients);
+			
+			Notification::dispatch(
+				$user,
+				$artwork->users()->get(),
+				collect([
+					"sender_id" => $user->id,
+					"type" => "fave",
+					"artwork_id" => $artwork->id
+				])
+			);
 
 			return response([
 				"artwork" => $artwork->id,

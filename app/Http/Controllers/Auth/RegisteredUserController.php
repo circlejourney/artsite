@@ -72,6 +72,6 @@ class RegisteredUserController extends Controller
     }
 
 	public function messages() {
-		return [ 'name.regex' => "Username should contain only alphanumeric characters and dashes." ];
+		return [ 'name.regex' => "Username should contain only alphanumeric characters and hyphens." ];
 	}
 }

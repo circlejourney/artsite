@@ -67,6 +67,18 @@ function delete_one() {
 	});
 }
 
+function follow() {
+	event.preventDefault();
+	$.ajax({
+		method: "POST",
+		url: $(event.target).closest("form").prop("action"), 
+		headers: { "X-CSRF-TOKEN": $("input[name='_token']").val() },
+		success: function(response) {
+			$(".follow-button").text( response.action == -1 ? "Follow" : "Unfollow" );
+		}
+	});
+}
+
 function fetchNotificationCount() {
 	const form = $(".notifications")[0];
 	$.get($(form).prop("action"), {

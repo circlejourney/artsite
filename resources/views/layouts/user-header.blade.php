@@ -6,8 +6,20 @@
 		<div class="display-name">{!! $user->display_name !!}</div>
 		<div class="display-username">{{ "@" . $user->name }} {!! $user->getFlairHTML() !!}</div>
 	</div>
+	@auth
 	<div class="profile-interact">
-		<a class="button-pill" href="#">Follow</a>
+		@if(auth()->user() != $user)
+		<form method="POST" action="{{ route("follow", ["user" => $user]) }}">
+			@csrf
+			<button class="follow-button button-pill" href="#" onclick="follow()">
+				@if(auth()->user()->follows->doesntContain($user))
+					Follow
+				@else
+					Unfollow
+				@endif
+			</button>
+		</form>
+		@endif
 		<a class="button-circle" href="#">
 			<i class="far fa-envelope"></i>
 		</a>
@@ -15,6 +27,7 @@
 			<i class="fa fa-ellipsis"></i>
 		</a>
 	</div>
+	@endauth
 </div>
 
 <ul class="profile-menu">

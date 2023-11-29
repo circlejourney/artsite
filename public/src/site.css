@@ -285,6 +285,9 @@ main .page-block {
   justify-content: center;
   gap: 1rem;
 }
+.profile-interact form {
+  margin: 0;
+}
 
 .profile-menu {
   display: flex;

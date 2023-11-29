@@ -81,8 +81,10 @@ Route::middleware('auth', 'verified')->group(function () {
 		Route::get("/notifications", "index")->name("notifications");
 		Route::get("/notification-count", "get_count")->name("notifications.get_count");
 		Route::delete("/notifications", "destroy");
-		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete_one');
+		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
 	});
+
+	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");
 });
 
 require __DIR__.'/auth.php';
@@ -90,8 +92,8 @@ require __DIR__.'/auth.php';
 Route::get("/art/{path}", [ArtworkController::class, 'show'])->name("art");
 
 Route::controller(ArtworkController::class)->group(function () {
-	Route::post('art-ajax/{path}', 'fave')->name('fave');
-	Route::delete('art-ajax/{path}', 'unfave')->name('unfave');
+	Route::post('fave/{path}', 'fave')->name('fave');
+	Route::delete('fave/{path}', 'unfave')->name('unfave');
 });
 
 /* Artist's gallery */

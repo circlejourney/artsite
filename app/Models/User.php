@@ -115,6 +115,14 @@ class User extends Authenticatable
 		return $this->belongsToMany(Artwork::class, "faves")->withTimestamps();
 	}
 
+	public function follows() : BelongsToMany {
+		return $this->belongsToMany(User::class, "follows", "follower_id", "followed_id")->withTimestamps();
+	}
+
+	public function followed_by() : BelongsToMany {
+		return $this->belongsToMany(User::class, "follows", "followed_id", "follower_id")->withTimestamps();
+	}
+
 	/* Utility */
 
 	public function createTopFolder() {

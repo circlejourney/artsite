@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 
 class Notification extends Model
 {
@@ -25,6 +26,10 @@ class Notification extends Model
 		if($this->type == "fave") {
 			return "<i class='fa fa-heart'></i>&emsp;" . $this->getSenderHTML() . " faved your artwork " . $this->getArtworkHTML();
 		}
+		if($this->type == "follow") {
+			return "<i class='fa fa-heart'></i>&emsp;" . $this->getSenderHTML() . " followed you";
+		}
+		return "You received a notification with an unknown type.";
 	}
 
 	public function getSenderHTML() {
@@ -56,5 +61,15 @@ class Notification extends Model
 		if($this->recipients()->get()->pluck("id")->doesntContain($user->id)) return false;
 		$this->recipients()->detach($user->id);
 		if($this->recipients->count() == 0) $this->delete();
+	}
+
+	public static function dispatch(User $sender, Collection $recipients, Collection $props) {
+		$params = collect([
+			"sender_id" => $sender->id,
+			"type" => "fave"
+		])->merge($props)->all();
+		
+		$notif = Notification::create($params);
+		$notif->recipients()->attach($recipients->pluck("id"));
 	}
 }

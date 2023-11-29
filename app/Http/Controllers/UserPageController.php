@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Artwork;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserPageUpdateRequest;
+use App\Models\Notification;
 use App\Models\PrivacyLevel;
 use App\Services\UploadService;
 use App\Services\SanitiseService;
@@ -49,6 +50,20 @@ class UserPageController extends Controller
 		return Redirect::route('profile.html.edit')->with('status', 'Profile updated successfully.');
 	}
 
+	public function follow(User $user) {
+		$follower = auth()->user();
+		if($follower->id == $user->id) return response(["user" => $user->id, "action" => 0]);
+		if($follower->follows->doesntContain($user)) {
+			$follower->follows()->attach($user->id);
+
+			Notification::dispatch($follower, collect([$user]), collect([ "type" => "follow" ]));
+			return response(["user" => $user->id, "action" => 1]);
+			
+		} else {
+			$follower->follows()->detach($user->id);
+			return response(["user" => $user->id, "action" => -1]);
+		}
+	}
 
 	public function show_stats(string $username) {
 		$user = User::where("name", $username)->firstOrFail();

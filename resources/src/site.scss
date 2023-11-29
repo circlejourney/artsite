@@ -350,6 +350,10 @@ $profile-padding: 1rem;
 	margin-left: auto;
 	@include flex-centre();
 	gap: $profile-padding;
+
+	form {
+		margin: 0;
+	}
 }
 
 .profile-menu {
