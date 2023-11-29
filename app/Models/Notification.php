@@ -24,10 +24,10 @@ class Notification extends Model
 		 * ...more to be added
 		 */
 		if($this->type == "fave") {
-			return "<i class='fa fa-heart'></i>&emsp;" . $this->getSenderHTML() . " faved your artwork " . $this->getArtworkHTML();
+			return "<i class='fa fa-fw fa-heart'></i>&emsp;" . $this->getSenderHTML() . " favorited your artwork " . $this->getArtworkHTML();
 		}
 		if($this->type == "follow") {
-			return "<i class='fa fa-heart'></i>&emsp;" . $this->getSenderHTML() . " followed you";
+			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " followed you";
 		}
 		return "You received a notification with an unknown type.";
 	}

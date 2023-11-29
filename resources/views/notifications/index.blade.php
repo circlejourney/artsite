@@ -6,7 +6,7 @@
 		@csrf
 		@method("DELETE")
 		
-		@if(($notifications = $user->notifications)->count() > 0)
+		@if(($notifications = $user->notifications()->orderBy("created_at", "desc")->get())->count() > 0)
 			<div>
 				<button class="button-pill">Delete all</button>
 			</div>
@@ -18,6 +18,9 @@
 				<button class="invisible-button" data-action="{{ route("notifications.delete-one", ["notification" => $notification->id])}}" onclick="delete_one()">
 					<i class="fa fa-times"></i>
 				</button>
+				<span class="small monospace mr-2">
+					{{ $notification->created_at }}
+				</span>
 				{!! $notification->getDisplayHTML() !!}
 			</div>
 		@endforeach

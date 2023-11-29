@@ -65,6 +65,14 @@ nav .menu-toggle-circle .number-badge {
   transform: rotate(180deg);
 }
 
+.small {
+  font-size: 9pt;
+}
+
+.monospace {
+  font-family: monospace;
+}
+
 .invisible-button, nav .search-form button {
   background: none;
   border: none;

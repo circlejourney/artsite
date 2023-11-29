@@ -109,6 +109,14 @@ a.link-current {
 	transform: rotate(180deg);
 }
 
+.small {
+	font-size: $small-text;
+}
+
+.monospace {
+	font-family: monospace;
+}
+
 .invisible-button {
 	background: none;
 	border: none;
