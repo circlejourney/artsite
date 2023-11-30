@@ -20,14 +20,12 @@ class TagUserSeeder extends Seeder
 		foreach($artworks as $artwork) {
 			foreach($artwork->tags as $tag) {
 				foreach($artwork->users as $user){
-					$gettag = Tag::where("name", $tag->name)->where("user_id", $user->id)->first();
-					if(!$gettag) {
+					$newtag = Tag::where("name", $tag->name)->where("user_id", $user->id)->first();
+					if(!$newtag) {
 						$newtag = Tag::create([
 							"user_id" => $user->id,
 							"name" => $tag->name
 						]);
-					} else {
-						$newtag = Tag::where("name", $tag->name)->where("user_id", $user->id)->first();
 					}
 					$artwork->tags()->attach($newtag->id);
 				}
