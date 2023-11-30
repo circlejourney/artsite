@@ -14,7 +14,8 @@ class Tag extends Model
 {
     use HasFactory;
 	protected $fillable = [
-		"name"
+		"name",
+		"user_id"
 	];
 
 	// Each Tag can belong to many Artworks and each Artwork can belong to many tags.

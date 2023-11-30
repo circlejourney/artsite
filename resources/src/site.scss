@@ -541,6 +541,13 @@ div[class$="-section"] {
 }
 
 .wide-gallery {
+	.gallery-thumbnail {
+	}
+
+	.gallery-description {
+		flex-basis: 0;
+		flex-grow: 1;
+	}
 }
 
 .gallery-thumbnail {
@@ -548,7 +555,9 @@ div[class$="-section"] {
 	flex-direction: column;
 	justify-content: flex-start;
 	text-align: center;
+	flex-basis: 224px;
 	width: 224px;
+	height: 224px;
 	border: 1px solid $base;
 	border-radius: $border-radius;
 	overflow: hidden;

@@ -8,13 +8,14 @@ use App\Services\SanitiseService;
 class TaggerService {
 	
 	public static function tagArtwork(Artwork $artwork, array $tags) {
-		$user = request()->user();
-		$incomingtagIDs = collect($tags)->map(function($tagraw) {
+		$user = auth()->user();
+		$incomingtagIDs = collect($tags)->map(function($tagraw) use($user) {
 			if(!trim($tagraw)) return null;
+			error_log($user->id);
 			$tagstring = SanitiseService::makeTag($tagraw, 32);
 			$incomingtag = Tag::firstOrNew([
 				"name" => $tagstring,
-				"user_id" => auth()->user()->id
+				"user_id" => $user->id
 			]);
 			$incomingtag->save();
 			return $incomingtag->id;
@@ -31,7 +32,7 @@ class TaggerService {
 		$tag = Tag::where("id", $tagID)->firstOrFail();
 		$artlist = $tag->artworks()->get();
 		if($artlist->count() === 0) {
-			Tag::find($tagID)->delete();
+			$tag->delete();
 		}
 	}
 }

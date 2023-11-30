@@ -15,18 +15,16 @@ class SanitiseService {
   }
 
 	public static function makeURL(string $string, int $maxWords, int $hashLength) {
-		$stringparts = explode(" ", $string);
-		$string = trim( implode("-", array_slice($stringparts, 0, $maxWords)), "-");
-    $string = strtolower( preg_replace("/[^A-Za-z0-9]+/", "-", $string) );
-
-    if($hashLength > 0) $string = $string . "-" . Str::random($hashLength);
-		
-    return $string;
+		$cleanString = preg_replace("/[^A-Za-z0-9]+/", " ", $string);
+		$string = Str::of($cleanString)->squish()->trim()->lower()->words($maxWords)->kebab();
+		if($hashLength > 0) $string = $string . "-" . Str::random($hashLength);
+		return $string;
 	}
 
 	public static function makeTag(string $string, int $maxLength=255) {
-    	$string = strtolower( preg_replace("/[^A-Za-z0-9]+/", "-", $string) );
-		$string = trim( substr($string, 0, $maxLength), "-");
+		$string = preg_replace("/[^A-Za-z0-9]+/", " ", $string);
+		$string = Str::of($string)->squish()->trim()->substr(0, $maxLength)->lower()->kebab();
+		error_log($string);
     	return $string;
 	}
 

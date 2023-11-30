@@ -12,7 +12,7 @@
 			<a class="gallery-thumbnail" href="{{ route("art", $artwork->path) }}">
 				<img src="{{ $artwork->getThumbnailURL() }}">
 			</a>
-			<div class="p-2 d-flex flex-column justify-content-center">
+			<div class="gallery-description p-2 d-flex flex-column justify-content-center">
 				<a href="{{ route("art", $artwork->path) }}">
 					<h2 class="no-margin">{{ $artwork->title }}</h2>
 				</a>
@@ -23,7 +23,7 @@
 					@endforeach
 				</div>
 				<div>
-					{!! $artwork->getText() !!}
+					{!! Str::of($artwork->getText())->words(20) !!}
 				</div>
 			</div>
 		</div>
