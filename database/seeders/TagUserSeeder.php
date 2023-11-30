@@ -20,7 +20,8 @@ class TagUserSeeder extends Seeder
 		foreach($artworks as $artwork) {
 			foreach($artwork->tags as $tag) {
 				foreach($artwork->users as $user){
-					if($artwork->tags->pluck("name")->doesntContain($tag->name)) {
+					$gettag = Tag::where("name", $tag->name)->where("user_id", $user->id)->first();
+					if(!$gettag) {
 						$newtag = Tag::create([
 							"user_id" => $user->id,
 							"name" => $tag->name
