@@ -13,7 +13,9 @@
 				<img src="{{ $artwork->getThumbnailURL() }}">
 			</a>
 			<div class="p-2 d-flex flex-column justify-content-center">
-				<h2 class="no-margin">{{ $artwork->title }}</h2>
+				<a href="{{ route("art", $artwork->path) }}">
+					<h2 class="no-margin">{{ $artwork->title }}</h2>
+				</a>
 				<div class="small text-muted">{{ $artwork->created_at->diffForHumans() }}</div>
 				<div>
 					@foreach($artwork->users as $artist)

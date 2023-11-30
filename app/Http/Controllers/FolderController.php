@@ -44,9 +44,9 @@ class FolderController extends Controller
 		$artworks = PrivacyLevelService::filterArtworkCollection($request->user(), $user->artworks()->with("tags")->orderBy("created_at", "desc")->get() );
 		
 		if($request->query("tag")) { 
-			$tagID = $request->query('tag');
-			$artworks = $artworks->filter(function($artwork) use($tagID){
-				return $artwork->tags->pluck("id")->contains($tagID);
+			$tag = Tag::where("user_id", $user->id)->where("name", $request->query('tag', null))->first();
+			$artworks = $artworks->filter(function($artwork) use($tag){
+				return $artwork->tags->pluck("id")->contains($tag->id);
 			});
 		}
 
@@ -72,12 +72,15 @@ class FolderController extends Controller
 
 		$childfolders = $folder->children()->with("artworks")->get();
 		
-		if($request->query("tag")) {
-			$tag = Tag::where("id", $request->query('tag', null))->first();
-			$artworks = $folder->artworks()->with("tags")->get();
-			$artworks = $artworks->filter(function($artwork) use($tag){
-				return $artwork->tags->pluck("id")->contains($tag->id);
-			});
+		if($request->query("tag")) { 
+			$tag = Tag::where("user_id", $user->id)->where("name", $request->query('tag'))->first();
+			if(!$tag) $artworks = [];
+			else {
+			$artworks = $folder->artworks()->with("tags")->get()
+				->filter(function($artwork) use($tag){
+					return $artwork->tags->pluck("id")->contains($tag->id);
+				});
+			}
 		} else $artworks = $folder->artworks;
 
 		$params = [

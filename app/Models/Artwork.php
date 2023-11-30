@@ -86,7 +86,7 @@ class Artwork extends Model
 	}
 	
 	public function getJoinedTags() : string {
-		return $this->tags()->orderBy("artwork_tag.created_at", "desc")->pluck("tag_id")->join(", ");
+		return $this->tags()->orderBy("artwork_tag.created_at", "desc")->pluck("name")->join(", ");
 	}
 
 	public function getOwners() {

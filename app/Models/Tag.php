@@ -13,10 +13,8 @@ use App\Models\Artwork;
 class Tag extends Model
 {
     use HasFactory;
-	protected $primaryKey = "id";
-	protected $keyType = "string";
 	protected $fillable = [
-		"id"
+		"name"
 	];
 
 	// Each Tag can belong to many Artworks and each Artwork can belong to many tags.

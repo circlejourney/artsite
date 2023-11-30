@@ -8,19 +8,23 @@ use App\Services\SanitiseService;
 class TaggerService {
 	
 	public static function tagArtwork(Artwork $artwork, array $tags) {
+		$user = request()->user();
 		$incomingtagIDs = collect($tags)->map(function($tagraw) {
 			if(!trim($tagraw)) return null;
 			$tagstring = SanitiseService::makeTag($tagraw, 32);
-			$incomingtag = Tag::firstOrNew(["id" => $tagstring]);
+			$incomingtag = Tag::firstOrNew([
+				"name" => $tagstring,
+				"user_id" => auth()->user()->id
+			]);
 			$incomingtag->save();
-			return $tagstring;
+			return $incomingtag->id;
 		})->filter();
-
-		$removeTagsIDs = $artwork->tags()->get()->pluck("id")->diff($incomingtagIDs);
-		$artwork->tags()->sync(
-			$incomingtagIDs->map(function($tag){ return collect(["tag_id"=>$tag]); })
-		);
-		foreach($removeTagsIDs as $removeTagID) self::cleanupTags($removeTagID);
+		$currentTagIDs = $artwork->tags->where("user_id", $user->id)->pluck("id");
+		$removeTagIDs = $currentTagIDs->diff($incomingtagIDs);
+		$addTagIDs = $incomingtagIDs->diff($currentTagIDs);
+		$artwork->tags()->detach($removeTagIDs);
+		$artwork->tags()->attach($addTagIDs);
+		foreach($removeTagIDs as $removeTagID) self::cleanupTags($removeTagID);
 	}
 
 	public static function cleanupTags($tagID) {
@@ -30,5 +34,4 @@ class TaggerService {
 			Tag::find($tagID)->delete();
 		}
 	}
-
 }

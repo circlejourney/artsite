@@ -41,7 +41,7 @@
 			
 			@unless($folder->isTopFolder())
 				<a class="folder-badge-link" href="{{
-					route("folders.show", ["username" => $user->name, "folder" => $folder->parent()->first(), "tag" => $tag ?? null])
+					route("folders.show", ["username" => $user->name, "folder" => $folder->parent()->first(), "tag" => $tag->name ?? null])
 				}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
 			@endunless
 

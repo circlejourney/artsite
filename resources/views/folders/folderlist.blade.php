@@ -6,7 +6,7 @@
 				isset($manage) ? route("folders.edit", ["folder" => $listfolder["id"]])
 				: (
 					isset($tag) ?
-					route("folders.show", ["username" => $user->name, "folder" => $listfolder["id"], "tag" => $tag])
+					route("folders.show", ["username" => $user->name, "folder" => $listfolder["id"], "tag" => $tag->name])
 					: (
 						$listfolder["id"] == $user->top_folder_id ?
 						route("folders.index", ["username" => $user->name])

@@ -97,12 +97,15 @@ class ArtworkController extends Controller
 			->intersect($request->user()->folders()->get())->first()->id;
 		$text = $artwork->getText();
 		$image_urls = $artwork->getImageURLs($artwork->images);
+		$user_tags = $artwork->tags->where("user_id", request()->user()->id);
 		return view("art.edit", [
 			"artwork" => $artwork,
 			"image_urls" => $image_urls,
 			"folderlist" => $folderlist,
 			"text" => $text,
-			"selectedfolder" => $selectedfolder]);
+			"selectedfolder" => $selectedfolder,
+			"tags" => $user_tags
+		]);
 	}
 
 	
