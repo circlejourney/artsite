@@ -6,13 +6,10 @@
 @endpush
 
 @section('body')
-	<div class="page-block">
-		<h1>{{ $artwork->title }} 	
-		</h1>
-		
-		<div class="art-info row">
-		<div class="col-6">
-			
+	<h1>{{ $artwork->title }} 	
+	</h1>
+	<div class="art-info row mb-2">
+		<div class="col-12 col-md-6">
 			@include("components.fave-button")
 
 			<div>
@@ -50,21 +47,22 @@
 			@endif
 			
 			@if($artwork->tags)
-				@foreach($artwork->users as $user) 
-					<div class="tag-list">
-						{{$user->name}}'s tags: @component("tags.taglist", ["tags"=>$artwork->tags->where("user_id", $user->id), "user" => $user ?? null]) @endcomponent
-					</div>
-				@endforeach
+			<div class="tag-list">
+				Tags -
+					@foreach($artwork->users as $user) 
+						@if(($thistags = $artwork->tags->where("user_id", $user->id))->count() > 0)
+							{{$user->name}}: @include("tags.taglist", ["tags"=>$thistags])
+						@endif
+					@endforeach
+				</div>
 			@endif
 		</div>
 
-		<div class="col-6">
+		<div class="col-12 col-md-6 text-right">
 			@if(auth()->check() && ($owner_ids->contains(auth()->user()->id)))
 			<a class="button-pill" href="{{ route('art.edit', ['path' => $artwork->path]) }}">
 				Edit artwork
 			</a>
-			<br>
-			<br>
 			<a class="button-pill bg-danger" href="{{ route('art.delete', ['path' => $artwork->path]) }}">
 				Delete artwork
 			</a>
