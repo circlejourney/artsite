@@ -21,5 +21,9 @@ class Tag extends Model
 	public function artworks() : BelongsToMany {
 		return $this->BelongsToMany(Artwork::class);
 	}
+
+	public function user() : BelongsTo {
+		return $this->belongsTo(User::class);
+	}
 	
 }
