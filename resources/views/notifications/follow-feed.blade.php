@@ -8,7 +8,7 @@
 	</ul>
 	<div class="wide-gallery row">
 		@foreach($artworks as $artwork)
-		<div class="d-flex col-12 col-md-6">
+		<div class="d-flex col-12 col-md-6 p-2">
 			<a class="gallery-thumbnail" href="{{ route("art", $artwork->path) }}">
 				<img src="{{ $artwork->getThumbnailURL() }}">
 			</a>

@@ -71,7 +71,7 @@ class NotificationController extends Controller
 
 	public function index_follow() {
 		$artworks = Artwork::whereHas("users", function($query){
-			$query->where("user_id", auth()->user()->follows->pluck("id")->all());
+			$query->whereIn("user_id", auth()->user()->follows->pluck("id")->all());
 		})->orderBy("created_at", "desc")->get();
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
 	}
