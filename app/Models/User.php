@@ -191,7 +191,7 @@ class User extends Authenticatable
 	}
 
 	public function getNametag(): string {
-		return "<a href='" . route("user", ["username", $this->name]) . "'>" . $this->getFlairHTML() . " " . $this->name . "</a>";
+		return "<a href='" . route("user", ["username" => $this->name]) . "'>" . $this->getFlairHTML() . " " . $this->name . "</a>";
 	}
 
 	public function getAvatarURL() {
