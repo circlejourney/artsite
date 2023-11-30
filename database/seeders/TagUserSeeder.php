@@ -26,9 +26,9 @@ class TagUserSeeder extends Seeder
 							"name" => $tag->name
 						]);
 					} else {
-						$newtag = Tag::where("name", $tag->name)->where("user_id", $user->id);
+						$newtag = Tag::where("name", $tag->name)->where("user_id", $user->id)->first();
 					}
-					$artwork->tags()->attach($newtag);
+					$artwork->tags()->attach($newtag->id);
 				}
 			}
 		}
