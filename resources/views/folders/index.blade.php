@@ -5,7 +5,6 @@
 	<meta name="og:description" content="{{ $user->name }}'s gallery on {{ config("app.name") }}">
 	<script>
 		function toggleView(togglerClass, toggleableClass, toShow, collapsibleClass, toCollapse) {
-			event.preventDefault();
 			let toggleOn, toggleOff, action;
 			const clicked = $(event.target).closest(togglerClass)[0];
 			
@@ -57,12 +56,18 @@
 		<div id="tag-wrapper" class="collapse show active">
 			@if(!$tag)
 				@foreach($tags as $listtag) 
-					<a href="#" class="tag" onclick="toggleView('.tag', '.gallery-thumbnail', '.{{ $listtag->name }}', '.tag-info', '#tag-info-{{ $listtag->id }}')">
+					<div class="tag" onclick="toggleView('.tag', '.gallery-thumbnail', '.{{ $listtag->name }}', '.tag-info', '#tag-info-{{ $listtag->id }}')">
 						{{ $listtag->name }}
 						@if($listtag->tag_highlight)
 							<i class="fa fa-info-circle pl-2 py-2" data-toggle="tooltip" title="This tag has meta information"></i>
 						@endif
-					</a>
+						<a href="{{ route("folders.index", ["username" => $user->name, "tag" => $listtag->name ?? null]) }}"
+							data-toggle="tooltip"
+							title="Tag permalink"
+							onclick="event.stopPropagation()">
+							<i class="fa fa-tag ml-2"></i>
+						</a>
+					</div>
 				@endforeach
 			@else
 				@include("tags.taglist", ["user" => $user, "tags" => $tags, "selected" => $tag ?? null])

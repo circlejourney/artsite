@@ -81,6 +81,9 @@ a.link-current {
     border-radius: 1rem;
 	@include inline-flex-centre();
     color: black;
+	a {
+		color: black;
+	}
 }
 
 .button-pill {

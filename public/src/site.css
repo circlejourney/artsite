@@ -41,6 +41,9 @@ nav .menu-toggle-circle .number-badge {
   justify-content: center;
   color: black;
 }
+.button-circle a, .button-pill a, .tag a {
+  color: black;
+}
 
 .button-pill, .tag {
   min-width: 10rem;
