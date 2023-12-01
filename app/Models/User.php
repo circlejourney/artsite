@@ -19,6 +19,7 @@ use App\Services\FolderListService;
 use App\Services\PrivacyLevelService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -94,6 +95,14 @@ class User extends Authenticatable
 		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
 
+	public function tags(): HasMany {
+		return $this->hasMany(Tag::class);
+	}
+
+	public function tag_highlights(): HasManyThrough {
+		return $this->hasManyThrough(TagHighlight::class, Tag::class);
+	}
+
 	public function notifications(): BelongsToMany {
 		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->withTimestamps();
 	}
@@ -153,15 +162,6 @@ class User extends Authenticatable
 	
 	public function getTopRole() {
 		return $this->roles()->orderBy("id", "asc")->first();
-	}
-
-	public function getTags() {
-		$tags = Tag::where("user_id", $this->id)->get();
-		$artworktags = $this->artworks()->with(["tags"])->get()->pluck("tags");
-		$tags = $tags->sortByDesc(function($tag) use($artworktags) {
-			return $artworktags->where("id", $tag->id)->count();
-		})->values();
-		return $tags;
 	}
 
 	public function getArtWithTag($tag) {

@@ -67,6 +67,11 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::put("/dashboard/folders/folder:{folder}", [FolderController::class, 'update']);
 	Route::delete("/dashboard/folders/folder:{folder}", [FolderController::class, 'destroy']);
 	
+	Route::get("/dashboard/tags", [TagController::class, 'index_manage'])->name("tags.manage");
+	Route::get("/dashboard/tags/{tag}", [TagController::class, 'edit'])->name("tags.edit");
+	Route::post("/dashboard/tags/{tag}", [TagController::class, 'store_or_update']);
+	Route::patch("/dashboard/tags/{tag}", [TagController::class, 'store_or_update']);
+	
 	Route::get("/dashboard/art", [ArtworkController::class, 'manage'])->name("art.manage");
 	Route::put("/dashboard/art", [ArtworkController::class, 'put']);
 	

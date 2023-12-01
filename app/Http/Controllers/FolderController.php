@@ -56,11 +56,11 @@ class FolderController extends Controller
 			->get()->reject(function($folder) use($maxPrivacyAllowed) { return $folder->privacy_level_id > $maxPrivacyAllowed; });
 		$folderlist = collect([$user->getTopFolder()])->merge($childfolders);
 		
-		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $folderlist, "tags" => $user->getTags()]);
+		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $folderlist, "tags" => $user->tags]);
 	}
 
     /**
-     * Display the specified resource.
+     * Display the specified folter.
      */
 
 	public function show(Request $request, string $username, Folder $folder, $all = false) {
@@ -94,7 +94,7 @@ class FolderController extends Controller
 			"user" => $user,
 			"folder" => $folder,
 			"childfolders" => $childfolders,
-			"tags" => $user->getTags(),
+			"tags" => $user->tags,
 			"artworks" => $artworks,
 			"all" => $all == "all"
 		];
@@ -127,7 +127,7 @@ class FolderController extends Controller
 		$params = [
 			"user" => $user,
 			"folder" => $folder,
-			"tags" => $user->getTags(),
+			"tags" => $user->tags,
 			"artworks" => $artworks
 		];
 		if(isset($tag)) $params["tag"] = $tag;

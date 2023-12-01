@@ -137,8 +137,7 @@ class Artwork extends Model
 	}
 
 	public function uploadImage(UploadedFile $image, User $user) {
-		$relative_path = UploadService::upload($image, "art/".$user->id);
-		return $relative_path;
+		return UploadService::upload($image, "art/".$user->id);
 	}
 
 	public function updateThumbnail() {

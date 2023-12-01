@@ -13,6 +13,10 @@
 			});
 
 			const editor = startAceEditor("#editor", "#text", "#html-preview");
+			
+			$("input[type='file']").each(function(i, val){
+				updatePreview(val, $(val).siblings(".image-preview")[0]);
+			});
 
 		});
 
