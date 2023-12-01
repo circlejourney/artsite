@@ -60,7 +60,7 @@
 					<a href="#" class="tag" onclick="toggleView('.tag', '.gallery-thumbnail', '.{{ $listtag->name }}', '.tag-info', '#tag-info-{{ $listtag->id }}')">
 						{{ $listtag->name }}
 						@if($listtag->tag_highlight)
-							<i class="fa fa-info-circle pl-2 py-2" data-toggle="tooltip" title="This tag meta information"></i>
+							<i class="fa fa-info-circle pl-2 py-2" data-toggle="tooltip" title="This tag has meta information"></i>
 						@endif
 					</a>
 				@endforeach

@@ -17,9 +17,7 @@
 		<div id="folder-wrapper" class="collapse show active">
 			<div class="folder-row">
 				<a class="folder" href="{{
-					$folder->isTopFolder() ?
-					route("folders.index", ["username" => $user->name])
-					: route("folders.show", ["username" => $user->name, "folder" => $folder->id, "all"])
+					route("folders.show", ["username" => $user->name, "folder" => $folder->id, "all"])
 				}}">
 					<div class="folder-thumbnail">
 						<i class="fa fa-folder-tree"></i>
