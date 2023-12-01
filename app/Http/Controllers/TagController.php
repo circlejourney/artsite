@@ -28,17 +28,17 @@ class TagController extends Controller
 	}
 
 	public function show_global(Request $request) {
-		$tagID = SanitiseService::makeTag($request->query("tag"));
+		$tagName = SanitiseService::makeTag($request->query("tag"));
 
-		$taggedArtworks = Artwork::whereHas("tags",  function($query) use($tagID){
-			return $query->where("id", $tagID);
-		})->get()->reject(function($artwork) {
-			if(!$artwork->searchable) return true;
-			$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
-			$artworkPrivacy = $artwork->getPrivacyLevel();
-			return $artworkPrivacy > $maxPrivacyAllowed;
-		});
-		return view("tags.show-global", ["tagID" => $tagID, "artworks" => $taggedArtworks]);
+		$taggedArtworks = Artwork::whereHas("tags", function($query) use($tagName){
+			return $query->where("name", $tagName);
+		})->where("searchable", true)
+			->get()->reject(function($artwork) {
+				$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), $artwork->users()->get()->pluck("id"));
+				$artworkPrivacy = $artwork->getPrivacyLevel();
+				return $artworkPrivacy > $maxPrivacyAllowed;
+			});
+		return view("tags.show-global", ["tagName" => $tagName, "artworks" => $taggedArtworks]);
 
 	}
 }
