@@ -15,10 +15,6 @@ body {
   }
 }
 
-h1:not(.no-margin), h2:not(.no-margin), h3:not(.no-margin), .collapse-link:not(.no-margin) {
-  margin-top: 2rem;
-}
-
 a.link-current {
   font-weight: bold;
 }
@@ -233,6 +229,9 @@ main {
     width: 100vw;
     margin: 0;
   }
+}
+main > h1:not(.no-margin), main > h2:not(.no-margin), main > h3:not(.no-margin), main > .collapse-link:not(.no-margin) {
+  margin-top: 2rem;
 }
 main img {
   max-width: 100%;
@@ -529,6 +528,12 @@ main .page-block {
   background-color: #A9A9A9;
   padding: 0 0.3rem;
   font-size: 10pt;
+}
+
+/* Tag meta */
+.tag-highlight-image {
+  width: 100px;
+  height: 100px;
 }
 
 /* Footer */

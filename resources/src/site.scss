@@ -58,12 +58,6 @@ body {
     }
 }
 
-h1, h2, h3 {
-	&:not(.no-margin) {
-		margin-top: $header-margin;
-	}
-}
-
 a.link-current {
 	font-weight: bold;
 	&::after {
@@ -300,6 +294,12 @@ main {
 		margin: 0;
 	}
 
+	&> h1, & > h2, & > h3 {
+		&:not(.no-margin) {
+			margin-top: $header-margin;
+		}
+	}
+
 	img {
 		max-width: 100%;
 	}
@@ -464,7 +464,6 @@ $profile-padding: 1rem;
 }
 
 /* FOLDER PAGE */
-
 .folder-row {
 	$folder-height: 220px;
 	overflow-x: auto;
@@ -588,6 +587,12 @@ div[class$="-section"] {
 		padding: 0 $small-padding;
 		font-size: 10pt;
 	}
+}
+
+/* Tag meta */
+.tag-highlight-image {
+	width: 100px;
+	height: 100px;
 }
 
 /* Footer */

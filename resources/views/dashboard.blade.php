@@ -3,7 +3,6 @@
 @push("title"){{ "Dashboard" }}@endpush
 
 @section('body')
-<div class="p-4">
 	<h1>Welcome back to {{ config("app.name") }}, {{ auth()->user()->name }}!</h1>
 	<ul>
 		<li>
@@ -31,6 +30,4 @@
 	<br>
 	<h2>Admin section</h2>
 	@include("components.admin-links", ["roles" => auth()->user()->roles()])
-
-</div>
 @endsection

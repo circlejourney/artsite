@@ -3,7 +3,6 @@
 @push("metadescription"){{ "A cool art site with collabs, collectives and more." }}@endpush
 
 @section("body")
-<div class="p-4">
 	@auth
 		<h1>Hello, {{ auth()->user()->name}}!</h1>
 	@else
@@ -23,6 +22,4 @@
 			<a href="{{ route("register") }}">Register</a>
 		</p>
 	@endauth
-
-</div>
 @endsection
