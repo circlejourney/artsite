@@ -179,7 +179,8 @@ class User extends Authenticatable
 		if(!$this->profile_html) return "";
 		$profile_html_content = Storage::get($this->profile_html);
 		if(!$profile_html_content) return "";
-		return SanitiseService::sanitiseHTML($profile_html_content);
+		$cleanHTML = SanitiseService::of($profile_html_content)->sanitiseHTML()->get();
+		return $cleanHTML;
 	}
 
 	public function getFlairHTML(): string {

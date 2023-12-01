@@ -11,7 +11,7 @@ class TaggerService {
 		$user = auth()->user();
 		$incomingtagIDs = collect($tags)->map(function($tagraw) use($user) {
 			if(!trim($tagraw)) return null;
-			$tagstring = SanitiseService::makeTag($tagraw, 32);
+			$tagstring = SanitiseService::of($tagraw)->makeTag(32)->get();
 			$incomingtag = Tag::firstOrNew([
 				"name" => $tagstring,
 				"user_id" => $user->id

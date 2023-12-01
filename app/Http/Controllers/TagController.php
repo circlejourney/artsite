@@ -28,7 +28,7 @@ class TagController extends Controller
 	}
 
 	public function show_global(Request $request) {
-		$tagName = SanitiseService::makeTag($request->query("tag"));
+		$tagName = SanitiseService::of($request->query("tag"))->makeTag()->get();
 
 		$taggedArtworks = Artwork::whereHas("tags", function($query) use($tagName){
 			return $query->where("name", $tagName);

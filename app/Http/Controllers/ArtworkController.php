@@ -46,7 +46,7 @@ class ArtworkController extends Controller
 		$validated = $request->validated();
 		$imagepaths = array();
 
-		$path = SanitiseService::makeURL($request->title, 10, 8);
+		$path = SanitiseService::of($request->title)->makeURL(10, 8)->get();
 		$artwork = Artwork::create([
             'title' => $validated["title"],
             'images' => $imagepaths,
@@ -190,7 +190,7 @@ class ArtworkController extends Controller
 			$artwork->updateThumbnail()->save();
 		}
 
-		return redirect()->route('art', ["path" => $path])->with('success', 'Post updated successfully.');
+		return redirect()->route('art', ["path" => $artwork->path])->with('success', 'Post updated successfully.');
 	}
 
 
