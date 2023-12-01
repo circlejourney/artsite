@@ -56,7 +56,13 @@ class FolderController extends Controller
 			->get()->reject(function($folder) use($maxPrivacyAllowed) { return $folder->privacy_level_id > $maxPrivacyAllowed; });
 		$folderlist = collect([$user->getTopFolder()])->merge($childfolders);
 		
-		return view("folders.index", ["user" => $user, "artworks" => $artworks, "folderlist" => $folderlist, "tags" => $user->tags]);
+		return view("folders.index", [
+			"user" => $user,
+			"artworks" => $artworks,
+			"folderlist" => $folderlist,
+			"tags" => $user->tags,
+			"tag" => $tag ?? null
+		]);
 	}
 
     /**
@@ -73,7 +79,7 @@ class FolderController extends Controller
 		$childfolders = $folder->children()->with("artworks")->get();
 		
 		if($request->query("tag")) {
-			$tag = Tag::where("user_id", $user->id)->where("name", $request->query('tag'))->first();
+			$tag = $user->tags()->where("name", $request->query('tag'))->first();
 		}
 			
 		$artworks = collect([]);
@@ -94,12 +100,11 @@ class FolderController extends Controller
 			"user" => $user,
 			"folder" => $folder,
 			"childfolders" => $childfolders,
-			"tags" => $user->tags,
+			"tags" => $user->tags()->with("tag_highlight")->get()->sortByDesc("tag_highlight"),
 			"artworks" => $artworks,
-			"all" => $all == "all"
+			"all" => $all == "all",
+			"tag" => $tag ?? null
 		];
-		
-		if(isset($tag)) $params["tag"] = $tag;
 
 		return view("folders.show", $params);
 		

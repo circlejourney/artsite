@@ -44,10 +44,17 @@
 			onclick="$(this).find('.collapse-arrow').toggleClass('upside-down')">
 			Tags <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 		</a>
+
 		<div id="tag-wrapper" class="collapse show active">
-			@include("tags.taglist", ["user" => $user, "folder" => $folder, "tags" => $tags ?? null])
+			@include("tags.taglist", ["user" => $user, "folder" => $folder, "tags" => $tags ?? null, "selected" => $tag ?? null])
 		</div>
 	</div>
+
+	@if($tag && $tag->tag_highlight)
+		<div id="tag-info-{{ $tag->id }}" class="tag-info collapse @if(isset($tag) && $tag->id = $tag->tag_highlight->tag_id) show @endif">
+			{!! $tag->tag_highlight->text !!}
+		</div>
+	@endif
 	@endunless
 
 	<h3>

@@ -1,6 +1,6 @@
 <div class="gallery">
 @forelse($artworks as $artwork) 
-	<a class="gallery-thumbnail" href="{{ route("art", ["path" => $artwork->path]) }}" title="{{ $artwork->title }}">
+	<a class="gallery-thumbnail {{ $artwork->tags()->pluck("name")->join(" ") }}" href="{{ route("art", ["path" => $artwork->path]) }}" title="{{ $artwork->title }}">
 		<img src="{{ $artwork->getThumbnailURL() }}">
 		<div class="gallery-thumbnail-badgerow">
 			@if(($artistcount = sizeof($artwork->users)) > 1)

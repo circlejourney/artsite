@@ -45,7 +45,6 @@ nav .menu-toggle-circle .number-badge {
 .button-pill, .tag {
   min-width: 10rem;
   border: none;
-  cursor: pointer;
 }
 .button-pill:hover, .tag:hover {
   text-decoration: none;
@@ -59,6 +58,10 @@ nav .menu-toggle-circle .number-badge {
 
 .upside-down {
   transform: rotate(180deg);
+}
+
+.fake-link {
+  cursor: pointer;
 }
 
 .small {
@@ -465,6 +468,9 @@ main .page-block {
   color: black;
   padding: 0.3rem 1.2rem;
 }
+.tag.selected {
+  background-color: #A9A9A9;
+}
 
 @media screen and (min-width: 1200px) {
   div[class$=-section] {
@@ -499,12 +505,16 @@ main .page-block {
   flex-direction: column;
   justify-content: flex-start;
   text-align: center;
-  flex-basis: 224px;
   width: 224px;
   border: 1px solid #d9d9d9;
   border-radius: 10px;
   overflow: hidden;
   position: relative;
+  transition: 0.2s all linear;
+}
+.gallery-thumbnail.collapsed {
+  width: 0px;
+  opacity: 0;
 }
 .gallery-thumbnail img {
   height: 224px;

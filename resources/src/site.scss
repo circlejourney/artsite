@@ -87,7 +87,6 @@ a.link-current {
 	@extend %button;
 	min-width: 10rem;
 	border: none;
-	cursor: pointer;
 
 	&:hover {
 		text-decoration: none;
@@ -103,6 +102,10 @@ a.link-current {
 
 .upside-down {
 	transform: rotate(180deg);
+}
+
+.fake-link {
+	cursor: pointer;
 }
 
 .small {
@@ -523,6 +526,10 @@ $profile-padding: 1rem;
 	min-width: auto;
 	color: black;
 	padding: $small-padding calc(4 * $small-padding);
+
+	&.selected { 
+		background-color: $mid-bg;
+	}
 }
 
 div[class$="-section"] {
@@ -557,12 +564,17 @@ div[class$="-section"] {
 	flex-direction: column;
 	justify-content: flex-start;
 	text-align: center;
-	flex-basis: 224px;
 	width: 224px;
 	border: 1px solid $base;
 	border-radius: $border-radius;
 	overflow: hidden;
 	position: relative;
+	transition: 0.2s all linear;
+	
+	&.collapsed {
+		width: 0px;
+		opacity: 0;
+	}
 
 	img {
 		height: 224px;
