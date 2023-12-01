@@ -24,7 +24,6 @@ class SanitiseService {
 	public static function makeTag(string $string, int $maxLength=255) {
 		$string = preg_replace("/[^A-Za-z0-9]+/", " ", $string);
 		$string = Str::of($string)->squish()->trim()->substr(0, $maxLength)->lower()->kebab();
-		error_log($string);
     	return $string;
 	}
 

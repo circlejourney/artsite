@@ -99,7 +99,7 @@ Route::controller(ArtworkController::class)->group(function () {
 
 /* Artist's gallery */
 Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name("folders.index");
-Route::get("/{username}/gallery/folder:{folder}", [FolderController::class, 'show'])->name("folders.show");
+Route::get("/{username}/gallery/folder:{folder}/{all?}", [FolderController::class, 'show'])->name("folders.show");
 
 /* Groups */
 Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");

@@ -488,6 +488,9 @@ $profile-padding: 1rem;
 
 	.folder-thumbnail {
 		flex-grow: 1;
+		@include flex-centre();
+		font-size: 60pt;
+		color: $mid-bg;
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;

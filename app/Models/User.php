@@ -157,11 +157,8 @@ class User extends Authenticatable
 
 	public function getTags() {
 		$tags = Tag::where("user_id", $this->id)->get();
-		error_log($tags);
 		$artworktags = $this->artworks()->with(["tags"])->get()->pluck("tags");
 		$tags = $tags->sortByDesc(function($tag) use($artworktags) {
-			error_log($tag);
-			error_log($artworktags->where("id", $tag->id)->count());
 			return $artworktags->where("id", $tag->id)->count();
 		})->values();
 		return $tags;

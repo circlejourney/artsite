@@ -10,12 +10,13 @@ class FolderListService {
 	}
 	
 	public static function class(Folder $folder) {
-		return new folderListService($folder);
+		return new FolderListService($folder);
 	}
 
 	public function tree($includeRoot, $maxPrivacyAllowed=5) {
 		$accumulator = collect([]);
-		$sorted = $this->recursivePush($this->folder, 0+intval($includeRoot), $accumulator, $maxPrivacyAllowed);
+		$topfolder = $this->folder;
+		$sorted = $this->recursivePush($topfolder, 0+intval($includeRoot), $accumulator, $maxPrivacyAllowed);
 		return $sorted;
 	}
 	
@@ -23,10 +24,8 @@ class FolderListService {
 		if($folder->privacy_level_id > $maxPrivacyAllowed) return $accumulator;
 		if($depth > 0) {
 			$attributes = collect([
-				"id" => $folder->id,
-				"title" => $folder->getDisplayName(),
+				"folder" => $folder,
 				"depth" => $depth,
-				"parent_folder_id" => $folder->parent_folder_id
 			]);
 			$accumulator->push($attributes);
 		}

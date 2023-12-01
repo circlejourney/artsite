@@ -14,7 +14,7 @@
 			onclick="$(this).find('.collapse-arrow').toggleClass('upside-down')">
 			Folders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 		</a>
-		<div id="folder-wrapper" class="collapse show active">
+		<div id="folder-wrapper" class="folder-row collapse show active">
 			@include("folders.folderrow", ["user"=>$user, "folderlist" => $folderlist])
 		</div>
 	</div>

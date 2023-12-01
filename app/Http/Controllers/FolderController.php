@@ -63,7 +63,7 @@ class FolderController extends Controller
      * Display the specified resource.
      */
 
-	public function show(Request $request, string $username, Folder $folder) {
+	public function show(Request $request, string $username, Folder $folder, $all = false) {
 		$user = User::where("name", $username)->firstOrFail();
 		if(!$user->folders()->get()->contains($folder)) abort(404);
 		
@@ -72,23 +72,31 @@ class FolderController extends Controller
 
 		$childfolders = $folder->children()->with("artworks")->get();
 		
-		if($request->query("tag")) { 
+		if($request->query("tag")) {
 			$tag = Tag::where("user_id", $user->id)->where("name", $request->query('tag'))->first();
-			if(!$tag) $artworks = [];
-			else {
-			$artworks = $folder->artworks()->with("tags")->get()
-				->filter(function($artwork) use($tag){
-					return $artwork->tags->pluck("id")->contains($tag->id);
-				});
+		}
+			
+		$artworks = collect([]);
+		if(!isset($tag) || $tag !== null) {
+			if($all != "all") {
+				$folders = collect([$folder]);
+			} else {
+				$folders = $folder->getTree(true, $maxPrivacyAllowed)->pluck("folder");
 			}
-		} else $artworks = $folder->artworks;
+			foreach($folders as $thisfolder) {
+				if(isset($tag)) $thisartworks = $thisfolder->artworks()->whereHas("tags", function($q) use($tag) { $q->where("id", $tag->id); })->get();
+				else $thisartworks = $thisfolder->artworks;
+				$artworks = $artworks->concat($thisartworks);
+			}
+		}
 
 		$params = [
 			"user" => $user,
 			"folder" => $folder,
 			"childfolders" => $childfolders,
 			"tags" => $user->getTags(),
-			"artworks" => $artworks
+			"artworks" => $artworks,
+			"all" => $all == "all"
 		];
 		
 		if(isset($tag)) $params["tag"] = $tag;
@@ -97,8 +105,38 @@ class FolderController extends Controller
 		
 	}
 
+	public function show_all(Request $request, string $username, Folder $folder) {
+		$user = User::where("name", $username)->firstOrFail();
+		if(!$user->folders()->get()->contains($folder)) abort(404);
+		$maxPrivacyAllowed = PrivacyLevelService::getMaxPrivacyAllowed(auth()->user(), collect([$user->id]));
+		if($folder->getLineagePrivacyLevel() > $maxPrivacyAllowed) abort(401);
+
+		if($request->query("tag")) {
+			$tag = Tag::where("user_id", $user->id)->where("name", $request->query('tag'))->first();
+		}
+		$artworks = collect([]);
+		if(!isset($tag) || $tag !== null) {
+			$folders = $folder->getTree(true, $maxPrivacyAllowed)->pluck("folder");
+			foreach($folders as $folder) {
+				if(isset($tag)) $thisartworks = $folder->artworks()->whereHas("tags", function($q) use($tag) { $q->where("id", $tag->id); })->get();
+				else $thisartworks = $folder->artworks;
+				$artworks = $artworks->concat($thisartworks);
+			}
+		}
+
+		$params = [
+			"user" => $user,
+			"folder" => $folder,
+			"tags" => $user->getTags(),
+			"artworks" => $artworks
+		];
+		if(isset($tag)) $params["tag"] = $tag;
+
+		return view("folders.show", $params);
+	}
+
     /**
-     * Display a listing of the authenticated user's folders
+     * Display a listing of the authenticated user's folders for management
      */
     public function index_manage(Request $request)
     {
@@ -107,7 +145,7 @@ class FolderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the folder.
      */
     public function edit(Folder $folder, Request $request)
     {

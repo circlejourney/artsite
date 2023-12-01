@@ -431,6 +431,11 @@ main .page-block {
 }
 .folder-row .folder-thumbnail {
   flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60pt;
+  color: #A9A9A9;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

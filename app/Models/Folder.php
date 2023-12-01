@@ -54,8 +54,8 @@ class Folder extends Model
 		return $this->parent()->with("ancestors");
 	}
 
-	public function getTree($includeRoot, $maxPrivacyAllowed=5): Collection {
-		return FolderListService::class($this)->tree($includeRoot, $maxPrivacyAllowed);
+	public function getTree($includeRoot, $maxPrivacyAllowed=5, $withArtworks=false): Collection {
+		return FolderListService::class($this)->tree($includeRoot, $maxPrivacyAllowed, $withArtworks);
 	}
 
 	public function getLineage() {
