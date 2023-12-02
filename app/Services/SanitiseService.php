@@ -25,6 +25,12 @@ class SanitiseService {
 	  $this->string = preg_replace($re, "", $this->string);
     	return $this;
   }
+  
+	public function stripHTML() {
+			$re = "/<\/?.*?>/";
+		$this->string = preg_replace($re, "", $this->string);
+			return $this;
+	}
 
 	public function makeURL(int $maxWords, int $hashLength) {
 		$cleanString = preg_replace("/[^A-Za-z0-9]+/", " ", $this->string);

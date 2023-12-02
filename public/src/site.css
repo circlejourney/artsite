@@ -523,6 +523,9 @@ main .page-block {
   width: 0px;
   opacity: 0;
 }
+.gallery-thumbnail.empty {
+  justify-content: center;
+}
 .gallery-thumbnail img {
   height: 224px;
   width: 224px;

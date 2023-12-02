@@ -1,7 +1,16 @@
 <div class="gallery">
 @forelse($artworks as $artwork) 
-	<a class="gallery-thumbnail {{ $artwork->tags()->pluck("name")->join(" ") }}" href="{{ route("art", ["path" => $artwork->path]) }}" title="{{ $artwork->title }}">
-		<img src="{{ $artwork->getThumbnailURL() }}">
+	<a class="gallery-thumbnail @if(!$artwork->thumbnail) empty @endif {{ $artwork->tags()->pluck("name")->join(" ") }}" href="{{ route("art", ["path" => $artwork->path]) }}" title="{{ $artwork->title }}">
+		@if($artwork->thumbnail)
+			<img src="{{ $artwork->getThumbnailURL() }}">
+		@else
+		<h3>
+			<i class="fa fa-font"></i> {{ $artwork->title }}
+		</h3>
+		<span>
+			{!! Str::of($artwork->getPlainText())->words(10) !!}
+		</span>
+		@endif
 		<div class="gallery-thumbnail-badgerow">
 			@if(($artistcount = sizeof($artwork->users)) > 1)
 				<div class="gallery-thumbnail-badge"

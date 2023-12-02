@@ -68,6 +68,14 @@ class Artwork extends Model
 		return $text ?? "";
 	}
 
+	public function getPlainText() : string {
+		$relative_path = $this->text;
+		if(!$relative_path) return "";
+		$text = Storage::get($relative_path);
+		$text = SanitiseService::of($text)->stripHTML()->get();
+		return $text ?? "";
+	}
+
 	public function getThumbnailURL() : string {
 		if(!$relative_path = $this->thumbnail) return "";
 		$thumbnail = Storage::url($relative_path);
