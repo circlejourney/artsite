@@ -29,6 +29,10 @@ class Notification extends Model
 		if($this->type == "follow") {
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " followed you";
 		}
+		if($this->type == "ping") {
+			error_log($this->artwork_id);
+			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " pinged you" . ($this->artwork_id ? " on <a href='" . route("art", ["path" => $this->artwork->path]) . "'>" . $this->artwork->title . "</a>" : "");
+		}
 		return "You received a notification with an unknown type.";
 	}
 

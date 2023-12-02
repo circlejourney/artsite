@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use App\Models\Folder;
 use App\Models\Tag;
+use App\Services\SanitiseService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\UploadService;
@@ -63,6 +64,7 @@ class Artwork extends Model
 		$relative_path = $this->text;
 		if(!$relative_path) return "";
 		$text = Storage::get($relative_path);
+		$text = SanitiseService::of($text)->sanitiseHTML()->formatPings()->get();
 		return $text ?? "";
 	}
 

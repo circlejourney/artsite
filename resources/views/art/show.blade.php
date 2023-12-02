@@ -32,18 +32,14 @@
 				Folder:
 				@endif
 
-				@foreach($folders as $folder)
-					<a href="{{ route("user", ["username" => $folder->user()->first()->name]) }}">
-						{{$folder->user()->first()->name}}</a>'s
-					<a href="{{ route("folders.show", ["username" => $folder->user()->first()->name, "folder"=>$folder]) }}">
-						{{ $folder->title }}</a><!--
+				@foreach($folders as $listfolder)
+					<a href="{{ route("user", ["username" => $listfolder->user()->first()->name]) }}">
+						{{$listfolder->user()->first()->name}}</a>'s
+					<a href="{{ route("folders.show", ["username" => $listfolder->user()->first()->name, "folder"=>$listfolder]) }}">
+						{{ $listfolder->title }}</a><!--
 					-->@if(!$loop->last), @endif
 				@endforeach
 			</div>
-			@endif
-
-			@if($text)
-			<div class="artwork-text">Description: {!! $text !!}</div>
 			@endif
 			
 			@if($artwork->tags)
@@ -71,6 +67,12 @@
 	</div>
 	
 	<div class="art-display-container">
+		@if($text)
+		<div class="artwork-text w-100 large">
+			{!! $text !!}
+		</div>
+		@endif
+
 		@foreach($image_urls as $image_url)
 			<a href="{{$image_url}}" target="_blank"><img class="art-display" src="{{$image_url}}"></a>
 		@endforeach

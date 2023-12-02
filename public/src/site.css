@@ -71,6 +71,10 @@ nav .menu-toggle-circle .number-badge {
   font-size: 9pt;
 }
 
+.large {
+  font-size: 14pt;
+}
+
 .monospace {
   font-family: monospace;
 }

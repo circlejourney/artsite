@@ -1,5 +1,9 @@
 <?php
 namespace App\Services;
+
+use App\Models\Artwork;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class SanitiseService {
@@ -35,10 +39,28 @@ class SanitiseService {
     	return $this;
 	}
 
-	public function makePing() {
-		preg_match_all("/@[\w\-]+/", $this->string, $pings, PREG_OFFSET_CAPTURE);
-		foreach($pings[1] as $ping) {
-			error_log($ping);
+	public function makePing(Artwork $artwork=null) {
+		preg_match_all("/\@([\w\-]+)/", $this->string, $pings);
+		foreach($pings[1] as $i => $username) {
+			$user = User::where("name", $username)->first();
+			if($user) {
+				$notif = Notification::create([
+					"sender_id" => auth()->user()->id,
+					"artwork_id" => $artwork->id ?? null,
+					"type" => "ping"
+				]);
+				$user->notifications()->attach($notif);
+			}
+		}
+    	return $this;
+	}
+
+	public function formatPings() {
+		preg_match_all("/\@([\w\-]+)/", $this->string, $pings);
+		foreach($pings[0] as $i => $ping) {
+			$username = $pings[1][$i];
+			$user = User::where("name", $username)->first();
+			if($user) $this->string = str_replace($ping, $user->getNametag(), $this->string);
 		}
     	return $this;
 	}

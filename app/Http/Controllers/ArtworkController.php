@@ -75,12 +75,15 @@ class ArtworkController extends Controller
 		
 		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
-		foreach(array_filter($request->images) as $i => $image) {
-			if(!$image) continue;
-			$artwork->writeImage($i, $image, $request->user());
-		};
+		if($request->images) {
+			foreach(array_filter($request->images) as $i => $image) {
+				if(!$image) continue;
+				$artwork->writeImage($i, $image, $request->user());
+			};
+			$artwork->updateThumbnail();
+		}
 
-		$artwork->updateThumbnail()->updateText($request->text)->save();
+		$artwork->updateText(SanitiseService::of($request->text)->makePing($artwork)->get() ?? "")->save();
 
 		return redirect(route("art", ["path" => $path]));
 	}
@@ -186,7 +189,7 @@ class ArtworkController extends Controller
 		$artwork->images = $newImages;
 		$artwork->save();
 
-		if($newImages[0] !== $images[0]) {
+		if($newImages && $newImages[0] !== $images[0]) {
 			$artwork->updateThumbnail()->save();
 		}
 
