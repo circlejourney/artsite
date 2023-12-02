@@ -3,13 +3,13 @@
 @push("title"){{ "Dashboard" }}@endpush
 
 @section('body')
-	<h1>Welcome back to {{ config("app.name") }}, {{ auth()->user()->name }}!</h1>
+	<h1>Dashboard</h1>
 	<ul>
 		<li>
-			<a href="/{{ auth()->user()->name }}">View your profile</a>
+		<a href="{{ route("profile.edit") }}">Account settings</a>
 		</li>
 		<li>
-		<a href="{{ route("profile.edit") }}">Account settings</a>
+			<a href="/{{ auth()->user()->name }}">View your profile</a>
 		</li>
 		<li>
 			<a href="{{ route("profile.html.edit") }}">Customise profile</a>
