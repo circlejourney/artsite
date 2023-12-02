@@ -61,12 +61,6 @@
 						@if($listtag->tag_highlight)
 							<i class="fa fa-info-circle pl-2 py-2" data-toggle="tooltip" title="This tag has meta information"></i>
 						@endif
-						<a href="{{ route("folders.index", ["username" => $user->name, "tag" => $listtag->name ?? null]) }}"
-							data-toggle="tooltip"
-							title="Tag permalink"
-							onclick="event.stopPropagation()">
-							<i class="fa fa-tag ml-2"></i>
-						</a>
 					</div>
 				@endforeach
 			@else
@@ -74,12 +68,23 @@
 			@endif
 		</div>
 		
-		@foreach($user->tag_highlights as $tag_highlight)
+		@foreach($tags as $listtag)
 			<div
-				id="tag-info-{{ $tag_highlight->tag_id }}"
-				class="tag-info collapse
-				@if($tag && $tag->id == $tag_highlight->tag_id) show @endif">
-				{!! $tag_highlight->text !!}
+				id="tag-info-{{ $listtag->id }}"
+				class="py-2 tag-info collapse
+				@if($tag && $tag->id == $listtag->id) show @endif">
+				@if(!$tag)
+					<a class="folder-badge-link"
+						href="{{ route("folders.index", ["username" => $user->name, "tag" => $listtag->name ?? null]) }}"
+						data-toggle="tooltip"
+						title="Tag permalink"
+						onclick="event.stopPropagation()">
+						<i class="fa fa-tag ml-2"></i> Tag permalink
+					</a>
+				@endif
+				@if($listtag->tag_highlight)
+					{!! $listtag->tag_highlight->text !!}
+				@endif
 			</div>
 		@endforeach
 	</div>

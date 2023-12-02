@@ -49,7 +49,7 @@
 	</div>
 
 	@if($tag && $tag->tag_highlight)
-		<div id="tag-info-{{ $tag->id }}" class="tag-info collapse @if(isset($tag) && $tag->id = $tag->tag_highlight->tag_id) show @endif">
+		<div id="tag-info-{{ $tag->id }}" class="tag-info py-2 collapse @if(isset($tag) && $tag->id = $tag->tag_highlight->tag_id) show @endif">
 			{!! $tag->tag_highlight->text !!}
 		</div>
 	@endif
