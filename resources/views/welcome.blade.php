@@ -4,7 +4,7 @@
 
 @section("body")
 	@auth
-		<h1>Hello {!! auth()->user()->getNametag() !!}!</h1>
+		<h1>Hello <x-nametag :user="auth()->user()" />!</h1>
 	@else
     	<h1>Welcome to {{ config("app.name") }}!</h1>
 	@endauth

@@ -1,8 +1,8 @@
 @extends("layouts.site", ["metatitle" => $artwork->title])
 
 @push('head')
-	<meta name="og:image" content="{{ $artwork->getThumbnailURL() }}">
-	<meta name="og:description" content="{{ $artwork->title }} by {{ $artwork->users->pluck("name")->join(", ") }} on {{ config("app.name") }}">
+	<meta property="og:image" content="{{ $artwork->getThumbnailURL() }}">
+	<meta property="og:description" content="{{ $artwork->title }} by {{ $artwork->users->pluck("name")->join(", ") }} on {{ config("app.name") }}">
 @endpush
 
 @section('body')
@@ -18,10 +18,8 @@
 			{{ sizeof($owner_ids) > 1 ? "Artists:" : "Artist:" }}
 			
 			@foreach($artwork->users()->get() as $i => $owner)
-					<a href="{{ route("user", ["username" => $owner->name]) }}">
-						{!! $owner->getFlairHTML() !!}
-						{{ $owner->name }}</a><!--
-						-->@if(!$loop->last), @endif
+				{!! $owner->getNametag() !!}<!--
+				-->@if(!$loop->last), @endif
 			@endforeach
 
 			@if(sizeof($folders) > 0)

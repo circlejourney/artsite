@@ -191,13 +191,17 @@ class User extends Authenticatable
 		return $cleanHTML;
 	}
 
+	public function getFlair(): string {
+		return $this->custom_flair ?? $this->getTopRole()->default_flair;
+	}
+
 	public function getFlairHTML(): string {
 		$faString = $this->custom_flair ?? $this->getTopRole()->default_flair;
 		return "<i class='user-flair fa fa-$faString'></i>";
 	}
 
-	public function getNametag(): string {
-		return "<a href='" . route("user", ["username" => $this->name]) . "'>" . $this->getFlairHTML() . " " . $this->name . "</a>";
+	public function getNametag() {
+		return view("components.nametag", ["user" => $this]);
 	}
 
 	public function getAvatarURL() {

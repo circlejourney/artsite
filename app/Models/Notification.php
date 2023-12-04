@@ -37,7 +37,7 @@ class Notification extends Model
 	}
 
 	public function getSenderHTML() {
-		return "<a href=".route("user", ["username" => $this->sender->name]).">" . $this->sender->getFlairHTML() . " " . $this->sender->name . "</a>";
+		return view("components.nametag", ["user" => $this->sender]);
 	}
 
 	public function getArtworkHTML() {

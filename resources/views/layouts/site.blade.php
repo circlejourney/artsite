@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="/src/site.css?v={{ filemtime("src/site.css") }}">
     <script src="/src/site.js?v={{ filemtime("src/site.js") }}"></script>
 
-	<meta name="og:title" content="{{ config("app.name") }}@isset($metatitle) - {{ $metatitle }} @endisset">
+	<meta property="og:title" content="{{ config("app.name") }}@isset($metatitle) - {{ $metatitle }} @endisset">
     @stack("head")
 
 </head>

@@ -1,7 +1,7 @@
 @extends("layouts.site", ["metatitle" => "Artwork tagged #".$tagName])
 
 @push('head')
-	<meta name="og:image" content="{{ $artworks->first()->getThumbnailURL() }}">
+	<meta property="og:image" content="{{ $artworks->first()->getThumbnailURL() }}">
 @endpush
 
 @section('body')
