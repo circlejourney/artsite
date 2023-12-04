@@ -11,10 +11,13 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Throwable;
+
+use function PHPUnit\Framework\throwException;
 
 class RegisteredUserController extends Controller
 {
@@ -40,29 +43,25 @@ class RegisteredUserController extends Controller
 			'invite_code' => ['required', 'string', 'size:10'],
         ]);
 		
-		$invite = Invite::where("id", trim($request->invite_code))->firstOrFail();
-		$inviter = $invite->creator_id;
-		$invite_hold = $invite->only(["id", "creator_id"]);
-		$invite->delete();
-
+		DB::beginTransaction();
 		try {
+			$invite = Invite::where("id", trim($request->invite_code))->firstOrFail();
+			$inviterID = $invite->creator_id;
+			$invite->delete();
+
 			$user = User::create([
 				'name' => $request->name,
 				'display_name' => $request->name,
 				'email' => $request->email,
 				'password' => Hash::make($request->password),
 				'top_folder_id' => null,
-				'invited_by' => $inviter
+				'invited_by' => $inviterID
 			]);
-		} catch(Throwable $e) {
-			$message = $e->getMessage();
-			Invite::create($invite_hold);
-			return redirect()->back()->withErrors("Account creation failed: $message. You may try again with the same invite code.");
+		} catch (Throwable $err) {
+			return redirect()->back()->withErrors("Account creation failed; try again with the same invite code. ".$err->getMessage());
 		}
 
-		$inviter->update([
-			"invitee_count" => $inviter->invitee_count + 1
-		]);
+		DB::commit();
 
         event(new Registered($user));
 

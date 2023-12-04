@@ -18,7 +18,7 @@
 		@if($user == auth()->user())
 		<div class="owner-only">
 			<h2><i class="fa fa-lock"></i> (Private notice) No highlight images found.</h2>
-			<div>To highlight images, go to the <a href="{{ route("art.manage", ["user" => $user]) }}">Manage Art dashboard page</a>.</div>
+			<div>To add highlight images, go to the <a href="{{ route("art.manage", ["user" => $user]) }}">Manage Art dashboard page</a>.</div>
 		</div>
 		@endif
 	@endif
