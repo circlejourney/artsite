@@ -14,12 +14,12 @@ class Notification extends Model
     use HasFactory;
 
 	protected $fillable = [
-		"type", "sender_id", "sender_collective_id", "artwork_id"
+		"type", "sender_id", "sender_collective_id", "artwork_id", "content"
 	];
 
 	public function getDisplayHTML() {
 		/* Type can be:
-		 * [User] follow, fave, comment, message, collective-accept-join
+		 * [User] follow, fave, comment, message, ping
 		 * [Collective] collective-join, collective-follow, collective-comment
 		 * ...more to be added
 		 */
@@ -30,10 +30,10 @@ class Notification extends Model
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " followed you";
 		}
 		if($this->type == "ping") {
-			error_log($this->artwork_id);
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " pinged you" . ($this->artwork_id ? " on <a href='" . route("art", ["path" => $this->artwork->path]) . "'>" . $this->artwork->title . "</a>" : "");
 		}
-		return "You received a notification with an unknown type.";
+		if($this->content) return $this->content;
+		return "You received a notification of an unknown type.";
 	}
 
 	public function getSenderHTML() {
@@ -74,6 +74,6 @@ class Notification extends Model
 		])->merge($props)->all();
 		
 		$notif = Notification::create($params);
-		$notif->recipients()->attach($recipients->pluck("id"));
+		$notif->recipients()->attach($recipients->pluck("id")->reject($sender->id));
 	}
 }

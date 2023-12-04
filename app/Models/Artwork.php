@@ -13,6 +13,7 @@ use App\Services\SanitiseService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\UploadService;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 
 class Artwork extends Model
@@ -54,6 +55,10 @@ class Artwork extends Model
 
 	public function faved_by(): BelongsToMany {
 		return $this->belongsToMany(User::class, "faves")->withTimestamps();
+	}
+
+	public function art_invites(): HasMany {
+		return $this->hasMany(ArtInvite::class);
 	}
 
 	public static function byPath($path) : Artwork {
@@ -120,6 +125,14 @@ class Artwork extends Model
 			Storage::put($relative_path, $text ?? "");
 		}
 		return $this;
+	}
+
+	public function inviteForeignUser(User $user) {
+		$art_invite = ArtInvite::create([
+			"user_id" => $user->id,
+			"sender_id" => auth()->user()->id,
+			"artwork_id" => $this->id
+		]);
 	}
 
 	public function addForeignUser(User $user) {

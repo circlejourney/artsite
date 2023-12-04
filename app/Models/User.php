@@ -131,6 +131,14 @@ class User extends Authenticatable
 		return $this->belongsToMany(User::class, "follows", "followed_id", "follower_id")->withTimestamps();
 	}
 
+	public function art_invites(): HasMany { // Art invites RECEIVED by the user
+		return $this->hasMany(ArtInvite::class);
+	}
+
+	public function sent_art_invites(): HasMany { // Art invites SENT by the user
+		return $this->hasMany(ArtInvite::class, "sender_id");
+	}
+
 	/* Utility */
 
 	public function createTopFolder() {

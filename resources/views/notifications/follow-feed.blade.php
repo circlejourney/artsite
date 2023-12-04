@@ -2,10 +2,10 @@
 
 @section('body')
 	<h1>Artists You Follow</h1>
-	<ul class="nav nav-pill">
-		<a class="nav-link" href="{{ route("notifications") }}">Notifications</a>
-		<a class="nav-link">Artists You Follow</a>
-	</ul>
+	
+	@component('notifications.notification-menu')
+	@endcomponent
+
 	<div class="wide-gallery row">
 		@foreach($artworks as $artwork)
 		<div class="d-flex col-12 col-md-6 p-2">

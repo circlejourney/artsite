@@ -5,6 +5,7 @@ use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
+use App\Http\Controllers\ArtInviteController;
 use App\Http\Controllers\CollectiveController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\NotificationController;
@@ -88,6 +89,9 @@ Route::middleware('auth', 'verified')->group(function () {
 		Route::get("/notification-count", "get_count")->name("notifications.get_count");
 		Route::delete("/notifications", "destroy");
 		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
+
+		Route::get("/notifications/invites", [ArtInviteController::class, 'index'])->name("notifications.invites");
+		Route::post("/notifications/invites", [ArtInviteController::class, 'post'])->name("notifications.invites");
 	});
 
 	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");

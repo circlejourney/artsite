@@ -2,10 +2,9 @@
 
 @section('body')
 	<h1>Notifications</h1>
-	<ul class="nav nav-pill">
-		<a class="nav-link">Notifications</a>
-		<a href="{{ route("notifications.feed") }}" class="nav-link">Artists You Follow</a>
-	</ul>
+	@component('notifications.notification-menu')
+	@endcomponent
+
 	<form method="POST">
 		@csrf
 		@method("DELETE")

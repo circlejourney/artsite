@@ -17,46 +17,6 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Notification $notification)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)
@@ -70,7 +30,7 @@ class NotificationController extends Controller
     }
 
 	public function index_follow() {
-		$artworks = Artwork::whereHas("users", function($query){
+		$artworks = Artwork::whereDoesntHave("users", function($q) { $q->where("user_id", auth()->user()->id); })->whereHas("users", function($query){
 			$query->whereIn("user_id", auth()->user()->follows->pluck("id")->all());
 		})->orderBy("created_at", "desc")->get();
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
@@ -87,6 +47,6 @@ class NotificationController extends Controller
 
 	public function get_count(Request $request) {
 		$user = $request->user();
-		return response($user->notifications->count());
+		return response($user->notifications->count() + $user->invites->count());
 	}
 }

@@ -66,12 +66,13 @@ class ArtworkController extends Controller
 			// Loop through guest artists (not the user making the request) and add their top folders
 			if(!$artist) continue;
 			$guestArtist = User::where("name", $artist)->first();
-			$artistIDs[] = $guestArtist->id;
-			$folderIDs[] = $guestArtist->top_folder_id;
+			$artwork->inviteForeignUser($guestArtist);
+			//$artistIDs[] = $guestArtist->id;
+			//$folderIDs[] = $guestArtist->top_folder_id;
 		}
 
-		$artwork->users()->attach($artistIDs);
-		$artwork->folders()->attach($folderIDs);
+		//$artwork->users()->attach($artistIDs);
+		//$artwork->folders()->attach($folderIDs);
 		
 		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
@@ -151,7 +152,7 @@ class ArtworkController extends Controller
 					if(!$artistname) continue;
 					if(!$artist = User::where("name", $artistname)->first()) continue;
 					if($artwork->users()->get()->contains($artist)) continue;
-					$artwork->addForeignUser($artist);
+					$artwork->inviteForeignUser($artist);
 				}	
 			}
 		}
