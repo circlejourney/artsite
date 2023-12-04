@@ -10,7 +10,9 @@
 	</h1>
 	<div class="art-info row mb-2">
 		<div class="col-12 col-md-6">
-			@include("components.fave-button")
+			@auth
+				@include("components.fave-button")
+			@endauth
 
 			<div>
 				Posted: <span class="format-date" data-timestamp="{{ $artwork->created_at->timestamp}}"></span>
