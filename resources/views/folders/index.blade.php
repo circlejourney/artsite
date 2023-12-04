@@ -13,7 +13,6 @@
 			if($(clicked).hasClass("selected")) {
 				action = "off";
 				toggleOn = toggleableClass + ':not(' + toShow + ')';
-				toggleOff = toggleableClass + toShow;
 				$(toCollapse).collapse("hide");
 			} else {
 				action = "on";

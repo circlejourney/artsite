@@ -470,6 +470,12 @@ main .page-block {
   font-size: 15pt;
 }
 
+.tag-info.collapsing {
+  height: 0;
+  padding-bottom: 0;
+  transition: all 0.01s linear;
+}
+
 .tag {
   min-width: auto;
   color: black;
