@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\ArtInviteController;
 use App\Http\Controllers\CollectiveController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -95,6 +96,12 @@ Route::middleware('auth', 'verified')->group(function () {
 	});
 
 	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");
+
+	Route::controller(MessageController::class)->group(function() {
+		Route::get("messages", "index")->name("messages");
+		Route::get("/{username}/message", "create")->name("message.create");
+		Route::post("/{username}/message", "create")->name("message.create");
+	});
 });
 
 require __DIR__.'/auth.php';

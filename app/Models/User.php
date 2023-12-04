@@ -139,6 +139,14 @@ class User extends Authenticatable
 		return $this->hasMany(ArtInvite::class, "sender_id");
 	}
 
+	public function messages() : HasMany {
+		return $this->hasMany(Message::class, "recipient_id");
+	}
+
+	public function sent_messages() : HasMany {
+		return $this->hasMany(Message::class, "sender_id");
+	}
+
 	/* Utility */
 
 	public function createTopFolder() {

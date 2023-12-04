@@ -47,6 +47,6 @@
 				</a>
 			</form>
 		@endauth
-        <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></a>
+        <a href="{{ route("messages") }}" class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></a>
     </div>
 </nav>

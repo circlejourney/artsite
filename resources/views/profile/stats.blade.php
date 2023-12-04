@@ -1,4 +1,4 @@
-@extends("layouts.profile", ["user" => $user, "metatitle" => $user->name . "'s Stats"]);
+@extends("layouts.profile", ["user" => $user, "metatitle" => $user->name . "'s Stats"])
 
 @section('profile-body')
 	<h1>{{$user->name}}'s Stats</h1>
