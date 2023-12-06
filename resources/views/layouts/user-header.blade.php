@@ -20,7 +20,7 @@
 			</button>
 		</form>
 		@endif
-		<a class="button-circle" href="#">
+		<a class="button-circle" href="{{ route("messages.create", ["username" => $user->name]) }}">
 			<i class="far fa-envelope"></i>
 		</a>
 		<a class="button-circle" href="#">

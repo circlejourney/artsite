@@ -99,8 +99,11 @@ Route::middleware('auth', 'verified')->group(function () {
 
 	Route::controller(MessageController::class)->group(function() {
 		Route::get("messages", "index")->name("messages");
-		Route::get("/{username}/message", "create")->name("message.create");
-		Route::post("/{username}/message", "create")->name("message.create");
+		Route::get("messages/outbox", "index")->name("messages.outbox");
+		Route::get("/messages/new/{username?}", "create")->name("messages.create");
+		Route::post("/messages/new/{username?}", "store");
+		Route::get("messages/{message}", "show")->name("messages.show");
+		Route::post("messages/{message}", "store");
 	});
 });
 

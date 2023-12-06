@@ -42,11 +42,18 @@
 				@csrf
 				<a href="{{ route("notifications") }}" class="notification-button menu-toggle-circle">
 					<i class="far fa-fw fa-bell"></i>
-					<div class="notification-badge number-badge badge badge-primary d-none">
-					</div>
+					<div class="notification-badge number-badge badge badge-primary d-none"></div>
 				</a>
 			</form>
+			<a href="{{ route("messages") }}" class="menu-toggle-circle">
+				<i class="far fa-fw fa-envelope"></i>
+				@php
+					$unread = auth()->user()->messages->reject(function($i){ return $i->read; })->count();
+				@endphp
+				@if($unread > 0)
+					<div class="notification-badge number-badge badge badge-primary">{{ $unread }}</div>
+				@endif
+			</a>
 		@endauth
-        <a href="{{ route("messages") }}" class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></a>
     </div>
 </nav>

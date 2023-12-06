@@ -485,6 +485,11 @@ main .page-block {
   background-color: #A9A9A9;
 }
 
+.tag-highlight-image {
+  width: 100px;
+  height: 100px;
+}
+
 @media screen and (min-width: 1200px) {
   div[class$=-section] {
     margin: 2rem 0;
@@ -556,10 +561,10 @@ main .page-block {
   font-size: 10pt;
 }
 
-/* Tag meta */
-.tag-highlight-image {
-  width: 100px;
-  height: 100px;
+/* Messages */
+.unread {
+  background-color: #f5f5f5;
+  font-weight: bold;
 }
 
 /* Footer */

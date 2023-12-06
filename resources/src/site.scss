@@ -547,6 +547,11 @@ $profile-padding: 1rem;
 	}
 }
 
+.tag-highlight-image {
+	width: 100px;
+	height: 100px;
+}
+
 div[class$="-section"] {
 	@include screen-lg {
 		margin: $header-margin 0;
@@ -620,10 +625,11 @@ div[class$="-section"] {
 	}
 }
 
-/* Tag meta */
-.tag-highlight-image {
-	width: 100px;
-	height: 100px;
+/* Messages */
+
+.unread {
+	background-color: $light-bg;
+	font-weight: bold;
 }
 
 /* Footer */

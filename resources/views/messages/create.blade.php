@@ -1,14 +1,14 @@
 @extends('layouts.site')
 
 @section('body')
-	<h1>Message {{ $recipient->name }}</h1>
-	@if($previousMessage) {{ $previousMessage->content }} @endif
+	<h1>Create message</h1>
 	<form method="POST">
 		@csrf
-		<input type="text" name="subject" id="subject" class="form-control" @if($previousMessage) disabled value="{{ $previousMessage->subject }}" @endif>
-		@if($previousMessage)
-			<input type="checkbox" id="change-subject" onchange="$('#subject')[0].toggleAttribute('disabled', !this.checked)"> Change subject
-		@endif
+		Recipient
+		<input type="text" name="recipient" id="recipient" class="form-control" value="{{ old("recipient", $recipientName ?? "") }}">
+		Subject
+		<input type="text" name="subject" id="subject" class="form-control" value="{{ old("subject") }}">
+		Message
 		<textarea name="content" class="form-control"></textarea>
 		<button class="button-pill">Send</button>
 	</form>
