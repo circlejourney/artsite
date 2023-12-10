@@ -1,42 +1,92 @@
-@extends("layouts.site")
+@extends("layouts.site", ["metatitle" => "Edit ".$artwork->title])
 
 @push("head")
+	<script src="/src/extend_form.js"></script>
+	<script src="/src/ace/ace.js"></script>
+	<script src="/src/sortable/Sortable.js"></script>
+
 	<script>
-		function addImageInput() {
-			if($("input-wrapper").length < 9) $("#image-inputs").append("<div class=\"input-wrapper\"><input type=\"file\" name=\"images[]\"></input></div>");
+		function toggleImageDelete(element){
+			if($(element).siblings(".image_order").val() == "false" && !$(element).siblings("input[type='file']").val()) {
+				element.parentElement.remove();
+			}
+
+			const newval = $(element).find('input').val() == "false";
+			$(element).find('input').val(newval);
+			$(element).closest('.image-input-wrapper').toggleClass('deselected', newval);
 		}
+		$(window).on("load", function(){
+			const imageInputs = $("#image-inputs")[0];
+			const sortable = new Sortable(imageInputs, {
+				animation: 150,
+				ghostClass: 'dragging',
+				handle: '.image-drag-handle'
+			});
+			const editor = startAceEditor("#editor", "#text", "#html-preview");
+		})
 	</script>
+
 @endpush
 
 @section('body')
-<div class="p-4">
+<div class="page-block">
 	<h1>Edit '{{ $artwork->title }}'</h1>
 
-	<form method="POST" enctype="multipart/form-data" class="row">
+	<form method="POST" enctype="multipart/form-data">
 		@method("PUT")
 		@csrf
-		<div class="col-auto">
+		<div>
 			<div id="image-inputs" class="flex-column">
-				@foreach($image_urls as $image_url)
+				@foreach($image_urls as $i=>$image_url)
 					<div class="image-input-wrapper">
+						<div class="image-buttons image-drag-handle">
+							<i class="fa fa-arrows"></i>
+						</div>
+
 						<input type="file" name="images[]" onchange="updatePreview(this, $(this).siblings('.image-preview')[0])">
+						<input type="hidden" class="image_order" name="image_order[]" value="{{$i}}">
 						<img class="image-preview" src="{{ $image_url }}">
+
+						<div class="image-buttons image-delete" onclick="toggleImageDelete(this)">
+							<input type="hidden" class="delete_image" name="delete_image[]" value="false">
+							<i class="fa fa-times fa-fw"></i>
+						</div>
 					</div>
 				@endforeach
 			</div>
-			<a class='button-pill' onclick="addImageInput()">+</a>
-		</div>
-		<div class="col">
+			<a class='button-pill' onclick="addImageInput('.image-input-wrapper', '#image-inputs')">+</a>
+
 			<input class="form-control" type="text" name="title" placeholder="Title" value="{{ old('title', $artwork->title ) }}">
-			<textarea class="form-control" name="text" placeholder="HTML text">{{ old('title', $artwork->text ) }}</textarea>
-			@foreach( $artwork->users()->get()->filter(function($user) {
-				return Auth::check() && $user->id !== Auth::user()->id;
-			}) as $user)
-				<input class="form-control" type="text" name="artist[]" placeholder="Collaborator" value="{{ $user["name"] }}">
-			@endforeach
-			<button class='button-pill'>Submit</button>
+			<div id="editor"></div>
+			<input type="hidden" id="text" name="text" value="{{ old('text', $text) }}">
+			
+			<div>Folder</div>
+			@include("components.folder-select", ["folderlist" => $folderlist, "selected" => $selectedfolder])
+			
+			<div>Artists</div>
+			<div id="artist-inputs">
+				@forelse( $artwork->users()->get() as $i=>$user)
+					<input class="form-control artist-input" type="text" name="artist[]" placeholder="Collaborator" value="{{ old("artist.".$i, $user["name"]) }}">
+				@empty
+					<input class="form-control artist-input" type="text" name="artist[]" placeholder="Collaborator">
+				@endforelse
+			</div>
+			<a class='button-pill' onclick="addTextInput('.artist-input', '#artist-inputs', 5)">+</a>
+
+			<div>Tags</div>
+			<input class="form-control" name="tags" id="tags" placeholder="Tags (comma-separated)" value="{{ old("tags", $tags->pluck("name")->join(", ") ) }}">
+			
+			<input type="checkbox" name="not_searchable" id="not_searchable" @checked( old("active", !$artwork->searchable) )>
+			<label for="not_searchable">Hide art from global tag searches</label>
+			
+			<br>
+			
+			<button class='button-pill'>Update</button>
 		</div>
 	</form>
 
+	<h2>HTML Preview</h2>
+	<div id="html-preview"></div>
+	
 </div>
 @endsection

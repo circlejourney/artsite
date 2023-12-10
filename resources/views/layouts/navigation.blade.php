@@ -2,6 +2,7 @@
     <div class="nav-left">
         <a href="#nav-menu" class="menu-toggle" data-toggle="collapse"><i class="fa fa-bars"></i></a>
         <a href="/" class="logo">Logo</a>
+		<a href="/" class="logo-small">L</a>
 		<div class="d-none d-lg-block">
 			@include("components.search-form")
 		</div>
@@ -19,9 +20,8 @@
                 @if(Auth::check())
 
                     <a class="menu-item" href="/{{ Auth::user()->name }}">{{ Auth::user()->name }}</a>
+                    <a class="menu-item" href="{{route('dashboard')}}">Dashboard</a>
 					<a class="menu-item" href="{{route('profile.html.edit')}}">Customise profile</a>
-					<a class="menu-item" href="{{route('folders')}}">Manage folders</a>
-                    <a class="menu-item" href="{{route('profile.edit')}}">Settings</a>
                     <!-- Authentication -->
                     @include("components.logout-form")
 
@@ -36,7 +36,24 @@
     </div>
 
     <div class="nav-right">
-        <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-bell"></i></a>
-        <a href="#" class="menu-toggle-circle"><i class="far fa-fw fa-envelope"></i></a>
+		
+		@auth
+			<form class="notifications" action="{{ route("notifications.get_count") }}">
+				@csrf
+				<a href="{{ route("notifications") }}" class="notification-button menu-toggle-circle">
+					<i class="far fa-fw fa-bell"></i>
+					<div class="notification-badge number-badge badge badge-primary d-none"></div>
+				</a>
+			</form>
+			<a href="{{ route("messages") }}" class="menu-toggle-circle">
+				<i class="far fa-fw fa-envelope"></i>
+				@php
+					$unread = auth()->user()->messages->reject(function($i){ return $i->read; })->count();
+				@endphp
+				@if($unread > 0)
+					<div class="notification-badge number-badge badge badge-primary">{{ $unread }}</div>
+				@endif
+			</a>
+		@endauth
     </div>
 </nav>

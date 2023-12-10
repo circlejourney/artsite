@@ -1,75 +1,37 @@
-@extends("layouts.site")
+@extends("layouts.profile", ["user" => $user, "metatitle" => $user->name])
 
-@push("metatitle"){{ $user->display_name }}@endpush
+@push('head')
+	<meta property="og:image" content="{{ $user->getAvatarURL() }}">
+	<meta property="og:description" content="{{ $user->name }} on {{ config("app.name") }}">
+@endpush
 
-@section('body')
-	<div class="profile-banner" style="background-image: url(/images/defaultbanner.png)"></div>
-	
-	<div class="profile-info">
-		<img class="profile-avatar" src="{{ $avatar_url ?? '/images/user.png' }}">
-		<div class="profile-details">
-			<div class="display-name">{{ $user->display_name }}</div>
-			<div class="display-username">{{ "@" . $user->name }}</div>
-		</div>
-		<div class="profile-interact">
-			<a class="button-pill" href="#">Follow</a>
-			<a class="button-circle" href="#">
-				<i class="far fa-envelope"></i>
-			</a>
-			<a class="button-circle" href="#">
-				<i class="fa fa-ellipsis"></i>
-			</a>
-		</div>
-	</div>
-
-	<ul class="profile-menu">
-		<li>
-			<a href="#">Profile</a>
-		</li>
-		<li>
-			<a href="#">Gallery</a>
-		</li>
-		<li>
-			<a href="#">Favorites</a>
-		</li>
-		<li>
-			<a href="#">Blog</a>
-		</li>
-		<li>
-			<a href="#">Commissions</a>
-		</li>
-		<li>
-			<a href="#">Stats</a>
-		</li>
-	</ul>
-
+@section('profile-body')
+	@if($highlights->count() > 0)
 	<div class="profile-highlight">
-		<img class="" src="/images/300.png">
-		<img src="/images/300.png">
-		<img src="/images/300.png">
+		@foreach($highlights as $highlight)
+		<a href="{{ route("art", ["path" => $highlight->path]) }}">
+			<img src="{{ $highlight->getImageURL(0) }}">
+		</a>
+		@endforeach
 	</div>
+	@else
+		@if($user == auth()->user())
+		<div class="owner-only">
+			<h2><i class="fa fa-lock"></i> (Private notice) No highlight images found.</h2>
+			<div>To add highlight images, go to the <a href="{{ route("art.manage", ["user" => $user]) }}">Manage Art dashboard page</a>.</div>
+		</div>
+		@endif
+	@endif
 	
 	<div class="profile-custom @if($user->customised){{ "customised" }}@endif">
 		{!! $profile_html !!}
 	</div>
 	
-	<div class="page-block">
-		<h2>Gallery</h2>
-		<div class="gallery">
-		@foreach($artworks as $artwork) 
-			<a class="gallery-thumbnail" href="{{ route('art', ["path" => $artwork->path]) }}">
-				@if($artwork->thumbnail)
-					<img src="{{ Storage::url($artwork->thumbnail) }}">
-				@else
-					<i class="far fa-newspaper"></i>
-					<br>
-					[Text only]
-				@endif
-			</a>
-		@endforeach
-		</div>
+	<div class="gallery-section">
+		<h2>Latest Art</h2>
+		@include("layouts.gallery", ["artworks" => $artworks, "user" => $user])
 	</div>
-	<div class="page-block row">
+	<div class="post-section row">
 		<div class="col-12 col-md-6 profile-column">
 			<div class="blog">
 				<h2>Latest Blog</h2>

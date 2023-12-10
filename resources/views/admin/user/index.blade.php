@@ -2,11 +2,11 @@
 
 @section('body')
 	<div class="page-block">
-		<h1>User Management</h1>
+		<h1>Manage Users</h1>
 		@foreach($users as $user)
 			<div>
 				<a href="{{ route("admin.user.edit", ["user" => $user]) }}">
-					{{ $user->name }}
+					{!! $user->getFlairHTML() !!} {{ $user->name }}
 				</a>
 			</div>
 		@endforeach

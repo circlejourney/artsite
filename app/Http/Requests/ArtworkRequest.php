@@ -24,7 +24,8 @@ class ArtworkRequest extends FormRequest
         return [
             'title' => ["required", "max:255"],
 			'images.*' => ["mimes:jpg,jpeg,png,gif", "max:4096"],
-			"artist.*" => ["string", "max:255", "nullable"]
+			"artist.*" => ["string", "max:255", "nullable"],
+			"tags" => ["string", "max:1000", "nullable"]
         ];
     }
 }

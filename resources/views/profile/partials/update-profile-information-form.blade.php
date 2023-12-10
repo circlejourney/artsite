@@ -1,3 +1,13 @@
+@push('head')
+	<script>
+		function updateFlairPreview() {
+			if($("#custom_flair").length) $(".flair-preview").removeClass().addClass("flair-preview fa fa-"+$("#custom_flair").val());
+			$(".username-preview").text($("#name").val());
+		}
+		$(window).on("load", updateFlairPreview);
+	</script>
+@endpush
+
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
@@ -19,14 +29,8 @@
 
         <div>
             <x-input-label for="name" value="Username" />
-            <x-text-input id="name" name="name" type="text" class="mt-1" :value="old('name', $user->name)" required autofocus autocomplete="Username" />
+            <x-text-input id="name" name="name" type="text" class="mt-1" :value="old('name', $user->name)" required autofocus autocomplete="Username" oninput="updateFlairPreview()" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
-
-        <div>
-            <x-input-label for="display_name" value="Display name" />
-            <x-text-input id="display_name" name="display_name" type="text" class="mt-1" :value="old('display_name', $user->display_name)" required autofocus autocomplete="Display name" />
-            <x-input-error class="mt-2" :messages="$errors->get('display_name')" />
         </div>
 
         <div>
@@ -52,6 +56,25 @@
                 </div>
             @endif
         </div>
+
+        <div>
+            <x-input-label for="display_name" value="Display name" />
+            <x-text-input id="display_name" name="display_name" type="text" class="mt-1" :value="old('display_name', $user->display_name)" required autofocus autocomplete="Display name" />
+            <x-input-error class="mt-2" :messages="$errors->get('display_name')" />
+        </div>
+
+		@if($user->hasPermissions("change_own_flair"))
+        <div>
+            <label for="custom_flair">Custom icon flair: <b>fa-</b></label>
+			<input id="custom_flair" name="custom_flair" type="text" class="mt-1" value="{{ old('custom_flair', $user->custom_flair ?? $user->getTopRole()->default_flair) }}" required autofocus oninput="updateFlairPreview()">
+			<a href="https://fontawesome.com/search?o=r&m=free">Click here</a> for a list of available Font Awesome icon names.
+            <x-input-error class="mt-2" :messages="$errors->get('custom_flair')" />
+        </div>
+		@endif
+		
+		<div>
+			Preview: <a href="#"><i class="flair-preview fa fa-{{ old('custom_flair', $user->custom_flair ?? $user->getTopRole()->default_flair) }}"></i> <span class="username-preview"></span></a>
+		</div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

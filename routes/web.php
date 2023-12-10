@@ -5,6 +5,12 @@ use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
+use App\Http\Controllers\ArtInviteController;
+use App\Http\Controllers\CollectiveController;
+use App\Http\Controllers\InviteController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-	if(auth()->check()) return view('dashboard');
-	else return view('welcome');
+	return view('welcome');
 })->name("home");
 
 Route::get('/dashboard', function () {
@@ -23,39 +28,108 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::middleware("role:admin")->group(function(){
+/* Admin management routes */
+Route::middleware("role:admin,mod")->group(function(){
+	Route::get("/admin", [AdminPageController::class, 'index'])->name("admin");
+});
+
+Route::middleware("permissions:manage_users")->group(function(){
 	Route::get("/admin/users", [AdminPageController::class, 'index_users'])->name("admin.user.index");
 	Route::get("/admin/users/{user}", [AdminPageController::class, 'edit_user'])->name("admin.user.edit");
 	Route::put("/admin/users/{user}", [AdminPageController::class, 'update_user']);
-	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
-	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
+	Route::delete("/admin/users/{user}/delete", [ProfileController::class, 'destroy']);
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-	Route::get('/profile/delete', function(){
-		return view("profile.delete");
-	})->name('profile.destroy');
-    Route::delete('/profile/delete', [ProfileController::class, 'destroy']);
-	Route::get("/profile/customise", [UserPageController::class, 'edit'])->name('profile.html.edit');
-	Route::patch("/profile/customise", [UserPageController::class, 'update']);
-	
-	Route::get("/work/new", [ArtworkController::class, 'create'])->name('art.create');
-	Route::post("/work/new", [ArtworkController::class, 'store']);
-	Route::get("/work/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
-	Route::delete("/work/{path}/delete", [ArtworkController::class, 'delete']);
-	Route::get("/work/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
-	Route::put("/work/{path}/edit", [ArtworkController::class, 'update']);
+Route::middleware("permissions:manage_roles")->group(function(){
+	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
+	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
+	Route::put("/admin/roles/{role}", [AdminPageController::class, 'update_role']);
+});
 
-	Route::get("/manage-folders", [FolderController::class, 'index'])->name("folders");
-	Route::post("/manage-folders", [FolderController::class, 'store']);
-	Route::get("/manage-folders/{folder}", [FolderController::class, 'edit'])->name("folders.edit");
-	Route::put("/manage-folders/{folder}", [FolderController::class, 'update']);
-	Route::delete("/manage-folders/{folder}", [FolderController::class, 'destroy']);
+Route::middleware("permissions:manage_artworks")->group(function(){
+	Route::get("/admin/works", [AdminPageController::class, 'index_artworks'])->name("admin.art.index");
+	Route::get("/admin/works/{role}", [AdminPageController::class, 'edit_artworks'])->name("admin.art.edit");
+});
+
+Route::middleware('auth', 'verified')->group(function () {
+	/* Self management routes */
+    Route::get('/dashboard/account', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/dashboard/account', [ProfileController::class, 'update'])->name('profile.update');
+	Route::get('/dashboard/account/delete', function(){ return view("profile.delete"); })->name('profile.destroy');
+    Route::delete('/dashboard/account/delete', [ProfileController::class, 'destroy']);
+	Route::get("/dashboard/profile", [UserPageController::class, 'edit'])->name('profile.html.edit');
+	Route::patch("/dashboard/profile", [UserPageController::class, 'update']);
+
+	Route::get('/dashboard/invites', [InviteController::class, 'manage'])->name('invites');
+	Route::post('/dashboard/invites', [InviteController::class, 'generate']);
+	
+	Route::get("/dashboard/folders", [FolderController::class, 'index_manage'])->name("folders.manage");
+	Route::post("/dashboard/folders", [FolderController::class, 'store']);
+	Route::get("/dashboard/folders/folder:{folder}", [FolderController::class, 'edit'])->name("folders.edit");
+	Route::put("/dashboard/folders/folder:{folder}", [FolderController::class, 'update']);
+	Route::delete("/dashboard/folders/folder:{folder}", [FolderController::class, 'destroy']);
+	
+	Route::get("/dashboard/tags", [TagController::class, 'index_manage'])->name("tags.manage");
+	Route::get("/dashboard/tags/{tag}", [TagController::class, 'edit'])->name("tags.edit");
+	Route::post("/dashboard/tags/{tag}", [TagController::class, 'store_or_update']);
+	Route::patch("/dashboard/tags/{tag}", [TagController::class, 'store_or_update']);
+	
+	Route::get("/dashboard/art", [ArtworkController::class, 'manage'])->name("art.manage");
+	Route::put("/dashboard/art", [ArtworkController::class, 'put']);
+	
+	Route::get("/art/new", [ArtworkController::class, 'create'])->name('art.create');
+	Route::post("/art/new", [ArtworkController::class, 'store']);
+	Route::get("/art/{path}/delete", [ArtworkController::class, 'showdelete'])->name('art.delete');
+	Route::delete("/art/{path}/delete", [ArtworkController::class, 'delete']);
+	Route::get("/art/{path}/edit", [ArtworkController::class, 'edit'])->name('art.edit');
+	Route::put("/art/{path}/edit", [ArtworkController::class, 'update']);
+
+	Route::controller(NotificationController::class)->group(function() {
+		Route::get("/notifications", "index")->name("notifications");
+		Route::get("/notifications/follow-feed", "index_follow")->name("notifications.feed");
+		Route::get("/notification-count", "get_count")->name("notifications.get_count");
+		Route::delete("/notifications", "destroy");
+		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
+
+		Route::get("/notifications/invites", [ArtInviteController::class, 'index'])->name("notifications.invites");
+		Route::post("/notifications/invites", [ArtInviteController::class, 'post'])->name("notifications.invites");
+	});
+
+	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");
+
+	Route::controller(MessageController::class)->group(function() {
+		Route::get("messages", "index")->name("messages");
+		Route::get("messages/outbox", "index")->name("messages.outbox");
+		Route::get("/messages/new/{username?}", "create")->name("messages.create");
+		Route::post("/messages/new/{username?}", "store");
+		Route::get("messages/{message}", "show")->name("messages.show");
+		Route::post("messages/{message}", "store");
+	});
 });
 
 require __DIR__.'/auth.php';
 
-Route::get("/work/{path}", [ArtworkController::class, 'show'])->name("art");
+Route::get("/art/{path}", [ArtworkController::class, 'show'])->name("art");
+
+Route::controller(ArtworkController::class)->group(function () {
+	Route::post('fave/{path}', 'fave')->name('fave');
+	Route::delete('fave/{path}', 'unfave')->name('unfave');
+});
+
+/* Artist's gallery */
+Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name("folders.index");
+Route::get("/{username}/gallery/folder:{folder}/{all?}", [FolderController::class, 'show'])->name("folders.show");
+
+/* Groups */
+Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
+Route::post("/co/new", [CollectiveController::class, 'store']);
+Route::get("/co/{url}", [CollectiveController::class, 'show'])->name("collectives.show");
+Route::get("/co/{url}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");
+Route::patch("/co/{url}/edit", [CollectiveController::class, 'update']);
+
+Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags.user.index");
+Route::get("/search", [TagController::class, 'show_global'])->name("tags.global.show");
+
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');
+Route::get("/{username}/stats", [UserPageController::class, 'show_stats'])->name("stats");
+Route::get("/{username}/faves", [UserPageController::class, 'index_faves'])->name("faves");

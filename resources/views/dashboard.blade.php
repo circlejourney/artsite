@@ -1,20 +1,36 @@
-@extends("layouts.site")
+@extends("layouts.site", [ "metatitle" => "Dashboard" ])
 
-@push("metatitle"){{ "Dashboard" }}@endpush
 @push("title"){{ "Dashboard" }}@endpush
 
 @section('body')
-<div class="p-4">
 	<h1>Dashboard</h1>
-	<p>Welcome back to {{ config("app.name") }}, {{ Auth::user()->name }}!</p>
-	<a href="/{{ Auth::user()->name }}">View your profile</a>
+	<ul>
+		<li>
+		<a href="{{ route("profile.edit") }}">Account settings</a>
+		</li>
+		<li>
+			<a href="/{{ auth()->user()->name }}">View your profile</a>
+		</li>
+		<li>
+			<a href="{{ route("profile.html.edit") }}">Customise profile</a>
+		</li>
+		<li>
+		<a href="{{ route("art.manage") }}">Manage art</a>
+		</li>
+		<li>
+		<a href="{{ route("folders.manage") }}">Manage art folders</a>
+		</li>
+		<li>
+		<a href="{{ route("tags.manage") }}">Manage tags</a>
+		</li>
+		<li>
+			<a href="{{ route("invites") }}">Invites</a>
+		</li>
+		<li>
+		@include("components.logout-form")
+		</li>
+	</ul>
 	<br>
-	<a href="{{ route("profile.html.edit") }}">Customise your profile</a>
-	<br>
-	<a href="{{ route("folders") }}">Manage art folders</a>
-	<br>
-	<a href="{{ route("profile.edit") }}">Update your settings</a>
-	<br>
-	@include("components.logout-form")
-</div>
+	<h2>Admin section</h2>
+	@include("components.admin-links", ["roles" => auth()->user()->roles()])
 @endsection

@@ -1,20 +1,25 @@
-@extends('layouts.site')
-
-@push("metatitle"){{ "Home" }}@endpush
+@extends('layouts.site', ["metatitle" => "Home"])
 @push("title"){{ "Home" }}@endpush
-@push("metadescription"){{ "A cool art site with groups and more." }}@endpush
+@push("metadescription"){{ "A cool art site with collabs, collectives and more." }}@endpush
 
 @section("body")
-<div class="p-4">
-    <h1>Art Site</h1>
-    <p>Welcome to {{ config("app.name") }}! A cool art site with groups, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
+	@auth
+		<h1>Hello <x-nametag :user="auth()->user()" />!</h1>
+	@else
+    	<h1>Welcome to {{ config("app.name") }}!</h1>
+	@endauth
+	
+	<p>A cool art site with collabs, collectives, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
     
-    @unless(Auth::check())
-    <p>
-        <a href="{{ route("login") }}">Log in</a>
-		<br>
-		<a href="{{ route("register") }}">Register</a>
-    </p>
-    @endif
-</div>
+    @auth
+		<p>
+			<a href="{{ route("dashboard")}}">Go to dashboard</a>
+		</p>
+    @else
+		<p>
+			<a href="{{ route("login") }}">Log in</a>
+			<br>
+			<a href="{{ route("register") }}">Register</a>
+		</p>
+	@endauth
 @endsection

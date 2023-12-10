@@ -6,7 +6,7 @@
 		@foreach($roles as $role)
 			<div>
 				<a href="{{ route("admin.role.edit", ["role" => $role]) }}">
-					{{ Str::ucfirst($role->name) }}
+					{!! $role->getDefaultFlairHTML() !!} {{ Str::ucfirst($role->name) }}
 				</a>
 			</div>
 		@endforeach

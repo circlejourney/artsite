@@ -23,7 +23,8 @@ class UserPageUpdateRequest extends FormRequest
     {
         return [
             'profile_html' => ['string', 'nullable'],
-			'avatar' => ['mimes:jpg,jpeg,png,gif']
+			'avatar' => ['mimes:jpg,jpeg,png,gif', 'max:1024'],
+			'banner' => ['mimes:jpg,jpeg,png,gif', 'max:2048']
         ];
     }
 }

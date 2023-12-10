@@ -152,9 +152,6 @@ return [
     | Set whether the site is open or closed to new registrations.
     | By default the site is closed and the register app will be inaccessible.
     | 
-    |
-    | 
-    |
     */
 
     'site_closed' => env('SITE_CLOSED', true),
@@ -183,6 +180,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\HttpErrorServiceProvider::class,
     ])->toArray(),
 
     /*

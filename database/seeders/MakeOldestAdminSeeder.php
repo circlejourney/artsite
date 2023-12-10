@@ -15,9 +15,11 @@ class MakeOldestAdminSeeder extends Seeder
     public function run(): void
     {
         $user = User::oldest()->first();
-		$admin_role = Role::where("name", "admin")->first()->id;
+		if(!$user->hasRole("founder")) {
+			$user->roles()->attach(1);
+		}
 		if(!$user->hasRole("admin")) {
-			$user->roles()->attach($admin_role);
+			$user->roles()->attach(2);
 		}
     }
 }
