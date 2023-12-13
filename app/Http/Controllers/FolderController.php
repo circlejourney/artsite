@@ -158,7 +158,9 @@ class FolderController extends Controller
 		
 		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
 		$childkeys = FolderListService::class($thisfolder)->tree(false)
-			->map(function($i){ return $i["id"]; })->all();
+			->map(function($i){ return $i["id"]; })
+			->push($folder->id)
+			->all();
 
 		$selectedfolder = $folder->parent()->first()->id;
 			

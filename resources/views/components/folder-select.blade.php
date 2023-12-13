@@ -2,7 +2,8 @@
 	<option value="">[None]</option>
 	@foreach($folderlist as $listfolder)
 		<option value={{ $listfolder["folder"]->id }}
-		@if(isset($selected) && $selected == $listfolder["folder"]->id) selected="selected" @endif
+		@selected(isset($selected) && $selected == $listfolder["folder"]->id)
+		@disabled(isset($forbidden) && in_array($listfolder["folder"]->id, $forbidden))
 		>{!! str_repeat("&ensp;", $listfolder["depth"]-1) !!} {{ $listfolder["depth"] > 1 ? "↳" : "" }} {{ $listfolder["folder"]->title }}</option>
 	@endforeach
 </select>

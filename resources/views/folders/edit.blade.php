@@ -16,19 +16,7 @@
 					<input class="form-control" name="title" id="title" value="{{ old("title", $folder->title) }}" placeholder="Folder name">
 					
 					<label for="parent_folder">Parent folder</label>
-					<select id="parent_folder" class="form-control" name="parent_folder">
-						<option value="">[None]</option>
-						@foreach($folderlist as $listfolder)
-							<option value="{{ $listfolder["id"] }}"
-								@if($folder->parent_folder_id == $listfolder["id"] || $listfolder["id"] == old("parent_folder"))
-									selected="selected"
-								@endif
-								@if(in_array($listfolder["id"], $childkeys) || $listfolder["id"] == $folder["id"]) disabled @endif
-								>
-								{!! str_repeat("&ensp;", $listfolder["depth"]-1) !!} {{ $listfolder["title"] }}
-							</option>
-						@endforeach
-					</select>
+					@component("components.folder-select", ["folderlist" => $folderlist, "selected" => $folder->parent->id, "forbidden" => $childkeys])@endcomponent
 					
 					<x-privacy-select :selected="$folder->privacy_level_id" />
 
