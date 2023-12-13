@@ -88,7 +88,6 @@ function fetchNotificationCount() {
 	$.get($(form).prop("action"), {
 		"headers": { "X-CSRF-TOKEN": $(form).find("input[name='_token']").val() },
 	}).done(function(response){
-		console.log(response);
 		const badge = $(form).find(".notification-badge").text(response)[0];
 		if(parseInt(response) > 0) $(badge).removeClass("d-none");
 		else $(badge).addClass("d-none");
