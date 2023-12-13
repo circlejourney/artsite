@@ -8,7 +8,7 @@
 	</div>
 	@auth
 	<div class="profile-interact">
-		@if(auth()->user() != $user)
+		@if(auth()->user()->id != $user->id)
 		<form method="POST" action="{{ route("follow", ["user" => $user]) }}">
 			@csrf
 			<button class="follow-button button-pill" href="#" onclick="follow()">
