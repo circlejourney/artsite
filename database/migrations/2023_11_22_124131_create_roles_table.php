@@ -12,7 +12,7 @@ return new class extends Migration
 	 * view_users_list		See a list of every user on the site
 	 * manager_users		Edit users' names, profiles, ban users, close accounts
 	 * manage_artworks		Edit and delete other users' artworks
-	 * change_own_flair		Change the FA icon shown next to name. Fun customisation for founders/donators
+	 * change_own_flair		Change the FA icon shown next to name. Fun customisation for founders/donors
 	 * default_flair		Font Awesome icon to be displayed next to name by default
      */
     public function up(): void

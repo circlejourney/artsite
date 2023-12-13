@@ -20,7 +20,7 @@ class UserTopFolderSeeder extends Seeder
 			$user = User::where("id", $user_row->id)->first();
 			if($user->top_folder_id === null) {
 				$top_folder = Folder::create([
-					"title" => $user->id,
+					"title" => "Unsorted",
 					"user_id" => $user->id
 				]);	
 				$user->update([
