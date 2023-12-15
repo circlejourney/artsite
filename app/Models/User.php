@@ -147,6 +147,17 @@ class User extends Authenticatable
 		return $this->hasMany(Message::class, "sender_id");
 	}
 
+	public function collectives() : BelongsToMany {
+		return $this->belongsToMany(Collective::class);
+	}
+
+	public function collective_notifications() {
+		$collectives = $this->collectives;
+		return $collectives->map(function($i) {
+			return $i->notifications;
+		})->flatten();
+	}
+
 	/* Utility */
 
 	public function createTopFolder() {

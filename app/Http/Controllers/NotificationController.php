@@ -35,6 +35,10 @@ class NotificationController extends Controller
 		})->orderBy("created_at", "desc")->get();
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
 	}
+	
+	public function index_collectives(Request $request) {
+		return view("notifications.collectives.index", ["collective_notifications" => $request->user()->collective_notifications()]);
+	}
 
 	public function delete_one(Request $request, Notification $notification) {
 		$user = $request->user();

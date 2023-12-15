@@ -93,6 +93,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
 		Route::get("/notifications/invites", [ArtInviteController::class, 'index'])->name("notifications.invites");
 		Route::post("/notifications/invites", [ArtInviteController::class, 'post'])->name("notifications.invites");
+		Route::get("/notifications/collectives", "index_collectives")->name("notifications.collectives");
 	});
 
 	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");
@@ -121,11 +122,13 @@ Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name
 Route::get("/{username}/gallery/folder:{folder}/{all?}", [FolderController::class, 'show'])->name("folders.show");
 
 /* Groups */
+Route::get("/co", [CollectiveController::class, 'index'])->name("collectives.index");
 Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
 Route::post("/co/new", [CollectiveController::class, 'store']);
-Route::get("/co/{url}", [CollectiveController::class, 'show'])->name("collectives.show");
-Route::get("/co/{url}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");
-Route::patch("/co/{url}/edit", [CollectiveController::class, 'update']);
+Route::get("/co/{collective}", [CollectiveController::class, 'show'])->name("collectives.show");
+Route::post("/co/{collective}", [CollectiveController::class, 'request_join']);
+Route::get("/co/{collective}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");
+Route::patch("/co/{collective}/edit", [CollectiveController::class, 'update']);
 
 Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags.user.index");
 Route::get("/search", [TagController::class, 'show_global'])->name("tags.global.show");

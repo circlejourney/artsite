@@ -9,4 +9,7 @@
 	<a href="{{ route("notifications.invites") }}" class="nav-link">Requests and Invites
 		<span class="badge badge-secondary">{{ $user->art_invites->count() }}</span>
 	</a>
+	<a href="{{ route("notifications.collectives") }}" class="nav-link">Collectives
+		<span class="badge badge-secondary">{{ $user->collective_notifications()->count() }}</span>
+	</a>
 </ul>

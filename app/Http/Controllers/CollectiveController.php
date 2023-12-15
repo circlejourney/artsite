@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collective;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use PHPUnit\TestRunner\TestResult\Collector;
 
 class CollectiveController extends Controller
 {
@@ -12,7 +14,8 @@ class CollectiveController extends Controller
      */
     public function index()
     {
-        //
+        $collectives = Collective::all();
+        return view("collectives.index", ["collectives" => $collectives]);
     }
 
     /**
@@ -45,33 +48,29 @@ class CollectiveController extends Controller
     /**
      * Display the selected group.
      */
-    public function show(string $url)
+    public function show(Collective $collective)
     {
-		$collective = Collective::where("url", $url)->firstOrFail();
         return view("collectives.show", ["collective" => $collective]);
     }
 
     /**
      * Show the form for editing the group.
      */
-    public function edit(string $url)
+    public function edit(Collective $collective)
     {
-		$collective = Collective::where("url", $url)->firstOrFail();
         return view("collectives.edit", ["collective" => $collective]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $url)
+    public function update(Request $request, Collective $collective)
     {
 		$request->validate([
 			"url" => ["required", "string", "max:255", "regex:/^[\w-]+$/"],
 			"display_name" => ["string", "max:255", "regex:/^[^<>]+$/"],
 			"privacy_level_id" => ["required", "integer"],
 		]);
-		
-        $collective = Collective::where("url", $url)->firstOrFail();
 		$collective->update([
 			"privacy_level_id" => $request->privacy_level_id,
 			"display_name" => $request->display_name,
@@ -91,15 +90,16 @@ class CollectiveController extends Controller
     /**
      * Show the form for joining an existing group.
      */
-    public function join(Collective $collective)
+    public function request_join(Collective $collective, Request $request)
     {
-        //
+        Notification::dispatch_collective($request->user(), $collective, collect(["type" => "collective_join"]));
+        return redirect( route("collectives.show", ["collective" => $collective]) )->with("success", "Request sent successfully.");
     }
 
     /**
      * Add the joining user to the group.
      */
-    public function insert(Collective $collective)
+    public function add_member(Collective $collective)
     {
         //
     }

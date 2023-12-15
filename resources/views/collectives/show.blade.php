@@ -2,14 +2,37 @@
 @section('body')
 	<h1>{{ $collective->display_name }}</h1>
 	<div>
-		The collectives feature is a WIP...
+		<a class="btn btn-primary" data-toggle="modal" href="#request-join">Request to Join</a>
 		<h2>Members</h2>
 		@foreach($collective->members as $member)
 			<div>
-				{{ $member->name }}
+				<a href="{{ route("user", ["username" => $member->name]) }}">
+					{{ $member->name }}
+				</a>
 			</div>
 		@endforeach
 		<h2>Folders</h2>
 		<div>{{ $collective->topFolder->title }}</div>
 	</div>
+
+	<div class="modal" id="request-join" tabindex="-1">
+		<div class="modal-dialog">
+		  	<form class="modal-content" method="POST">
+				@csrf
+				<div class="modal-header">
+				<h5 class="modal-title">Request to join {{ $collective->display_name }}</h5>
+				<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+				</div>
+				<div class="modal-body">
+				<p>Request message (optional):</p>
+				<textarea class="form-control" name="join_message" id="join_message"></textarea>
+				</div>
+				<div class="modal-footer">
+				<button class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button class="btn btn-primary">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	  
 @endsection

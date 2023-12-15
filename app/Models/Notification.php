@@ -14,7 +14,7 @@ class Notification extends Model
     use HasFactory;
 
 	protected $fillable = [
-		"type", "sender_id", "sender_collective_id", "artwork_id", "content"
+		"type", "sender_id", "sender_collective_id", "recipient_collective_id", "artwork_id", "content"
 	];
 
 	public function getDisplayHTML() {
@@ -32,6 +32,11 @@ class Notification extends Model
 		if($this->type == "ping") {
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " pinged you" . ($this->artwork_id ? " on <a href='" . route("art", ["path" => $this->artwork->path]) . "'>" . $this->artwork->title . "</a>" : "");
 		}
+
+		if($this->type == "collective_join") {
+			return "<i class='fa fa-fw fa-users-plus'></i>&emsp;" . $this->getSenderHTML() . " requested to join your collective";
+		}
+
 		if($this->content) return $this->content;
 		return "You received a notification of an unknown type.";
 	}
@@ -56,8 +61,8 @@ class Notification extends Model
 		return $this->belongsToMany(User::class, "notification_recipient", "notification_id", "recipient_id")->withTimestamps();
 	}
 
-	public function recipientCollectives() : BelongsToMany {
-		return $this->belongsToMany(User::class, "notification_recipient", "notification_id", "recipient_collective_id")->withTimestamps();
+	public function recipient_collective() : BelongsTo {
+		return $this->belongsTo(Collective::class, "recipient_collective_id");
 	}
 
 	/* Utility */
@@ -67,7 +72,7 @@ class Notification extends Model
 		if($this->recipients->count() == 0) $this->delete();
 	}
 
-	public static function dispatch(User $sender, Collection $recipients, Collection $props) {
+	public static function dispatch(User $sender, Collection $recipients, Collection $props=null) {
 		$params = collect([
 			"sender_id" => $sender->id,
 			"type" => "fave"
@@ -75,5 +80,13 @@ class Notification extends Model
 		
 		$notif = Notification::create($params);
 		$notif->recipients()->attach($recipients->pluck("id")->reject($sender->id));
+	}
+
+	public static function dispatch_collective(User $sender, Collective $recipient_collective, Collection $props=null) {
+		$params = collect([
+			"sender_id" => $sender->id,
+			"recipient_collective_id" => $recipient_collective->id
+		])->merge($props)->all();
+		Notification::create($params);
 	}
 }

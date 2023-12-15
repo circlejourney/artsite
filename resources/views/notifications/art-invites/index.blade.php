@@ -2,7 +2,7 @@
 
 @section('body')
 	<h1>Requests and Invites</h1>
-	@component('notifications.notification-menu')@endcomponent
+	@include('notifications.notification-menu')
 	@forelse($art_invites as $art_invite)
 		@include("notifications.art-invites.form")
 	@empty

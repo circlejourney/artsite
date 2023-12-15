@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Collective extends Model
 {
     use HasFactory;
+	
+	public function getRouteKeyName(){
+		return 'url';
+	}
+
 	protected $fillable = [
 		"url", "display_name", "avatar", "profile_html", "privacy_level_id"
 	];
@@ -44,7 +50,7 @@ class Collective extends Model
 		return $this->belongsToMany(User::class);
 	}
 
-	public function notifications(): BelongsToMany {
-		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_collective_id")->withTimestamps();
+	public function notifications(): HasMany {
+		return $this->hasMany(Notification::class, "recipient_collective_id");
 	}
 }
