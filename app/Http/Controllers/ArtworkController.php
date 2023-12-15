@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Artwork;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArtworkRequest;
 use App\Models\Notification;
@@ -67,12 +66,7 @@ class ArtworkController extends Controller
 			if(!$artist) continue;
 			$guestArtist = User::where("name", $artist)->first();
 			$artwork->inviteForeignUser($guestArtist);
-			//$artistIDs[] = $guestArtist->id;
-			//$folderIDs[] = $guestArtist->top_folder_id;
 		}
-
-		//$artwork->users()->attach($artistIDs);
-		//$artwork->folders()->attach($folderIDs);
 		
 		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 

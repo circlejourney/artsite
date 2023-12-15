@@ -20,12 +20,23 @@
 			</button>
 		</form>
 		@endif
+		
 		<a class="button-circle" href="{{ route("messages.create", ["username" => $user->name]) }}">
 			<i class="far fa-envelope"></i>
 		</a>
-		<a class="button-circle" href="#">
-			<i class="fa fa-ellipsis"></i>
-		</a>
+			
+		<div>
+			<a class="button-circle" href="#" data-toggle="dropdown">
+				<i class="fa fa-ellipsis"></i>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="dropdown-item">
+					<a href="{{ route("user.invite", ["user" => $user]) }}">
+						Invite to join group
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	@endauth
 </div>

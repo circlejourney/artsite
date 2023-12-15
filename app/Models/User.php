@@ -48,6 +48,11 @@ class User extends Authenticatable
 		'invitee_count'
     ];
 
+	public function getRouteKeyName()
+	{
+		return "name";
+	}
+
     /**
      * The attributes that should be hidden for serialization.
      *

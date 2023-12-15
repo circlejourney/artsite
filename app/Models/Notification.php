@@ -19,9 +19,8 @@ class Notification extends Model
 
 	public function getDisplayHTML() {
 		/* Type can be:
-		 * [User] follow, fave, comment, message, ping
-		 * [Collective] collective-join, collective-follow, collective-comment
-		 * ...more to be added
+		 * [User] follow, fave, comment, message, ping etc.
+		 * [Collective] co-join, co-accept, co-reject, co-invite, co-follow, co-comment etc.
 		 */
 		if($this->type == "fave") {
 			return "<i class='fa fa-fw fa-heart'></i>&emsp;" . $this->getSenderHTML() . " favorited your artwork " . $this->getArtworkHTML();
@@ -33,7 +32,10 @@ class Notification extends Model
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " pinged you" . ($this->artwork_id ? " on <a href='" . route("art", ["path" => $this->artwork->path]) . "'>" . $this->artwork->title . "</a>" : "");
 		}
 		if($this->type == "co-reject") {
-			return "<i class='fa fa-fw fa-users-plus'></i>&emsp;" . $this->getSenderCollectiveHTML() . " rejected your request to join.";
+			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderCollectiveHTML() . " rejected your request to join.";
+		}
+		if($this->type == "co-accept") {
+			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderCollectiveHTML() . " accepted your request to join.";
 		}
 
 		if($this->content) return $this->content;

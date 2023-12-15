@@ -75,4 +75,8 @@ class UserPageController extends Controller
 		$user = User::where("name", $username)->firstOrFail();
 		return view("profile.faves", ["user" => $user]);
 	}
+
+	public function invite(User $user) {
+		return view("profile.invite", ["user" => $user]);
+	}
 }

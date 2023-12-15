@@ -68,9 +68,9 @@ class Artwork extends Model
 	public function getText() : string {
 		$relative_path = $this->text;
 		if(!$relative_path) return "";
-		$text = Storage::get($relative_path);
+		$text = Storage::get($relative_path) ?? "";
 		$text = SanitiseService::of($text)->sanitiseHTML()->formatPings()->get();
-		return $text ?? "";
+		return $text;
 	}
 
 	public function getPlainText() : string {
@@ -128,7 +128,7 @@ class Artwork extends Model
 	}
 
 	public function inviteForeignUser(User $user) {
-		$art_invite = ArtInvite::create([
+		ArtInvite::create([
 			"user_id" => $user->id,
 			"sender_id" => auth()->user()->id,
 			"artwork_id" => $this->id

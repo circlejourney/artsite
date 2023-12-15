@@ -14,7 +14,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-		$notifications = auth()->user()->notifications()->orderBy("created_at", "desc")->whereNull("sender_collective_id")->get();
+		$notifications = auth()->user()->notifications()->whereNull("sender_collective_id")->orderBy("created_at", "desc")->get();
         return view("notifications.index", [ "notifications" => $notifications ]);
     }
 
@@ -56,7 +56,7 @@ class NotificationController extends Controller
 		return view("notifications.collectives.index",
 			["collective_notifications" => $request->user()->collective_notifications()->merge(
 				$request->user()->notifications()->whereNotNull("sender_collective_id")->get()
-			)]
+			)->sortByDesc("created_at")]
 		);
 	}
 
