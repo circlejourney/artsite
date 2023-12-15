@@ -76,7 +76,7 @@ class CollectiveController extends Controller
 			"display_name" => $request->display_name,
 			"url" => $request->url
 		]);
-		return redirect(route("collectives.show", ["url" => $collective->url]));
+		return redirect(route("collectives.show", ["collective" => $collective]));
     }
 
     /**
@@ -92,7 +92,7 @@ class CollectiveController extends Controller
      */
     public function request_join(Collective $collective, Request $request)
     {
-        Notification::dispatch_collective($request->user(), $collective, collect(["type" => "collective_join"]));
+        Notification::dispatch_to_collective($request->user(), $collective, collect(["type" => "co-join", "content" => $request->join_message]));
         return redirect( route("collectives.show", ["collective" => $collective]) )->with("success", "Request sent successfully.");
     }
 

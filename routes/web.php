@@ -93,7 +93,9 @@ Route::middleware('auth', 'verified')->group(function () {
 
 		Route::get("/notifications/invites", [ArtInviteController::class, 'index'])->name("notifications.invites");
 		Route::post("/notifications/invites", [ArtInviteController::class, 'post'])->name("notifications.invites");
+		
 		Route::get("/notifications/collectives", "index_collectives")->name("notifications.collectives");
+		Route::post("/notifications/collectives", "post_collectives");
 	});
 
 	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");

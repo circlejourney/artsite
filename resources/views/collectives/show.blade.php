@@ -2,7 +2,10 @@
 @section('body')
 	<h1>{{ $collective->display_name }}</h1>
 	<div>
-		<a class="btn btn-primary" data-toggle="modal" href="#request-join">Request to Join</a>
+		@if(auth()->user()->collectives->pluck("id")->doesntContain($collective->id))
+			<a class="btn btn-primary" data-toggle="modal" href="#request-join">Request to Join</a>
+		@endif
+		
 		<h2>Members</h2>
 		@foreach($collective->members as $member)
 			<div>

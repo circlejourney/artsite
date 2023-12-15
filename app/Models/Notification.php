@@ -32,9 +32,8 @@ class Notification extends Model
 		if($this->type == "ping") {
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " pinged you" . ($this->artwork_id ? " on <a href='" . route("art", ["path" => $this->artwork->path]) . "'>" . $this->artwork->title . "</a>" : "");
 		}
-
-		if($this->type == "collective_join") {
-			return "<i class='fa fa-fw fa-users-plus'></i>&emsp;" . $this->getSenderHTML() . " requested to join your collective";
+		if($this->type == "co-reject") {
+			return "<i class='fa fa-fw fa-users-plus'></i>&emsp;" . $this->getSenderCollectiveHTML() . " rejected your request to join.";
 		}
 
 		if($this->content) return $this->content;
@@ -45,12 +44,20 @@ class Notification extends Model
 		return view("components.nametag", ["user" => $this->sender]);
 	}
 
+	public function getSenderCollectiveHTML() {
+		return "<a href='" . route("collectives.show", ["collective" => $this->sender_collective]) . "'>" . $this->sender_collective->display_name . "</a>";
+	}
+
 	public function getArtworkHTML() {
 		return "<a href=".route("art", ["path" => $this->artwork->path]).">" . $this->artwork->title . "</a>";
 	}
 
 	public function sender() : BelongsTo {
 		return $this->belongsTo(User::class, "sender_id");
+	}
+
+	public function sender_collective() : BelongsTo {
+		return $this->belongsTo(Collective::class, "sender_collective_id");
 	}
 
 	public function artwork() : BelongsTo {
@@ -82,11 +89,20 @@ class Notification extends Model
 		$notif->recipients()->attach($recipients->pluck("id")->reject($sender->id));
 	}
 
-	public static function dispatch_collective(User $sender, Collective $recipient_collective, Collection $props=null) {
+	public static function dispatch_to_collective(User $sender, Collective $recipient_collective, Collection $props=null) {
 		$params = collect([
 			"sender_id" => $sender->id,
 			"recipient_collective_id" => $recipient_collective->id
 		])->merge($props)->all();
 		Notification::create($params);
+	}
+
+	public static function dispatch_from_collective(User $sender, Collective $sender_collective, Collection $recipients, Collection $props=null) {
+		$params = collect([
+			"sender" => $sender->id,
+			"sender_collective_id" => $sender_collective->id
+		])->merge($props)->all();
+		$notif = Notification::create($params);
+		$notif->recipients()->attach($recipients->pluck("id"));
 	}
 }
