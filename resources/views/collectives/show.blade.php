@@ -41,7 +41,7 @@
 		</div>
 	</div>
 
-		@if($collective->members->pluck("id")->contains(auth()->user()->id ))
+		@if(($member = $collective->members()->where("user_id", auth()->user()->id)->withPivot("role_id")->first()) && $member->pivot->role_id <= 2)
 			<a href="{{ route("collectives.delete", ["collective" => $collective]) }}" class="button-pill bg-danger">Delete collective</a>
 		@endif
 	@endauth

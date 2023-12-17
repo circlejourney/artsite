@@ -88,7 +88,9 @@ class CollectiveController extends Controller
      */
     public function destroy(Collective $collective)
     {
-        $collective->delete();
+		if(($member = $collective->members()->where("user_id", auth()->user()->id)->withPivot("role_id")->first()) && $member->pivot->role_id <= 2) {
+        	$collective->delete();
+		}
 		return redirect(route("collectives.index"));
     }
 
