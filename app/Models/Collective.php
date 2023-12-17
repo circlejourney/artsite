@@ -28,7 +28,9 @@ class Collective extends Model
 		});
 		Static::created(function($model){
 			$model->createTopFolder();
-			$model->members()->attach($model->founder_id);
+			$model->members()->attach([
+				1 => ["user_id" => $model->founder_id, "role_id" => 2]
+			]);
 		});
 	}
 

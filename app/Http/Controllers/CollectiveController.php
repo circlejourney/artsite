@@ -79,12 +79,17 @@ class CollectiveController extends Controller
 		return redirect(route("collectives.show", ["collective" => $collective]));
     }
 
+	public function show_destroy(Collective $collective) {
+		return view("collectives.delete", ["collective" => $collective]);
+	}
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Collective $collective)
     {
-        //
+        $collective->delete();
+		return redirect(route("collectives.index"));
     }
 
     /**

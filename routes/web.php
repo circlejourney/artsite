@@ -11,6 +11,7 @@ use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TagController;
+use App\Models\Collective;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -129,6 +130,8 @@ Route::get("/co/new", [CollectiveController::class, 'create'])->name("collective
 Route::post("/co/new", [CollectiveController::class, 'store']);
 Route::get("/co/{collective}", [CollectiveController::class, 'show'])->name("collectives.show");
 Route::post("/co/{collective}", [CollectiveController::class, 'request_join']);
+Route::get("/co/{collective}/delete", [CollectiveController::class, "show_destroy"])->name("collectives.delete");
+Route::delete("/co/{collective}/delete", [CollectiveController::class, "destroy"]);
 Route::get("/co/{collective}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");
 Route::patch("/co/{collective}/edit", [CollectiveController::class, 'update']);
 
