@@ -42,7 +42,7 @@ class CollectiveController extends Controller
 			"display_name" => $request->display_name,
 			"privacy_level_id" => intval($request->privacy_level_id)
 		]);
-		return redirect(route("collectives.show", ["url" => $collective->url]));
+		return redirect(route("collectives.show", ["collective" => $collective]));
     }
 
     /**
