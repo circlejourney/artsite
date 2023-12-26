@@ -40,6 +40,7 @@
         </div>
 
         <!-- Invite Code -->
+        @if(!$firstuser)
         <div class="mt-4">
             <x-input-label for="invite_code" :value="__('Invite Code')" />
 
@@ -49,6 +50,7 @@
 
             <x-input-error :messages="$errors->get('invite_code')" class="mt-2" />
         </div>
+        @endif
 
         <div class="flex items-center justify-end mt-4">
 

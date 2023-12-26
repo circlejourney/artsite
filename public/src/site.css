@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* GLOBAL STYLES */
 body {
-  font-family: "Inter";
+  font-family: "Outfit";
   background: white;
   min-height: 100vh;
   max-width: 100vw;
@@ -107,7 +107,8 @@ nav {
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
-  background-color: #d9d9d9;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   justify-content: space-between;
 }
@@ -134,10 +135,13 @@ nav .nav-left, nav .nav-right {
     justify-content: flex-start;
   }
 }
-nav .search-form, nav .nav-button, nav .menu-toggle-circle, nav .menu-toggle {
+nav .nav-button, nav .menu-toggle, nav .search-form, nav .menu-toggle-circle {
   font-size: 16pt;
   padding: 0.3rem;
   border-radius: 10px;
+}
+nav .search-form, nav .menu-toggle-circle {
+  border: 1px solid black;
 }
 nav .menu-toggle {
   display: flex;
@@ -153,10 +157,8 @@ nav .menu-toggle-circle {
   height: 2em;
   border-radius: 100%;
 }
-nav .search-form, nav .nav-button {
-  background-color: white;
-}
 nav .nav-button {
+  background-color: #2CC4EB;
   padding-left: 1.2rem;
   padding-right: 1.2rem;
   min-height: 2em;
@@ -239,6 +241,14 @@ main {
     width: 100vw;
     margin: 0;
   }
+}
+main h1, main h2, main h3, main .collapse-link {
+  font-weight: 400;
+}
+main h1 {
+  display: inline-block;
+  text-transform: uppercase;
+  border-bottom: 0.3rem solid #2CC4EB;
 }
 main > h1:not(.no-margin), main > h2:not(.no-margin), main > h3:not(.no-margin), main > .collapse-link:not(.no-margin) {
   margin-top: 2rem;
@@ -444,7 +454,7 @@ main .page-block {
   align-items: center;
   justify-content: center;
   font-size: 60pt;
-  color: #A9A9A9;
+  color: #2CC4EB;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -482,7 +492,7 @@ main .page-block {
   padding: 0.3rem 1.2rem;
 }
 .tag.selected {
-  background-color: #A9A9A9;
+  background-color: #2CC4EB;
 }
 
 .tag-highlight-image {
@@ -556,7 +566,7 @@ main .page-block {
 .gallery-thumbnail .gallery-thumbnail-badge {
   border-radius: 10px;
   color: white;
-  background-color: #A9A9A9;
+  background-color: #2CC4EB;
   padding: 0 0.3rem;
   font-size: 10pt;
 }

@@ -80,7 +80,16 @@ class User extends Authenticatable
 		parent::boot();
 		Static::created(function($model){
 			$model->createTopFolder();
-			$user_role = Role::where("name", "user")->first()->id;
+			
+			if(User::count() === 1) {
+				$user_role = [
+					Role::where("name", "founder")->first()->id,
+					Role::where("name", "admin")->first()->id
+				];
+			} else {
+				$user_role = Role::where("name", "user")->first()->id;
+			}
+
 			$model->roles()->attach($user_role);
 		});
 	}

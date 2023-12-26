@@ -49,7 +49,7 @@ class NotificationController extends Controller
 
 	public function get_count(Request $request) {
 		$user = $request->user();
-		return response($user->notifications->count() + $user->invites->count() + $user->collective_notifications()->count());
+		return response($user->notifications->count() + $user->art_invites->count() + $user->collective_notifications()->count());
 	}
 	
 	public function index_collectives(Request $request) {
