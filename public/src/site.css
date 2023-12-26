@@ -246,8 +246,12 @@ nav .menu-form-container {
 /* Main area */
 .main-wrapper {
   flex-grow: 1;
-  display: flex;
-  justify-content: center;
+}
+@media screen and (min-width: 1200px) {
+  .main-wrapper {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .main-right-spacer {
@@ -255,16 +259,27 @@ nav .menu-form-container {
 }
 
 /* Sidebar */
-.sidebar {
-  width: 200px;
-  padding: 3rem 0;
+@media screen and (min-width: 1200px) {
+  .sidebar {
+    width: 200px;
+    padding: 3rem 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .sidebar {
+    padding: 0.6rem 0;
+  }
 }
 .sidebar > a {
-  display: block;
-  width: 100%;
   border-radius: 10px;
   padding: 0.3rem 0.6rem;
   color: black;
+}
+@media screen and (min-width: 1200px) {
+  .sidebar > a {
+    display: block;
+    width: 100%;
+  }
 }
 .sidebar > a:hover {
   text-decoration: none;
@@ -283,10 +298,11 @@ nav .menu-form-container {
 }
 
 /* Main */
-.sidebar ~ main {
-  margin: 0 0 0 3rem;
+@media screen and (min-width: 1200px) {
+  .sidebar ~ main {
+    margin: 0 0 0 3rem;
+  }
 }
-
 main {
   background-color: white;
   width: 1200px;
@@ -296,6 +312,7 @@ main {
   main {
     width: 100vw;
     margin: 0;
+    padding: 0 0.6rem;
   }
 }
 main > h1:not(.no-margin), main > h2:not(.no-margin), main > h3:not(.no-margin), main > .collapse-link:not(.no-margin) {
@@ -643,6 +660,7 @@ main .page-block {
 .notification-left {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.3rem;
   padding: 0.6rem;
   border-left: 8px solid transparent;

@@ -325,8 +325,10 @@ nav {
 
 .main-wrapper {
 	flex-grow: 1;
-	display: flex;
-	justify-content: center;
+	@include screen-lg {
+		display: flex;
+		justify-content: center;
+	}
 }
 
 .main-right-spacer {
@@ -336,12 +338,21 @@ nav {
 /* Sidebar */
 
 .sidebar {
-	width: 200px;
-	padding: $global-padding 0;
+	@include screen-lg {
+		width: 200px;
+		padding: $global-padding 0;
+	}
+
+	@include screen-sm {
+		padding: $mid-padding 0;
+	}
 
 	& > a {
-		display: block;
-		width: 100%;
+		@include screen-lg {
+			display: block;
+			width: 100%;
+		}
+		
 		border-radius: $border-radius;
 		padding: $small-padding $mid-padding;
 		color: black;
@@ -367,9 +378,10 @@ nav {
 
 
 /* Main */
-
-.sidebar ~ main {
-    margin: 0 0 0 $global-padding;
+@include screen-lg() {
+	.sidebar ~ main {
+		margin: 0 0 0 $global-padding;
+	}
 }
 
 main {
@@ -380,6 +392,7 @@ main {
 	@include screen-sm {
 		width: 100vw;
 		margin: 0;
+		padding: 0 $mid-padding;
 	}
 
 	&> h1, & > h2, & > h3 {
@@ -730,6 +743,7 @@ div[class$="-section"] {
 .notification-left {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: $small-padding;
 	padding: $mid-padding;
 	border-left: 8px solid transparent;
