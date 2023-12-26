@@ -59,6 +59,7 @@ class ArtworkController extends Controller
 		} else {
 			$folderIDs[] = $request->user()->top_folder_id;
 		}
+		$artwork->folders()->attach($folderIDs);
 
 		$artistIDs = array( $request->user()->id );
 		foreach($request->artist as $artist) {
