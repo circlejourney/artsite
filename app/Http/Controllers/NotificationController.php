@@ -12,10 +12,16 @@ class NotificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index_faves(Request $request)
     {
-		$notifications = auth()->user()->notifications()->whereNull("sender_collective_id")->orderBy("created_at", "desc")->get();
-        return view("notifications.index", [ "notifications" => $notifications ]);
+		$notifications = $request->user()->notifications()->where("type", "fave")->orderBy("created_at", "desc")->get();
+        return view("notifications.index", [ "notifications" => $notifications, "active" => "faves" ]);
+    }
+
+    public function index_follows(Request $request)
+    {
+		$notifications = $request->user()->notifications()->where("type", "follow")->orderBy("created_at", "desc")->get();
+        return view("notifications.index", [ "notifications" => $notifications, "active" => "follows" ]);
     }
 
     /**
@@ -31,7 +37,7 @@ class NotificationController extends Controller
 		return view("notifications.index", ["user" => $user]);
     }
 
-	public function index_follow() {
+	public function index_fed() {
 		$artworks = Artwork::whereDoesntHave("users", function($q) { $q->where("user_id", auth()->user()->id); })->whereHas("users", function($query){
 			$query->whereIn("user_id", auth()->user()->follows->pluck("id")->all());
 		})->orderBy("created_at", "desc")->get();

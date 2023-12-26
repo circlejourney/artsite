@@ -2,7 +2,7 @@
 
 @section('sidebar')
 	<div class="sidebar">
-		@include('notifications.notification-menu', ["active" => "faves"])
+		@include('notifications.notification-menu', ["active" => $active])
 	</div>
 @endsection
 

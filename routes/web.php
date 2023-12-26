@@ -86,8 +86,10 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::put("/art/{path}/edit", [ArtworkController::class, 'update']);
 
 	Route::controller(NotificationController::class)->group(function() {
-		Route::get("/notifications", "index")->name("notifications");
-		Route::get("/notifications/follow-feed", "index_follow")->name("notifications.feed");
+		Route::get("/notifications", "index_faves")->name("notifications");
+		Route::get("/notifications/favorites", "index_faves")->name("notifications.faves");
+		Route::get("/notifications/follows", "index_follows")->name("notifications.follows");
+		Route::get("/notifications/follow-feed", "index_feed")->name("notifications.feed");
 		Route::get("/notification-count", "get_count")->name("notifications.get_count");
 		Route::delete("/notifications", "destroy");
 		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
