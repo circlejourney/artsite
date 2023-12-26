@@ -19,12 +19,6 @@ h1, h2, h3, .collapse-link {
   font-weight: bold;
 }
 
-h1 {
-  display: inline-block;
-  text-transform: uppercase;
-  border-bottom: 0.3rem solid #2CC4EB;
-}
-
 a {
   color: #188EAC;
 }
@@ -312,8 +306,14 @@ main {
   main {
     width: 100vw;
     margin: 0;
-    padding: 0 0.6rem;
+    padding-right: 0.6rem;
+    padding-left: 0.6rem;
   }
+}
+main h1 {
+  display: inline-block;
+  text-transform: uppercase;
+  border-bottom: 0.3rem solid #2CC4EB;
 }
 main > h1:not(.no-margin), main > h2:not(.no-margin), main > h3:not(.no-margin), main > .collapse-link:not(.no-margin) {
   margin-top: 2rem;
@@ -699,24 +699,47 @@ main .page-block {
 
 /* Footer */
 footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 3rem;
+  padding: 3rem calc(50% - 600px);
   background-color: #F2FAFB;
-  text-align: center;
 }
-footer .footer-link-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+@media screen and (max-width: 768px) {
+  footer {
+    padding: 0.6rem;
+  }
 }
-footer .footer-link {
+
+@media screen and (min-width: 1200px) {
+  .footer-columns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+}
+
+.footer-branding, .footer-link-wrapper {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+@media screen and (min-width: 1200px) {
+  .footer-branding, .footer-link-wrapper {
+    padding: 0 3rem 0.6rem 0;
+  }
+}
+
+.footer-header {
+  display: inline-block;
   font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 0.1rem solid #2CC4EB;
 }
-footer .footer-divider:before {
+
+.footer-link {
+  display: block;
+  margin: 0.3rem 0;
+}
+
+.footer-divider:before {
   content: "|";
   margin: 0 1rem;
 }

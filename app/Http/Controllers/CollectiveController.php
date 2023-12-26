@@ -124,7 +124,7 @@ class CollectiveController extends Controller
             "type" => "co-invite",
             "content" => $request->invite_message
         ]));
-        return redirect( route("user", ["username" => $user->name]) )->with("status", "Request sent successfully.");
+        return redirect( route("user", ["username" => $user->name]) )->with("status", "Invite sent successfully.");
     }
 
     /**

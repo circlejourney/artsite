@@ -71,12 +71,6 @@ h1, h2, h3 {
 	@extend %header;
 }
 
-h1 {
-	display: inline-block;
-	text-transform: uppercase;
-	border-bottom: 0.3rem solid $accent;
-}
-
 a {
 	color: $mid-bg;
 }
@@ -392,7 +386,14 @@ main {
 	@include screen-sm {
 		width: 100vw;
 		margin: 0;
-		padding: 0 $mid-padding;
+		padding-right: $mid-padding;
+		padding-left: $mid-padding;
+	}
+
+	h1 {
+		display: inline-block;
+		text-transform: uppercase;
+		border-bottom: 0.3rem solid $accent;
 	}
 
 	&> h1, & > h2, & > h3 {
@@ -785,25 +786,41 @@ div[class$="-section"] {
 /* Footer */
 
 footer {
-	@include flex-centre();
-	flex-direction: column;
-	padding: $global-padding;
-	background-color: $base;;
-	text-align: center;
+	padding: $global-padding calc(50% - 600px);
+	@include screen-sm() {
+		padding: $mid-padding;
+	}
+	background-color: $base;
+}
 
-	.footer-link-wrapper {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
+.footer-columns {
+	@include screen-lg {
+		@include flex-centre();
+		flex-direction: row;
 	}
-	
-	.footer-link {
-		font-weight: bold;
-	}
+}
 
-	.footer-divider:before {
-		content: "|";
-		margin: 0 1rem;
+.footer-branding, .footer-link-wrapper {
+	flex-grow: 1;
+	flex-basis: 0;
+	@include screen-lg {
+		padding: 0 $global-padding $mid-padding 0;
 	}
+}
+
+.footer-header {
+	display: inline-block;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-bottom: 0.1rem solid $accent;
+}
+
+.footer-link {
+	display: block;
+	margin: $small-padding 0;
+}
+
+.footer-divider:before {
+	content: "|";
+	margin: 0 1rem;
 }
