@@ -1,15 +1,29 @@
-<ul class="nav nav-pill">
-	@php
-		$user = request()->user();
-	@endphp
-	<a class="nav-link" href="{{ route("notifications") }}">Notifications
-		<span class="badge badge-secondary">{{ $user->notifications()->whereNull("sender_collective_id")->get()->count() }}</span>
-	</a>
-	<a href="{{ route("notifications.feed") }}" class="nav-link">Artists You Follow</a>
-	<a href="{{ route("notifications.invites") }}" class="nav-link">Requests and Invites
-		<span class="badge badge-secondary">{{ $user->art_invites->count() }}</span>
-	</a>
-	<a href="{{ route("notifications.collectives") }}" class="nav-link">Collectives
-		<span class="badge badge-secondary">{{ $user->collective_notifications()->count() + $user->notifications()->whereNotNull("sender_collective_id")->get()->count() }}</span>
-	</a>
-</ul>
+@php
+	$user = request()->user();
+@endphp
+
+<a href="{{ route("notifications.feed") }}" class="sidebar-link {{ isset($active) && $active == "follow-feed" ? "active" : "" }}">Artists You Follow</a>
+
+<a class="sidebar-link {{ isset($active) && $active == "faves" ? "active" : "" }}" href="{{ route("notifications") }}">Favorites
+	@if(($favecount = $user->notifications()->where("type", "fave")->get()->count()) > 0)
+		<span class="sidebar-unread">{{ $favecount }}</span>
+	@endif
+</a>
+
+<a class="sidebar-link {{ isset($active) && $active == "follows" ? "active" : "" }}" href="{{ route("notifications") }}">Follows
+	@if(($followcount = $user->notifications()->where("type", "follow")->get()->count()) > 0)
+		<span class="sidebar-unread">{{ $followcount }}</span>
+	@endif
+</a>
+
+<a href="{{ route("notifications.invites") }}" class="sidebar-link {{ isset($active) && $active == "invites" ? "active" : "" }}">Requests and Invites
+	@if(($artinvitecount = $user->art_invites->count()) > 0)
+		<span class="sidebar-unread">{{ $user->art_invites->count() }}</span>
+	@endif
+</a>
+
+<a href="{{ route("notifications.collectives") }}" class="sidebar-link {{ isset($active) && $active == "collectives" ? "active" : "" }}">Collectives
+	@if(($collectivecount = $user->collective_notifications()->count() + $user->notifications()->whereNotNull("sender_collective_id")->get()->count()) > 0)
+		<span class="sidebar-unread">{{ $collectivecount }}</span>
+	@endif
+</a>

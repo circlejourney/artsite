@@ -1,13 +1,18 @@
 @extends('layouts.site')
 
+@section("sidebar")	
+	@include('notifications.notification-menu')
+@endsection
+
 @section('body')
     <h1>Collective notifications</h1>
-    @include("notifications.notification-menu")
-    @foreach($collective_notifications as $collective_notification)
+    @forelse($collective_notifications as $collective_notification)
         @if($collective_notification->type == "co-join")
             @include("notifications.collectives.form")
         @else
             @include("notifications.notification-item", ["notification" => $collective_notification])
         @endif
-    @endforeach
+    @empty
+        <p>No notifications found.</p>
+    @endforelse
 @endsection

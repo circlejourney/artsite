@@ -1,11 +1,16 @@
 @extends("layouts.site")
 
+@section('sidebar')
+	<div class="sidebar">
+		@include('notifications.notification-menu', ["active" => "invites"])
+	</div>
+@endsection
+
 @section('body')
 	<h1>Requests and Invites</h1>
-	@include('notifications.notification-menu')
 	@forelse($art_invites as $art_invite)
 		@include("notifications.art-invites.form")
 	@empty
-		No notifications found.
+		<p>No notifications found.</p>
 	@endforelse
 @endsection

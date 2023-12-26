@@ -67,6 +67,7 @@ class ArtworkController extends Controller
 			$guestArtist = User::where("name", $artist)->first();
 			$artwork->inviteForeignUser($guestArtist);
 		}
+		$artwork->users()->attach($artistIDs);
 		
 		TaggerService::tagArtwork($artwork, explode(",", $request->tags));
 
@@ -78,7 +79,7 @@ class ArtworkController extends Controller
 			$artwork->updateThumbnail();
 		}
 
-		$artwork->updateText(SanitiseService::of($request->text)->makePing($artwork)->get() ?? "")->save();
+		$artwork->updateText(SanitiseService::of($request->text ?? "")->makePing($artwork)->get() ?? "")->save();
 
 		return redirect(route("art", ["path" => $path]));
 	}

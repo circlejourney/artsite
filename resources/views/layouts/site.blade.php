@@ -30,22 +30,28 @@
 </head>
 <body>
     @include("layouts.navigation")
-    <main>
-        @if ($errors->any())
-            {!! implode('', $errors->all('<div class="alert alert-danger m-4">:message</div>')) !!}
-        @endif
-        
-        @if (session()->has('success'))
-            <div class="alert alert-success m-4">{!! session()->get('success') !!}</div>
-        @endif
-        
-        
-        @if (session()->has('status'))
-            <div class="alert alert-info m-4">{!! session()->get('status') !!}</div>
-        @endif
+    
+    <div class="main-wrapper">
+        @yield("sidebar")
 
-        @yield("body")
-    </main>
+        <main>
+            @if ($errors->any())
+                {!! implode('', $errors->all('<div class="alert alert-danger m-4">:message</div>')) !!}
+            @endif
+            
+            @if (session()->has('success'))
+                <div class="alert alert-success m-4">{!! session()->get('success') !!}</div>
+            @endif
+            
+            
+            @if (session()->has('status'))
+                <div class="alert alert-info m-4">{!! session()->get('status') !!}</div>
+            @endif
+
+            @yield("body")
+        </main>
+    </div>
+
 	@include("layouts.footer")
 </body>
 </html>

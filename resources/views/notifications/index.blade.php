@@ -1,9 +1,13 @@
 @extends('layouts.site')
 
+@section('sidebar')
+	<div class="sidebar">
+		@include('notifications.notification-menu', ["active" => "faves"])
+	</div>
+@endsection
+
 @section('body')
 	<h1>Notifications</h1>
-	@component('notifications.notification-menu')
-	@endcomponent
 
 	<form method="POST">
 		@csrf

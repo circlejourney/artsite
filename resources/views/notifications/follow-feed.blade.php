@@ -1,10 +1,13 @@
 @extends("layouts.site")
 
+@section('sidebar')
+	<div class="sidebar">
+		@include('notifications.notification-menu', ["active" => "follow-feed"])
+	</div>
+@endsection
+
 @section('body')
 	<h1>Artists You Follow</h1>
-	
-	@component('notifications.notification-menu')
-	@endcomponent
 
 	<div class="wide-gallery row">
 		@foreach($artworks as $artwork)
