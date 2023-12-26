@@ -77,6 +77,16 @@ class UserPageController extends Controller
 	}
 
 	public function invite(User $user) {
-		return view("profile.invite", ["user" => $user]);
+		// Get only authed user's collectives where the selected user is not a member
+		$collectives = auth()->user()->collectives()->whereDoesntHave("members", function($q) use($user) {
+			$q->where("user_id", $user->id);
+		})->get();
+		
+
+		if($collectives->count() === 0) {
+			return redirect()->back()->withErrors("User is already a member of all your collectives.");
+		}
+
+		return view("profile.invite", ["user" => $user, "collectives" => $collectives]);
 	}
 }

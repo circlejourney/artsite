@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Collective;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use PHPUnit\TestRunner\TestResult\Collector;
 
@@ -99,8 +100,31 @@ class CollectiveController extends Controller
      */
     public function request_join(Collective $collective, Request $request)
     {
+
+		if($collective->members()->where("user_id", $request->user()->id)->exists()) {
+			return redirect()->back()->withErrors("User is already a member.");
+		}
+
         Notification::dispatch_to_collective($request->user(), $collective, collect(["type" => "co-join", "content" => $request->join_message]));
         return redirect( route("collectives.show", ["collective" => $collective]) )->with("success", "Request sent successfully.");
+    }
+
+    /**
+     * Show the form for joining an existing group.
+     */
+    public function invite(User $user, Request $request)
+    {
+        $collective = Collective::where("id", $request->collective)->firstOrFail();
+
+		if($collective->members()->where("user_id", $user->id)->exists()) {
+			return redirect()->back()->withErrors("User is already a member.");
+		}
+
+        Notification::dispatch_from_collective($request->user(), $collective, collect([$user]), collect([
+            "type" => "co-invite",
+            "content" => $request->invite_message
+        ]));
+        return redirect( route("user", ["username" => $user->name]) )->with("status", "Request sent successfully.");
     }
 
     /**

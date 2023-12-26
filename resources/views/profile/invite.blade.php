@@ -7,14 +7,17 @@
 
 @section('profile-body')
     <h1>Invite {{ $user->name }} to a collective</h1>
-    (this form does not currently work)
+    <p>
+        (this form does not currently work)
+    </p>
     <form method="POST">
         @csrf
-        <select>
-            @foreach(auth()->user()->collectives as $collective)
+        <select class="form-control" name="collective">
+            @foreach($collectives as $collective)
                 <option value="{{ $collective->id }}">{{ $collective->display_name }}</option>
             @endforeach
         </select>
+        <textarea class="form-control" name="invite_message"></textarea>
         <button>Invite</button>
     </form>
 @endsection

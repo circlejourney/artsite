@@ -11,6 +11,8 @@
     @forelse($collective_notifications as $collective_notification)
         @if($collective_notification->type == "co-join")
             @include("notifications.collectives.form")
+        @elseif($collective_notification->type == "co-invite")
+            @include("notifications.collectives.invite-form")
         @else
             @include("notifications.notification-item", ["notification" => $collective_notification])
         @endif

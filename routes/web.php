@@ -142,5 +142,6 @@ Route::get("/search", [TagController::class, 'show_global'])->name("tags.global.
 
 Route::get("/{username}", [UserPageController::class, 'show'])->name('user');
 Route::get("/{user}/invite", [UserPageController::class, 'invite'])->name('user.invite');
+Route::post("/{user}/invite", [CollectiveController::class, 'invite']);
 Route::get("/{username}/stats", [UserPageController::class, 'show_stats'])->name("stats");
 Route::get("/{username}/faves", [UserPageController::class, 'index_faves'])->name("faves");

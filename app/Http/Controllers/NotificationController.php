@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artwork;
 use App\Models\Collective;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -69,32 +70,80 @@ class NotificationController extends Controller
 	public function post_collectives(Request $request) {
 		$request->validate([ "notification_id" => "required|integer", "action" => "required" ]);
 		$notification = Notification::where("id", $request->notification_id)->firstOrFail();
-		$collective = Collective::where("id", $notification->recipient_collective_id)->firstOrFail();
-		if($request->user()->collectives->pluck("id")->doesntContain($notification->recipient_collective->id)) abort(403);
+
+		$isInvite = $notification->type == "co-invite";
+		
+		if(!$isInvite) {
+			$collective = Collective::where("id", $notification->recipient_collective_id)->firstOrFail();
+			if($request->user()->collectives->pluck("id")->doesntContain($notification->recipient_collective->id)) abort(403);
+			$joiner = $notification->sender;
+
+		} else {
+			$collective = Collective::where("id", $notification->sender_collective_id)->firstOrFail();
+			$joiner = $request->user();
+			
+		}
 
 		if($request->action == "reject") {
-			Notification::dispatch_from_collective(
-				$request->user(),
-				$collective,
-				collect([$notification->sender]),
-				collect([
-					"type" => "co-reject",
-					"content" => $collective->display_name." rejected your request to join."
-				])
-			);
+			if($isInvite) {
+				Notification::dispatch(
+					$request->user(),
+					collect([$notification->sender]),
+					collect([
+						"recipient_collective_id" => $collective->id,
+						"type" => "co-inv-reject"
+					])
+				);
+			} else {
+				Notification::dispatch_from_collective(
+					$request->user(),
+					$collective,
+					collect([$notification->sender]),
+					collect([
+						"type" => "co-reject"
+					])
+				);
+			}
 			$notification->delete();
 			return redirect()->back()->with("status", "Rejected invite.");
 		} else if($request->action == "accept") {
-			Notification::dispatch_from_collective(
-				$request->user(),
-				$collective,
-				collect([$notification->sender]),
-				collect([
-					"type" => "co-accept",
-					"content" => $collective->display_name." accepted your request to join."
-				])
-			);
-			$collective->members()->attach($notification->sender_id);
+
+			if($collective->members()->where("user_id", $joiner->id)->exists()) {
+				return redirect()->back()->withErrors("User is already a member.");
+			}
+
+			if($isInvite) {
+				Notification::dispatch_to_collective(
+					$request->user(),
+					$collective,
+					collect([
+						"type" => "co-inv-accept"
+					])
+				);
+			} else {
+				Notification::dispatch_from_collective(
+					$request->user(),
+					$collective,
+					collect([$notification->sender]),
+					collect([
+						"type" => "co-accept"
+					])
+				);
+			}
+
+			$obsolete = Notification::whereHas("recipients", function($q) use($joiner) {
+					$q->where("recipient_id", $joiner->id);
+				})->where("sender_collective_id", $collective->id)->get()
+				->merge(
+					Notification::where([
+						"sender_id" => $joiner->id,
+						"recipient_collective_id" => $collective->id
+					])->get()
+				);
+			
+			error_log($obsolete);
+
+			$collective->members()->syncWithoutDetaching($joiner->id);
 			$notification->delete();
 			return redirect()->back()->with("success", "Accepted invite.");
 		}

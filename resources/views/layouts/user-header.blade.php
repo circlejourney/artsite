@@ -32,7 +32,7 @@
 			<ul class="dropdown-menu">
 				<li class="dropdown-item">
 					<a href="{{ route("user.invite", ["user" => $user]) }}">
-						Invite to join group
+						Invite to join collective
 					</a>
 				</li>
 			</ul>

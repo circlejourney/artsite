@@ -19,7 +19,7 @@
     </div>
 
     <input type="hidden" name="notifications[]" value="{{ $notification->id }}">
-    <button class="notification-delete invisible-button" data-action="{{ route("notifications.delete-one", ["notification" => $notification->id])}}" onclick="delete_one()">
+    <button class="notification-respond invisible-button" data-action="{{ route("notifications.delete-one", ["notification" => $notification->id])}}" onclick="delete_one()">
         <i class="fa fa-trash"></i>
     </button>
 

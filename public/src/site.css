@@ -651,13 +651,20 @@ main .page-block {
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .notification-item img {
   width: 48px;
   border-radius: 5px;
 }
 
+.notification-message {
+  padding: 0.3rem;
+  width: 100%;
+}
+
 .notification-left {
+  flex-grow: 1;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -685,7 +692,7 @@ main .page-block {
   border: 1px solid #A9C7C1;
 }
 
-.notification-delete {
+.notification-respond {
   font-size: 14pt;
   padding: 0.6rem;
 }
