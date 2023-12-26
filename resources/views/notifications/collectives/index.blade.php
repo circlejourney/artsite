@@ -1,7 +1,9 @@
 @extends('layouts.site')
 
 @section("sidebar")	
-	@include('notifications.notification-menu')
+    <div class="sidebar">
+	    @include('notifications.notification-menu', ["active" => "collectives"])
+    </div>
 @endsection
 
 @section('body')

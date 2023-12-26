@@ -37,7 +37,7 @@ class NotificationController extends Controller
 		return view("notifications.index", ["user" => $user]);
     }
 
-	public function index_fed() {
+	public function index_feed() {
 		$artworks = Artwork::whereDoesntHave("users", function($q) { $q->where("user_id", auth()->user()->id); })->whereHas("users", function($query){
 			$query->whereIn("user_id", auth()->user()->follows->pluck("id")->all());
 		})->orderBy("created_at", "desc")->get();
