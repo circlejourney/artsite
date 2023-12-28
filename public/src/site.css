@@ -689,9 +689,12 @@ main .page-block {
   content: "✔️";
 }
 
-.dummy-checkbox-box {
+.dummy-checkbox-spacer, .dummy-checkbox-box {
   width: 1.6em;
   height: 1.6em;
+}
+
+.dummy-checkbox-box {
   border: 1px solid #A9C7C1;
 }
 

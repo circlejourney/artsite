@@ -775,9 +775,14 @@ div[class$="-section"] {
 		content: "✔️";
 	}
 }
-.dummy-checkbox-box {
+
+.dummy-checkbox-spacer {
 	width: 1.6em;
 	height: 1.6em;
+}
+
+.dummy-checkbox-box {
+	@extend .dummy-checkbox-spacer;
 	border: 1px solid $base-border;
 }
 

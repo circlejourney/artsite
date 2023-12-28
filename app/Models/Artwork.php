@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Services\UploadService;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Http\UploadedFile;
 
 class Artwork extends Model
@@ -42,6 +44,10 @@ class Artwork extends Model
 	 */
 	public function users(): BelongsToMany {
 		return $this->belongsToMany(User::class);
+	}
+
+	public function oldest_user(): User {
+		return $this->users()->orderByPivot("id", "asc")->first();
 	}
 
 	public function folders(): BelongsToMany {

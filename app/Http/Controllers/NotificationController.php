@@ -63,9 +63,14 @@ class NotificationController extends Controller
     }
 
 	public function index_feed() {
-		$artworks = Artwork::whereDoesntHave("users", function($q) { $q->where("user_id", auth()->user()->id); })->whereHas("users", function($query){
+		$artworks = Artwork::whereHas("users", function($query){
 			$query->whereIn("user_id", auth()->user()->follows->pluck("id")->all());
-		})->orderBy("created_at", "desc")->get();
+		})->orderBy("created_at", "desc")->get()
+		->filter(function($artwork) {
+			error_log($artwork->oldest_user());
+			return $artwork->oldest_user()->id !== auth()->user()->id;
+		});
+
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
 	}
 
