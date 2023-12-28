@@ -7,7 +7,7 @@
 @endsection
 
 @section('body')
-	<h1>Notifications</h1>
+	<h1>{{ Str::of($active)->replace("-", " ")->title() }}</h1>
 
 	@if(!isset($mass_delete) || $mass_delete)
 		<form method="POST">
@@ -37,10 +37,16 @@
 		
 	@else
 		@forelse($notifications as $notification)
+			@php
+				$read = $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read;
+				error_log($notification);
+			@endphp
 			@if($notification->type == "art-invite")
-				@include("notifications.art-invite-form", ["read" => $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read])
+				@include("notifications.art-invite-form", ["read" => $read])
+			@elseif($notification->type == "co-join" || $notification->type == "co-invite")
+				@include("notifications.collectives.form", ["read" => $read])
 			@else
-				@include("notifications.notification-item", ["read" => $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read])
+				@include("notifications.notification-item", ["read" => $read])
 			@endif
 		@empty
 			<p>

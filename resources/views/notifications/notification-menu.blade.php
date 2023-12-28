@@ -5,7 +5,7 @@
 
 <a href="{{ route("notifications.feed") }}" class="sidebar-link {{ isset($active) && $active == "follow-feed" ? "active" : "" }}">Artists You Follow</a>
 
-<a class="sidebar-link {{ isset($active) && $active == "faves" ? "active" : "" }}" href="{{ route("notifications.faves") }}">Favorites
+<a class="sidebar-link {{ isset($active) && $active == "favorites" ? "active" : "" }}" href="{{ route("notifications.faves") }}">Favorites
 	@if(($favecount = $user->notifications()->where("notification_recipient.read", 0)->where("type", "fave")->get()->count()) > 0)
 		<span class="sidebar-unread">{{ $favecount }}</span>
 	@endif
@@ -17,7 +17,7 @@
 	@endif
 </a>
 
-<a href="{{ route("notifications.invites") }}" class="sidebar-link {{ isset($active) && $active == "invites" ? "active" : "" }}">Requests and Invites
+<a href="{{ route("notifications.invites") }}" class="sidebar-link {{ isset($active) && $active == "art-invites" ? "active" : "" }}">Art Invites
 	@if(($artinvitecount = $user->notifications()->where("notification_recipient.read", 0)->where("type", "art-invite")->count()) > 0)
 		<span class="sidebar-unread">{{ $artinvitecount }}</span>
 	@endif

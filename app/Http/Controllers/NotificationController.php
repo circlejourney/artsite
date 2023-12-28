@@ -16,7 +16,7 @@ class NotificationController extends Controller
     public function index_faves(Request $request)
     {
 		$notifications = $request->user()->notifications()->where("type", "fave")->orderBy("created_at", "desc")->withPivot("read")->get();
-        return view("notifications.index", [ "notifications" => $notifications, "active" => "faves" ]);
+        return view("notifications.index", [ "notifications" => $notifications, "active" => "favorites" ]);
     }
 
     public function index_follows(Request $request)
@@ -28,7 +28,7 @@ class NotificationController extends Controller
     public function index_invites(Request $request)
     {
 		$notifications = $request->user()->notifications()->where("type", "art-invite")->orderBy("created_at", "desc")->get();
-        return view("notifications.index", [ "notifications" => $notifications, "active" => "invites", "mass_delete" => false ]);
+        return view("notifications.index", [ "notifications" => $notifications, "active" => "art-invites", "mass_delete" => false ]);
     }
 
 	public function post_invite(Request $request) {
@@ -72,6 +72,17 @@ class NotificationController extends Controller
 
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
 	}
+	
+	public function index_collectives(Request $request) {
+		return view(
+			"notifications.index",
+			[
+				"mass_delete" => false,
+				"notifications" => $request->user()->collective_notifications()->sortByDesc("created_at"),
+				"active" => "collectives"
+			]
+		);
+	}
 
 	public function delete_one(Request $request, Notification $notification) {
 		$user = $request->user();
@@ -101,12 +112,6 @@ class NotificationController extends Controller
 	public function get_count(Request $request) {
 		$user = $request->user();
 		return response($user->notifications()->where("notification_recipient.read", 0)->count());
-	}
-	
-	public function index_collectives(Request $request) {
-		return view("notifications.collectives.index",
-			["notifications" => $request->user()->collective_notifications()->sortByDesc("created_at")]
-		);
 	}
 
 	public function post_collectives(Request $request) {

@@ -10,8 +10,14 @@
         @endisset
 
 		<i class='fa fa-fw fa-user-group'></i>&emsp;{!! $notification->sender->getNametag() !!}
-		requested to join
-		<a href="{{ route("collectives.show", ["collective" => $notification->recipient_collective]) }}">{{ $notification->recipient_collective->display_name }}</a>
+		
+		@if($notification->recipient_collective)
+			requested to join
+			<a href="{{ route("collectives.show", ["collective" => $notification->recipient_collective]) }}">{{ $notification->recipient_collective->display_name }}</a>
+		@else
+			invited you to join
+			<a href="{{ route("collectives.show", ["collective" => $notification->sender_collective]) }}">{{ $notification->sender_collective->display_name }}</a>
+		@endif
 
 		@if($notification->content)
 			<div class="notification-message card">
