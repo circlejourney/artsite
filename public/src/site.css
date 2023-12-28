@@ -164,6 +164,8 @@ nav .menu-toggle-circle {
   width: 2em;
   height: 2em;
   border-radius: 100%;
+  background-size: cover;
+  background-position: center;
 }
 nav .nav-button {
   background-color: #2CC4EB;

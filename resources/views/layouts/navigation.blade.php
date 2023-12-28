@@ -18,8 +18,6 @@
 					@include("components.search-form")
 				</div>
                 @if(Auth::check())
-
-                    <a class="menu-item" href="/{{ Auth::user()->name }}">{{ Auth::user()->name }}</a>
                     <a class="menu-item" href="{{route('dashboard')}}">Dashboard</a>
 					<a class="menu-item" href="{{route('profile.html.edit')}}">Customise profile</a>
                     <!-- Authentication -->
@@ -53,6 +51,8 @@
 				@if($unread > 0)
 					<div class="notification-badge number-badge badge badge-primary">{{ $unread }}</div>
 				@endif
+			</a>
+			<a href="{{ route("user", Auth::user()->name) }}" class="menu-toggle-circle" style="background-image: url({{ Auth::user()->getAvatarURL() }})">
 			</a>
 		@endauth
     </div>
