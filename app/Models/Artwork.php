@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 use App\Models\Folder;
 use App\Models\Tag;
@@ -55,10 +54,6 @@ class Artwork extends Model
 
 	public function faved_by(): BelongsToMany {
 		return $this->belongsToMany(User::class, "faves")->withTimestamps();
-	}
-
-	public function art_invites(): HasMany {
-		return $this->hasMany(ArtInvite::class);
 	}
 
 	public static function byPath($path) : Artwork {
@@ -128,11 +123,17 @@ class Artwork extends Model
 	}
 
 	public function inviteForeignUser(User $user) {
-		ArtInvite::create([
+		/*ArtInvite::create([
 			"user_id" => $user->id,
 			"sender_id" => auth()->user()->id,
 			"artwork_id" => $this->id
+		]);*/
+		$notification = Notification::create([
+			"type" => "art-invite",
+			"sender_id" => auth()->user()->id,
+			"artwork_id" => $this->id
 		]);
+		$notification->recipients()->attach($user->id);
 	}
 
 	public function addForeignUser(User $user) {

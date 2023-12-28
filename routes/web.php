@@ -5,13 +5,11 @@ use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
-use App\Http\Controllers\ArtInviteController;
 use App\Http\Controllers\CollectiveController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TagController;
-use App\Models\Collective;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,8 +93,8 @@ Route::middleware('auth', 'verified')->group(function () {
 		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
 		Route::put("/notification-read", "put_read")->name('notifications.put-read');
 
-		Route::get("/notifications/invites", [ArtInviteController::class, 'index'])->name("notifications.invites");
-		Route::post("/notifications/invites", [ArtInviteController::class, 'post'])->name("notifications.invites");
+		Route::get("/notifications/invites", 'index_invites')->name("notifications.invites");
+		Route::post("/notifications/invites", 'post_invite');
 		
 		Route::get("/notifications/collectives", "index_collectives")->name("notifications.collectives");
 		Route::post("/notifications/collectives", "post_collectives");

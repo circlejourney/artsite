@@ -17,8 +17,8 @@
 </a>
 
 <a href="{{ route("notifications.invites") }}" class="sidebar-link {{ isset($active) && $active == "invites" ? "active" : "" }}">Requests and Invites
-	@if(($artinvitecount = $user->art_invites->count()) > 0)
-		<span class="sidebar-unread">{{ $user->art_invites->count() }}</span>
+	@if(($artinvitecount = $user->notifications()->where("type", "art-invite")->count()) > 0)
+		<span class="sidebar-unread">{{ $artinvitecount }}</span>
 	@endif
 </a>
 

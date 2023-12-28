@@ -1,9 +1,9 @@
 <form class="notification-item" method="POST">
-    <div class="notification-left">
+    <div class="notification-left @if(isset($read) && !$read) unread @endif">
 		@csrf
-		<input type="hidden" name="art_invite_id" value="{{ $art_invite->id }}">
-		<i class='fa fa-fw fa-image-plus'></i>&emsp;{!! $art_invite->sender->getNametag() !!} wants to add you as a collaborator on
-		<a href="{{ route("art", ["path" => $art_invite->artwork->path]) }}">{{ $art_invite->artwork->title }}</a>
+		<input type="hidden" name="notification_id" value="{{ $notification->id }}">
+		<i class='fa fa-fw fa-image-plus'></i>&emsp;{!! $notification->sender->getNametag() !!} wants to add you as a collaborator on
+		<a href="{{ route("art", ["path" => $notification->artwork->path]) }}">{{ $notification->artwork->title }}</a>
 	</div>
 
 	@include("components.accept-reject")

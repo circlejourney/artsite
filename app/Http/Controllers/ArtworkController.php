@@ -94,7 +94,7 @@ class ArtworkController extends Controller
 
 		$folderlist = $request->user()->getFolderTree(false);
 		$selectedfolder = $artwork->folders()->get()
-			->intersect($request->user()->folders()->get())->first()->id;
+			->intersect($request->user()->folders()->get())->first() ?? $request->user()->top_folder;
 		$text = $artwork->getText();
 		$image_urls = $artwork->getImageURLs($artwork->images);
 		$user_tags = $artwork->tags->where("user_id", request()->user()->id);
@@ -103,7 +103,7 @@ class ArtworkController extends Controller
 			"image_urls" => $image_urls,
 			"folderlist" => $folderlist,
 			"text" => $text,
-			"selectedfolder" => $selectedfolder,
+			"selectedfolder" => $selectedfolder->id,
 			"tags" => $user_tags
 		]);
 	}
@@ -138,7 +138,7 @@ class ArtworkController extends Controller
 			if($removeArtists) {
 				foreach($removeArtists as $artistname) {
 					if(!$artistname) continue;
-					if(!$artist = User::where("name", $artistname)->first()) continue;
+					if(!$artist = User::where("name", $artistname)->firstOrFail()) continue;
 					$artwork->removeForeignUser($artist);
 				}
 			}
@@ -146,7 +146,7 @@ class ArtworkController extends Controller
 				foreach($request->artist as $artistname) {
 					// Loop through guest artists (not the user making the request)
 					if(!$artistname) continue;
-					if(!$artist = User::where("name", $artistname)->first()) continue;
+					if(!$artist = User::where("name", $artistname)->firstOrFail()) continue;
 					if($artwork->users()->get()->contains($artist)) continue;
 					$artwork->inviteForeignUser($artist);
 				}	

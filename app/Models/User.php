@@ -105,6 +105,10 @@ class User extends Authenticatable
 		return $this->hasMany(Folder::class);
 	}
 
+	public function top_folder(): BelongsTo {
+		return $this->belongsTo(Folder::class, "top_folder_id");
+	}
+
 	public function roles(): BelongsToMany {
 		return $this->belongsToMany(Role::class)->withTimestamps();
 	}
@@ -143,14 +147,6 @@ class User extends Authenticatable
 
 	public function followers() : BelongsToMany {
 		return $this->belongsToMany(User::class, "follows", "followed_id", "follower_id")->withTimestamps();
-	}
-
-	public function art_invites(): HasMany { // Art invites RECEIVED by the user
-		return $this->hasMany(ArtInvite::class);
-	}
-
-	public function sent_art_invites(): HasMany { // Art invites SENT by the user
-		return $this->hasMany(ArtInvite::class, "sender_id");
 	}
 
 	public function messages() : HasMany {
