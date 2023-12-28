@@ -127,7 +127,7 @@ nav a:hover, nav a:active {
   color: black;
   text-decoration: none;
 }
-nav .nav-left, nav .nav-right {
+nav .nav-right, nav .nav-left {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -135,12 +135,11 @@ nav .nav-left, nav .nav-right {
   justify-content: center;
 }
 @media screen and (max-width: 768px) {
+  nav .nav-left {
+    justify-content: flex-start;
+  }
   nav .nav-right {
     justify-content: flex-end;
-  }
-  nav .nav-left {
-    flex-basis: 60%;
-    justify-content: flex-start;
   }
 }
 nav .nav-button, nav .menu-toggle, nav .search-form, nav .menu-toggle-circle {

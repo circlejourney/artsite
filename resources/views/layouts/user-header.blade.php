@@ -29,12 +29,20 @@
 			<a class="button-circle" href="#" data-toggle="dropdown">
 				<i class="fa fa-ellipsis"></i>
 			</a>
-			<ul class="dropdown-menu">
-				<li class="dropdown-item">
-					<a href="{{ route("user.invite", ["user" => $user]) }}">
-						Invite to join collective
-					</a>
-				</li>
+			<ul class="dropdown-menu profile-dropdown">
+				@if(Auth::user() == $user)
+					<li class="dropdown-item">
+						<a href="{{ route("profile.edit") }}">
+							<i class="fa fa-pencil"></i> Edit profile
+						</a>
+					</li>
+				@else
+					<li class="dropdown-item">
+						<a href="{{ route("user.invite", ["user" => $user]) }}">
+							<i class="fa fa-user-group"></i> Invite to join collective
+						</a>
+					</li>
+				@endif
 			</ul>
 		</div>
 	</div>

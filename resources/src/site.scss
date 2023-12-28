@@ -186,20 +186,19 @@ nav {
 		justify-content: center;
     }
 
+	.nav-left {
+        @extend %nav-section;
+		@include screen-sm {
+			justify-content: flex-start;
+		}
+	}
+
     .nav-right {
         @extend %nav-section;
 		@include screen-sm {
 			justify-content: flex-end;
 		}
     }
-
-	.nav-left {
-        @extend %nav-section;
-		@include screen-sm {
-			flex-basis: 60%;
-			justify-content: flex-start;
-		}
-	}
     
     %nav-block {
         font-size: 16pt;
