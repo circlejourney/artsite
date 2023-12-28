@@ -14,7 +14,7 @@ class Notification extends Model
     use HasFactory;
 
 	protected $fillable = [
-		"type", "sender_id", "sender_collective_id", "recipient_collective_id", "artwork_id", "content"
+		"type", "sender_id", "sender_collective_id", "recipient_collective_id", "artwork_id", "content", "read"
 	];
 
 	public function sender() : BelongsTo {

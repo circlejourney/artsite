@@ -93,6 +93,7 @@ Route::middleware('auth', 'verified')->group(function () {
 		Route::get("/notification-count", "get_count")->name("notifications.get_count");
 		Route::delete("/notifications", "destroy");
 		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
+		Route::put("/notification-read", "put_read")->name('notifications.put-read');
 
 		Route::get("/notifications/invites", [ArtInviteController::class, 'index'])->name("notifications.invites");
 		Route::post("/notifications/invites", [ArtInviteController::class, 'post'])->name("notifications.invites");

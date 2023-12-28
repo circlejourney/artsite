@@ -719,7 +719,7 @@ div[class$="-section"] {
 
 /* Messages */
 
-.unread {
+.mail-item.unread {
 	background-color: $light-bg;
 	font-weight: bold;
 }
@@ -730,11 +730,13 @@ div[class$="-section"] {
 	max-width: 1000px;
 	background-color: $base;
 	border: 1px solid $base-border;
-	margin: $small-padding 0;
+	margin: 0;
+	padding: 0;
 	border-radius: $border-radius;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	overflow: hidden;
 	
 	img {
 		width: 48px;
@@ -748,6 +750,7 @@ div[class$="-section"] {
 }
 
 .notification-left {
+	height: 100%;
 	flex-grow: 1;
 	display: flex;
 	align-items: center;
@@ -757,7 +760,7 @@ div[class$="-section"] {
 	border-left: 8px solid transparent;
 
 	&.unread {
-		border-color: $base;
+		border-color: $accent;
 	}
 }
 
@@ -779,8 +782,9 @@ div[class$="-section"] {
 }
 
 .notification-respond {
+	padding: 0 $small-padding;
 	font-size: $large-text;
-	padding: $mid-padding;
+	@include flex-wrap(row);
 }
 
 /* Footer */

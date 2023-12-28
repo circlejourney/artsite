@@ -1,7 +1,12 @@
 $(window).on("load", function(){
 	$('[data-toggle="tooltip"]').tooltip();
-	if($(".notifications").length > 0) {
+
+	if($("form.notifications").length > 0) {
 		fetchNotificationCount();
+	}
+
+	if($("form.read").length > 0) {
+		setRead();
 	}
 
 	$(".format-date").each(function(i, element){
@@ -84,7 +89,7 @@ function follow() {
 }
 
 function fetchNotificationCount() {
-	const form = $(".notifications")[0];
+	const form = $("form.notifications")[0];
 	$.get($(form).prop("action"), {
 		"headers": { "X-CSRF-TOKEN": $(form).find("input[name='_token']").val() },
 	}).done(function(response){
@@ -92,6 +97,15 @@ function fetchNotificationCount() {
 		if(parseInt(response) > 0) $(badge).removeClass("d-none");
 		else $(badge).addClass("d-none");
 	});
+}
+
+function setRead() {
+	const form = $("form.read")[0];
+	$.ajax($(form).prop("action"), {
+		"method": "PUT",
+		"headers": { "X-CSRF-TOKEN": $(form).find("input[name='_token']").val() },
+		"data": $(form).serialize()
+	}).done(function(response){});
 }
 
 function formatDateTime(target) {

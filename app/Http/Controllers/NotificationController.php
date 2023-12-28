@@ -25,6 +25,30 @@ class NotificationController extends Controller
         return view("notifications.index", [ "notifications" => $notifications, "active" => "follows" ]);
     }
 
+    public function index_invites(Request $request)
+    {
+		$notifications = $request->user()->notifications()->where("type", "art-invite")->orderBy("created_at", "desc")->get();
+        return view("notifications.index", [ "notifications" => $notifications, "active" => "invites", "mass_delete" => false ]);
+    }
+
+	public function post_invite(Request $request) {
+		$request->validate([ "notification_id" => "required|integer", "action" => "required" ]);
+        $notification = Notification::where("id", $request->notification_id)->firstOrFail();
+		if(!$notification->recipients()->where("recipient_id", $request->user()->id)->exists()) abort(403);
+
+		if($request->action == "reject") {
+			Notification::dispatch($request->user(), collect([$notification->sender]), collect([ "type" => "art-invite", "content" => $request->user()->getNametag()." rejected your invitation to add them as an artist." ]));
+			$notification->delete();
+			return redirect()->back()->with("status", "Rejected invite.");
+		} else if($request->action == "accept") {
+			foreach($notification->recipients as $recipient) {
+				$notification->artwork->addForeignUser($recipient);
+			}
+			$notification->delete();
+			return redirect()->back()->with("success", "Accepted invite.");
+		}
+	}
+
     /**
      * Remove the specified resource from storage.
      */
@@ -52,6 +76,14 @@ class NotificationController extends Controller
 		$notification->deleteFor($user);
 
 		return response(["notification" => $notificationID]);
+	}
+
+	public function put_read(Request $request) {
+		foreach($request->read as $notification_id) {
+			$notification = Notification::where("id", $notification_id);
+			$notification->update(["read" => true]);
+		}
+		return response(["notifications" => $request->read]);
 	}
 
 	public function get_count(Request $request) {
