@@ -38,7 +38,7 @@
 	@else
 		@forelse($notifications as $notification)
 			@if($notification->type == "art-invite")
-				@include("notifications.art-invites.form", ["read" => $notification->read])
+				@include("notifications.art-invite-form", ["read" => $notification->read])
 			@else
 				@include("notifications.notification-item", ["read" => $notification->read])
 			@endif

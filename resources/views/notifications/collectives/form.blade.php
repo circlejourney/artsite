@@ -12,5 +12,5 @@
 		@endif
 	</div>
 	
-	@include("components.accept-reject")
+	@include("notifications.accept-reject")
 </form>

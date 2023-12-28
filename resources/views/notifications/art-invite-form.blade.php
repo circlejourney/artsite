@@ -6,5 +6,5 @@
 		<a href="{{ route("art", ["path" => $notification->artwork->path]) }}">{{ $notification->artwork->title }}</a>
 	</div>
 
-	@include("components.accept-reject")
+	@include("notifications.accept-reject")
 </form>
