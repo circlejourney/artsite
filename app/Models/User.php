@@ -122,7 +122,7 @@ class User extends Authenticatable
 	}
 
 	public function notifications(): BelongsToMany {
-		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->withTimestamps();
+		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->withTimestamps()->withPivot("read");
 	}
 
 	public function invites(): HasMany {
@@ -162,10 +162,7 @@ class User extends Authenticatable
 	}
 
 	public function collective_notifications() {
-		$collectives = $this->collectives;
-		return $collectives->map(function($i) {
-			return $i->notifications;
-		})->flatten();
+		return $this->notifications()->whereNotNull("sender_collective_id")->get()->merge($this->notifications()->whereNotNull("recipient_collective_id")->get());
 	}
 
 	/* Utility */

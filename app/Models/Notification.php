@@ -30,7 +30,7 @@ class Notification extends Model
 	}
 
 	public function recipients() : BelongsToMany {
-		return $this->belongsToMany(User::class, "notification_recipient", "notification_id", "recipient_id")->withTimestamps();
+		return $this->belongsToMany(User::class, "notification_recipient", "notification_id", "recipient_id")->withTimestamps()->withPivot(["read"]);
 	}
 
 	public function recipient_collective() : BelongsTo {
@@ -106,7 +106,8 @@ class Notification extends Model
 			"sender_id" => $sender->id,
 			"recipient_collective_id" => $recipient_collective->id
 		])->merge($props)->all();
-		Notification::create($params);
+		$notification = Notification::create($params);
+		$notification->recipients()->attach($recipient_collective->members->pluck("id")->all());
 	}
 
 	public static function dispatch_from_collective(User $sender, Collective $sender_collective, Collection $recipients, Collection $props=null) {

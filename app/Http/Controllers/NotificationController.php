@@ -15,7 +15,7 @@ class NotificationController extends Controller
      */
     public function index_faves(Request $request)
     {
-		$notifications = $request->user()->notifications()->where("type", "fave")->orderBy("created_at", "desc")->get();
+		$notifications = $request->user()->notifications()->where("type", "fave")->orderBy("created_at", "desc")->withPivot("read")->get();
         return view("notifications.index", [ "notifications" => $notifications, "active" => "faves" ]);
     }
 
@@ -67,7 +67,6 @@ class NotificationController extends Controller
 			$query->whereIn("user_id", auth()->user()->follows->pluck("id")->all());
 		})->orderBy("created_at", "desc")->get()
 		->filter(function($artwork) {
-			error_log($artwork->oldest_user());
 			return $artwork->oldest_user()->id !== auth()->user()->id;
 		});
 
@@ -85,22 +84,28 @@ class NotificationController extends Controller
 
 	public function put_read(Request $request) {
 		foreach($request->read as $notification_id) {
-			$notification = Notification::where("id", $notification_id);
-			$notification->update(["read" => true]);
+			$notification = Notification::where("id", $notification_id)->first();
+			if(!$notification) continue;
+
+			$relatedPivotEntry = $notification->recipients()->withPivot("id")->where("notification_recipient.recipient_id", $request->user()->id)->first();
+			if($relatedPivotEntry === null) continue;
+			
+			$notification->recipients()->updateExistingPivot(
+				$relatedPivotEntry->id,
+				["read" => true]
+			);
 		}
 		return response(["notifications" => $request->read]);
 	}
 
 	public function get_count(Request $request) {
 		$user = $request->user();
-		return response($user->notifications->count() + $user->collective_notifications()->count());
+		return response($user->notifications()->where("notification_recipient.read", 0)->count());
 	}
 	
 	public function index_collectives(Request $request) {
 		return view("notifications.collectives.index",
-			["collective_notifications" => $request->user()->collective_notifications()->merge(
-				$request->user()->notifications()->whereNotNull("sender_collective_id")->get()
-			)->sortByDesc("created_at")]
+			["notifications" => $request->user()->collective_notifications()->sortByDesc("created_at")]
 		);
 	}
 
@@ -177,8 +182,6 @@ class NotificationController extends Controller
 						"recipient_collective_id" => $collective->id
 					])->get()
 				);
-			
-			error_log($obsolete);
 
 			$collective->members()->syncWithoutDetaching($joiner->id);
 			$notification->delete();

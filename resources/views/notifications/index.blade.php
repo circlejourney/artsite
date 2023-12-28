@@ -21,7 +21,7 @@
 			@endif
 
 			@foreach($notifications as $notification)
-				@include("notifications.notification-item", ["read" => $notification->read])
+				@include("notifications.notification-item", ["read" => $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read])
 			@endforeach
 
 			@if($notifications->count() > 0)
@@ -38,9 +38,9 @@
 	@else
 		@forelse($notifications as $notification)
 			@if($notification->type == "art-invite")
-				@include("notifications.art-invite-form", ["read" => $notification->read])
+				@include("notifications.art-invite-form", ["read" => $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read])
 			@else
-				@include("notifications.notification-item", ["read" => $notification->read])
+				@include("notifications.notification-item", ["read" => $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read])
 			@endif
 		@empty
 			<p>
