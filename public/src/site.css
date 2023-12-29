@@ -40,16 +40,16 @@ nav .menu-toggle-circle .number-badge {
   font-size: 9pt;
 }
 
-.button-circle, .button-pill, .tag {
+.button-blob, .button-circle, .button-pill, .tag {
   background-color: #F2FAFB;
   height: 2rem;
-  border-radius: 1rem;
+  border-radius: 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: black;
 }
-.button-circle a, .button-pill a, .tag a {
+.button-blob a, .button-circle a, .button-pill a, .tag a {
   color: black;
 }
 
@@ -65,6 +65,11 @@ nav .menu-toggle-circle .number-badge {
 
 .button-circle {
   width: 2rem;
+}
+
+.button-blob {
+  height: 3rem;
+  padding: 1.2rem;
 }
 
 .upside-down {
@@ -644,15 +649,32 @@ main .page-block {
 }
 
 /* Notifications */
-.notification-manage {
-  display: inline;
+.notification-manage-wrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px;
+}
+
+@media screen and (max-width: 768px) {
+  #notification-manage {
+    text-align: right;
+  }
+}
+.notification-manage-button {
+  border: 1px solid #A9C7C1;
+}
+
+.notification-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.3rem;
 }
 
 .notification-item {
   max-width: 1000px;
   background-color: #F2FAFB;
   border: 1px solid #A9C7C1;
-  margin: 0.3rem;
   padding: 0;
   border-radius: 10px;
   display: flex;
@@ -687,10 +709,10 @@ main .page-block {
 .dummy-checkbox {
   display: inline-block;
 }
-.dummy-checkbox input {
+.dummy-checkbox .real-checkbox {
   display: none;
 }
-.dummy-checkbox input:checked ~ .dummy-checkbox-box::after {
+.dummy-checkbox .real-checkbox:checked ~ .dummy-checkbox-box::after {
   content: "✔️";
 }
 

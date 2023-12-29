@@ -53,6 +53,12 @@ class Notification extends Model
 		if($this->type == "ping") {
 			return "<i class='fa fa-fw fa-user-plus'></i>&emsp;" . $this->getSenderHTML() . " pinged you" . ($this->artwork_id ? " on <a href='" . route("art", ["path" => $this->artwork->path]) . "'>" . $this->artwork->title . "</a>" : "");
 		}
+		if($this->type == "co-join") {
+			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderHTML() . " requested to join " . $this->getRecipientCollectiveHTML();
+		}
+		if($this->type == "co-invite") {
+			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderHTML() . " invited you to join " . $this->getSenderCollectiveHTML();
+		}
 		if($this->type == "co-reject") {
 			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderCollectiveHTML() . " rejected your join request.";
 		}
@@ -65,11 +71,14 @@ class Notification extends Model
 		if($this->type == "co-inv-accept") {
 			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderHTML() . " accepted your invite to join " . $this->getRecipientCollectiveHTML();
 		}
+		if($this->type == "art-invite") {
+			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " wants to add you as a collaborator on " . $this->getArtworkHTML();
+		}
 		if($this->type == "art-inv-accept") {
-			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " accepted your invite to be an artist on " . $this->getArtworkHTML();
+			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " accepted your invite to be a collaborator on " . $this->getArtworkHTML();
 		}
 		if($this->type == "art-inv-reject") {
-			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " rejected your invite to be an artist on " . $this->getArtworkHTML();
+			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " rejected your invite to be a collaborator on " . $this->getArtworkHTML();
 		}
 
 		if($this->content) return $this->content;

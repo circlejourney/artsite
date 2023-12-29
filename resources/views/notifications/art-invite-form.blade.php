@@ -9,8 +9,7 @@
             <img src="{{ $notification->sender->getAvatarURL() }}">
         @endisset
 
-		<i class='fa fa-fw fa-image-plus'></i>&emsp;{!! $notification->sender->getNametag() !!} wants to add you as a collaborator on
-		<a href="{{ route("art", ["path" => $notification->artwork->path]) }}">{{ $notification->artwork->title }}</a>
+		{!! $notification->getDisplayHTML() !!}
 	</div>
 
 	@include("notifications.accept-reject")

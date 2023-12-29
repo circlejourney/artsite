@@ -130,7 +130,7 @@ class User extends Authenticatable
 	}
 
 	public function art_invite_notifications() : BelongsToMany {
-		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->where("type", "like", "art-inv-%")->withPivot("read");
+		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->where("type", "like", "art-inv%")->withPivot("read");
 	}
 
 	public function invites(): HasMany {

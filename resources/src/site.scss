@@ -1,4 +1,5 @@
 $border-radius: 10px;
+$border-radius-large: 15px;
 $border-radius-small: 0.3rem;
 $base: #F2FAFB;
 $base-border: #A9C7C1;
@@ -19,6 +20,7 @@ $global-padding: 3rem;
 $small-padding: 0.3rem;
 $mid-padding: 0.6rem;
 $header-margin: 2rem;
+$notification-max-width: 1000px;
 
 @mixin screen-sm {
     @media screen and (max-width: 768px) {
@@ -95,7 +97,7 @@ a.link-current {
 %button {
     background-color: $base;
     height: 2rem;
-    border-radius: 1rem;
+    border-radius: $border-radius-large;
 	@include inline-flex-centre();
     color: black;
 	a {
@@ -118,6 +120,12 @@ a.link-current {
 .button-circle {
 	@extend %button;
 	width: 2rem;
+}
+
+.button-blob {
+	@extend %button;
+	height: 3rem;
+	padding: calc(2 * $mid-padding);
 }
 
 .upside-down {
@@ -727,15 +735,32 @@ div[class$="-section"] {
 
 /* Notifications */
 
-.notification-manage {
-	display: inline;
+.notification-manage-wrapper {
+	display: flex;
+	justify-content: space-between;
+	max-width: $notification-max-width;
+}
+
+
+@include screen-sm {
+	#notification-manage {
+		text-align: right;
+	}
+}
+
+.notification-manage-button {
+	border: 1px solid $base-border;
+}
+
+.notification-wrapper {
+	@include flex-wrap(column);
+	gap: $small-padding;
 }
 
 .notification-item {
-	max-width: 1000px;
+	max-width: $notification-max-width;
 	background-color: $base;
 	border: 1px solid $base-border;
-	margin: $small-padding;
 	padding: 0;
 	border-radius: $border-radius;
 	display: flex;
@@ -772,11 +797,11 @@ div[class$="-section"] {
 .dummy-checkbox {
 	display: inline-block;
 	
-	input {
+	.real-checkbox {
 		display: none;
 	}
 
-	input:checked ~ .dummy-checkbox-box::after {
+	.real-checkbox:checked ~ .dummy-checkbox-box::after {
 		content: "✔️";
 	}
 }
