@@ -9,7 +9,7 @@
     	<h1>Welcome to {{ config("app.name") }}!</h1>
 	@endauth
 	
-	<p>A cool art site with collabs, collectives, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad pariatur excepteur et cupidatat minim culpa.</p>
+	<p>A cool art site with collabs, collectives, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad penis pariatur excepteur et cupidatat minim culpa.</p>
     
     @auth
 		<p>
