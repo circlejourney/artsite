@@ -4,7 +4,9 @@
 
 	@auth
 		@if(auth()->user()->collectives->pluck("id")->doesntContain($collective->id))
+		<p>
 			<a class="btn btn-primary" data-toggle="modal" href="#request-join">Request to Join</a>
+		</p>
 		@endif
 	@endauth
 	

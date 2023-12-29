@@ -686,6 +686,10 @@ main .page-block {
   width: 48px;
   border-radius: 5px;
 }
+.notification-item a {
+  font-weight: bold;
+  color: inherit;
+}
 
 .notification-message {
   padding: 0.3rem;

@@ -772,6 +772,11 @@ div[class$="-section"] {
 		width: 48px;
 		border-radius: 5px;
 	}
+
+	a {
+		font-weight: bold;
+		color: inherit;
+	}
 }
 
 .notification-message {
