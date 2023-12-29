@@ -1,9 +1,9 @@
 <form class="notification-item" method="POST">
+	@csrf
+	<input type="hidden" name="notification_id" value="{{ $notification->id }}">
+	
 	<div class="notification-left @if(isset($read) && !$read) unread @endif">
-		@csrf
-		<input type="hidden" name="notification_id" value="{{ $notification->id }}">
-		
-		<div class="dummy-checkbox-spacer"></div>
+		@include("notifications.form-checkbox")
 
         @isset($notification->sender)
             <img src="{{ $notification->sender->getAvatarURL() }}">

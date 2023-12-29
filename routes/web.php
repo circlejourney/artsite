@@ -86,18 +86,24 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::controller(NotificationController::class)->group(function() {
 		Route::get("/notifications", "index_faves")->name("notifications");
 		Route::get("/notifications/favorites", "index_faves")->name("notifications.faves");
+		
 		Route::get("/notifications/follows", "index_follows")->name("notifications.follows");
-		Route::get("/notifications/follow-feed", "index_feed")->name("notifications.feed");
-		Route::get("/notification-count", "get_count")->name("notifications.get_count");
-		Route::delete("/notifications", "destroy");
-		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
-		Route::put("/notification-read", "put_read")->name('notifications.put-read');
 
+		Route::get("/notification-count", "get_count")->name("notifications.get_count");
+		
 		Route::get("/notifications/invites", 'index_invites')->name("notifications.invites");
 		Route::post("/notifications/invites", 'post_invite');
 		
 		Route::get("/notifications/collectives", "index_collectives")->name("notifications.collectives");
 		Route::post("/notifications/collectives", "post_collectives");
+
+		Route::get("/notifications/follow-feed", "index_feed")->name("notifications.feed");
+		
+		Route::put("/notifications/{page?}", "mark_read_many");
+		Route::delete("/notifications/{page?}", "delete_many");
+		Route::delete("/notification-ajax/{notification}", "delete_one")->name('notifications.delete-one');
+		Route::put("/notification-read", "put_read")->name('notifications.put-read');
+
 	});
 
 	Route::post("/follow/{user}", [UserPageController::class, "follow"])->name("follow");

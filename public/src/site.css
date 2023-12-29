@@ -644,6 +644,10 @@ main .page-block {
 }
 
 /* Notifications */
+.notification-manage {
+  display: inline;
+}
+
 .notification-item {
   max-width: 1000px;
   background-color: #F2FAFB;

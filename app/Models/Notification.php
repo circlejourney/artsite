@@ -65,6 +65,12 @@ class Notification extends Model
 		if($this->type == "co-inv-accept") {
 			return "<i class='fa fa-fw fa-user-group'></i>&emsp;" . $this->getSenderHTML() . " accepted your invite to join " . $this->getRecipientCollectiveHTML();
 		}
+		if($this->type == "art-inv-accept") {
+			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " accepted your invite to be an artist on " . $this->getArtworkHTML();
+		}
+		if($this->type == "art-inv-reject") {
+			return "<i class='fa fa-fw fa-palette'></i>&emsp;" . $this->getSenderHTML() . " rejected your invite to be an artist on " . $this->getArtworkHTML();
+		}
 
 		if($this->content) return $this->content;
 		return "You received a notification of an unknown type.";

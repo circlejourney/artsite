@@ -13,23 +13,32 @@ class NotificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index_faves(Request $request)
-    {
+    public function index_faves(Request $request) {
 		$notifications = $request->user()->notifications()->where("type", "fave")->orderBy("created_at", "desc")->withPivot("read")->get();
         return view("notifications.index", [ "notifications" => $notifications, "active" => "favorites" ]);
     }
 
-    public function index_follows(Request $request)
-    {
+    public function index_follows(Request $request) {
 		$notifications = $request->user()->notifications()->where("type", "follow")->orderBy("created_at", "desc")->get();
         return view("notifications.index", [ "notifications" => $notifications, "active" => "follows" ]);
     }
 
     public function index_invites(Request $request)
     {
-		$notifications = $request->user()->notifications()->where("type", "art-invite")->orderBy("created_at", "desc")->get();
+		$notifications = $request->user()->notifications()->where("type", "like", "art-inv%")->orderBy("created_at", "desc")->get();
         return view("notifications.index", [ "notifications" => $notifications, "active" => "art-invites", "mass_delete" => false ]);
     }
+	
+	public function index_collectives(Request $request) {
+		$notifications = $request->user()->collective_notifications()->orderBy("created_at", "desc")->get();
+		return view(
+			"notifications.index",
+			[
+				"notifications" => $notifications,
+				"active" => "collectives"
+			]
+		);
+	}
 
 	public function post_invite(Request $request) {
 		$request->validate([ "notification_id" => "required|integer", "action" => "required" ]);
@@ -37,30 +46,22 @@ class NotificationController extends Controller
 		if(!$notification->recipients()->where("recipient_id", $request->user()->id)->exists()) abort(403);
 
 		if($request->action == "reject") {
-			Notification::dispatch($request->user(), collect([$notification->sender]), collect([ "type" => "art-invite", "content" => $request->user()->getNametag()." rejected your invitation to add them as an artist." ]));
+			Notification::dispatch($request->user(), collect([$notification->sender]), collect([
+				"artwork_id" => $notification->artwork_id,
+				"type" => "art-inv-reject"
+			]));
 			$notification->delete();
 			return redirect()->back()->with("status", "Rejected invite.");
 		} else if($request->action == "accept") {
-			foreach($notification->recipients as $recipient) {
-				$notification->artwork->addForeignUser($recipient);
-			}
+			$notification->artwork->addForeignUser($request->user());
+			Notification::dispatch($request->user(), collect([$notification->sender]), collect([
+				"artwork_id" => $notification->artwork_id,
+				"type" => "art-inv-accept"
+			]));
 			$notification->delete();
 			return redirect()->back()->with("success", "Accepted invite.");
 		}
 	}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
-    {
-		$user = $request->user();
-        foreach($request->notifications as $notificationID) {
-			if(!$notification = Notification::where("id", $notificationID)->first()) continue;
-			$notification->deleteFor($user);
-		}
-		return view("notifications.index", ["user" => $user]);
-    }
 
 	public function index_feed() {
 		$artworks = Artwork::whereHas("users", function($query){
@@ -72,24 +73,69 @@ class NotificationController extends Controller
 
 		return view("notifications.follow-feed", ["artworks" => $artworks]);
 	}
-	
-	public function index_collectives(Request $request) {
-		return view(
-			"notifications.index",
-			[
-				"mass_delete" => false,
-				"notifications" => $request->user()->collective_notifications()->sortByDesc("created_at"),
-				"active" => "collectives"
-			]
-		);
+
+	public function mark_read_many(Request $request) {
+		foreach($request->notification_checked as $notification_id) {
+			$notification = Notification::where("id", $notification_id)->first();
+			if(!$notification) continue;
+
+			$relatedPivotEntry = $notification->recipients()->withPivot("id")->where("notification_recipient.recipient_id", $request->user()->id)->first();
+			if($relatedPivotEntry === null) continue;
+			
+			$notification->recipients()->updateExistingPivot(
+				$relatedPivotEntry->id,
+				["read" => true]
+			);
+		}
+		return redirect()->back()->with("status", "Messages marked as read.");
 	}
+
+	public function delete_many(Request $request) {
+		$user = $request->user();
+		foreach($request->notification_checked as $notification_id) {
+
+			$notification = Notification::where("id", $notification_id)->first();
+
+			if($notification->type == "co-invite") {
+				Notification::dispatch(
+					$request->user(),
+					collect([$notification->sender]),
+					collect([
+						"recipient_collective_id" => $notification->sender_collective->id,
+						"type" => "co-inv-reject"
+					])
+				);
+			} else if($notification->type == "co-join") {
+				Notification::dispatch_from_collective(
+					$request->user(),
+					$notification->recipient_collective,
+					collect([$notification->sender]),
+					collect([
+						"type" => "co-reject"
+					])
+				);
+			} else if($notification->type == "art-invite") {
+				Notification::dispatch(
+					$user,
+					collect([ $notification->sender ]),
+					collect([
+						"type" => "art-inv-reject",
+						"artwork_id" => $notification->artwork_id
+					])
+				);
+			}
+
+			$notification->deleteFor($user);
+		}
+		return redirect()->back()->with("status", "Messages deleted.");
+	}
+
+	/* AJAX */
 
 	public function delete_one(Request $request, Notification $notification) {
 		$user = $request->user();
 		$notificationID = $notification->id;
-
 		$notification->deleteFor($user);
-
 		return response(["notification" => $notificationID]);
 	}
 
@@ -193,4 +239,17 @@ class NotificationController extends Controller
 			return redirect()->back()->with("success", "Accepted invite.");
 		}
 	}
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
+    {
+		$user = $request->user();
+        foreach($request->notifications as $notificationID) {
+			if(!$notification = Notification::where("id", $notificationID)->first()) continue;
+			$notification->deleteFor($user);
+		}
+		return view("notifications.index", ["user" => $user]);
+    }
 }

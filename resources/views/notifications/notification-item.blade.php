@@ -1,9 +1,6 @@
 <div class="notification-item" id="delete-{{ $notification->id }}">
     <div class="notification-left @if(isset($read) && !$read) unread @endif">
-        <div class="dummy-checkbox">
-            <input type="checkbox">
-            <div class="dummy-checkbox-box" onclick="$(this.previousElementSibling).prop('checked', !$(this.previousElementSibling).prop('checked'))"></div>
-        </div>
+        @include("notifications.form-checkbox")
 
         @isset($notification->sender)
             <img src="{{ $notification->sender->getAvatarURL() }}">

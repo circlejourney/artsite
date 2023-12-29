@@ -8,58 +8,33 @@
 
 @section('body')
 	<h1>{{ Str::of($active)->replace("-", " ")->title() }}</h1>
-
-	@if(!isset($mass_delete) || $mass_delete)
-		<form method="POST">
-			@csrf
-			@method("DELETE")
-			
-			@if($notifications->count() > 0)
-				<div>
-					<button class="button-pill">Delete all</button>
-				</div>
-			@endif
-
-			@foreach($notifications as $notification)
-				@include("notifications.notification-item", ["read" => $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read])
-			@endforeach
-
-			@if($notifications->count() > 0)
-				<div>
-					<button class="button-pill">Delete all</button>
-				</div>
-			@else
-			<p>
-				No notifications found.
-			</p>
-			@endif
-		</form>
 		
-	@else
-		@forelse($notifications as $notification)
+	@if($notifications->count() > 0)
+		<div>
+			<form id="notification-manage" method="POST">
+				@csrf
+				<button class="button-pill" name="_method" value="delete">Delete selected</button>
+				<button class="button-pill" name="_method" value="put">Mark selected as read</button>
+			</form>
+		</div>
+
+		@foreach($notifications as $notification)
 			@php
-				$read = $notification->recipients()->where("recipient_id", auth()->user()->id)->first()->pivot->read;
-				error_log($notification);
+				$read = $notification->pivot->read;
 			@endphp
 			@if($notification->type == "art-invite")
 				@include("notifications.art-invite-form", ["read" => $read])
 			@elseif($notification->type == "co-join" || $notification->type == "co-invite")
-				@include("notifications.collectives.form", ["read" => $read])
+				@include("notifications.collective-form", ["read" => $read])
 			@else
 				@include("notifications.notification-item", ["read" => $read])
 			@endif
-		@empty
-			<p>
-				No notifications found.
-			</p>
-		@endforelse
-	@endif
-
-	<form class="read" action="{{ route("notifications.put-read") }}">
-		@csrf
-		@foreach($notifications as $notification)
-			<input type="hidden" name="read[]" value="{{ $notification->id }}">
 		@endforeach
-	</form>
+
+	@else
+		<p>
+			No notifications found.
+		</p>
+	@endif
 
 @endsection

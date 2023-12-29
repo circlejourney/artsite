@@ -727,6 +727,10 @@ div[class$="-section"] {
 
 /* Notifications */
 
+.notification-manage {
+	display: inline;
+}
+
 .notification-item {
 	max-width: 1000px;
 	background-color: $base;
