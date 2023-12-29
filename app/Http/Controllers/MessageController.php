@@ -49,20 +49,21 @@ class MessageController extends Controller
      */
     public function show(Message $message)
     {
-		$subject = SanitiseService::of($message->subject ?? "")->makeTag()->get();
+      if($message->sender->id !== auth()->user()->id || $message->recipient->id !== auth()->user()->id) abort(404);
+      $subject = SanitiseService::of($message->subject ?? "")->makeTag()->get();
 
-		$messageHistory = Message::where([
-			["sender_id", "=", $message->sender->id],
-			["recipient_id", "=", $message->recipient->id]
-		])->orWhere([
-			["sender_id", "=", $message->recipient->id],
-			["recipient_id", "=", $message->sender->id]
-		])->get()
-		->filter(function($i) use($subject) {
-			return SanitiseService::of($i->subject ?? "")->makeTag()->get() == $subject;
-		});
-		if(auth()->user() == $message->recipient) $message->update(["read" => true]);
-        return view("messages.show", ["message" => $message, "messageHistory" => $messageHistory]);
+      $messageHistory = Message::where([
+        ["sender_id", "=", $message->sender->id],
+        ["recipient_id", "=", $message->recipient->id]
+      ])->orWhere([
+        ["sender_id", "=", $message->recipient->id],
+        ["recipient_id", "=", $message->sender->id]
+      ])->get()
+      ->filter(function($i) use($subject) {
+        return SanitiseService::of($i->subject ?? "")->makeTag()->get() == $subject;
+      });
+      if(auth()->user() == $message->recipient) $message->update(["read" => true]);
+          return view("messages.show", ["message" => $message, "messageHistory" => $messageHistory]);
     }
 
     /**
