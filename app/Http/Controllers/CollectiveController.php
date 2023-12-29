@@ -128,10 +128,19 @@ class CollectiveController extends Controller
     }
 
     /**
+     * Show the form to leave the collective
+     */
+    public function show_leave(Collective $collective)
+    {
+		return view("collectives.leave", ["collective" => $collective]);
+    }
+
+    /**
      * Add the joining user to the group.
      */
-    public function add_member(Collective $collective)
+    public function leave(Collective $collective)
     {
-        //
+        $collective->members()->detach(auth()->user()->id);
+        return redirect( route("collectives.show", ["collective" => $collective]) );
     }
 }

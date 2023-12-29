@@ -131,12 +131,16 @@ Route::controller(ArtworkController::class)->group(function () {
 Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name("folders.index");
 Route::get("/{username}/gallery/folder:{folder}/{all?}", [FolderController::class, 'show'])->name("folders.show");
 
-/* Groups */
+/* Collectives */
 Route::get("/co", [CollectiveController::class, 'index'])->name("collectives.index");
 Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
 Route::post("/co/new", [CollectiveController::class, 'store']);
+
 Route::get("/co/{collective}", [CollectiveController::class, 'show'])->name("collectives.show");
 Route::post("/co/{collective}", [CollectiveController::class, 'request_join']);
+
+Route::get("/co/{collective}/leave", [CollectiveController::class, 'show_leave'])->name("collectives.leave");
+Route::delete("/co/{collective}/leave", [CollectiveController::class, 'leave']);
 Route::get("/co/{collective}/delete", [CollectiveController::class, "show_destroy"])->name("collectives.delete");
 Route::delete("/co/{collective}/delete", [CollectiveController::class, "destroy"]);
 Route::get("/co/{collective}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");

@@ -18,14 +18,14 @@
 </a>
 
 <a href="{{ route("notifications.invites") }}" class="sidebar-link {{ isset($active) && $active == "art-invites" ? "active" : "" }}">Art Invites
-	@if(($artinvitecount = $unread->whereIn("type", ["art-invite", "art-inv-reject"])->count()) > 0)
+	@if(($artinvitecount = $user->art_invite_notifications->where("pivot.read", 0)->count()) > 0)
 		<span class="sidebar-unread">{{ $artinvitecount }}</span>
 	@endif
 </a>
 
 <a href="{{ route("notifications.collectives") }}" class="sidebar-link {{ isset($active) && $active == "collectives" ? "active" : "" }}">Collectives
 	@php
-		$collectivecount = $unread->whereIn("type", ["co-join", "co-invite", "co-reject", "co-accept", "co-inv-reject", "co-inv-accept"])->count();
+		$collectivecount = $user->collective_notifications->where("pivot.read", 0)->count();
 	@endphp
 	@if($collectivecount > 0)
 		<span class="sidebar-unread">{{ $collectivecount }}</span>

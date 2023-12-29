@@ -126,7 +126,11 @@ class User extends Authenticatable
 	}
 
 	public function collective_notifications() : BelongsToMany {
-		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->where("type", "like", "co-%")->withTimestamps()->withPivot("read");
+		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->where("type", "like", "co-%")->withPivot("read");
+	}
+
+	public function art_invite_notifications() : BelongsToMany {
+		return $this->belongsToMany(Notification::class, "notification_recipient", "recipient_id", "notification_id")->where("type", "like", "art-inv-%")->withPivot("read");
 	}
 
 	public function invites(): HasMany {
