@@ -12,6 +12,7 @@ use App\Models\Artwork;
 use App\Models\User;
 use App\Models\Collective;
 use App\Services\FolderListService;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;
 
 class Folder extends Model
@@ -35,7 +36,7 @@ class Folder extends Model
 	}
 	
 	public function collective() : BelongsTo {
-		return $this->belongsTo(Collective::class, "top_folder_id");
+		return $this->belongsTo(Collective::class);
 	}
 
 	public function parent() : BelongsTo {
@@ -52,6 +53,14 @@ class Folder extends Model
 
 	public function ancestors() {
 		return $this->parent()->with("ancestors");
+	}
+
+	public function tags() {
+		$tags = collect([]);
+		foreach($this->artworks()->with("tags")->get() as $artwork) {
+			$tags = $tags->concat($artwork->tags);
+		}
+		return $tags;
 	}
 
 	public function getTree($includeRoot, $maxPrivacyAllowed=5, $withArtworks=false): Collection {
@@ -72,7 +81,8 @@ class Folder extends Model
 	}
 
 	public function isTopFolder() {
-		return $this->id == $this->user()->first()->top_folder_id;
+		if($this->user) return $this->id == $this->user->top_folder_id;
+		else return $this->id == $this->collective->top_folder_id;
 	}
 
 	public function getDisplayName() {

@@ -6,6 +6,7 @@ use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\CollectiveController;
+use App\Http\Controllers\CollectiveFolderController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
@@ -146,9 +147,10 @@ Route::middleware("auth")->group(function(){
 	Route::delete("/co/{collective}/delete", [CollectiveController::class, "destroy"]);
 	Route::get("/co/{collective}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");
 	Route::patch("/co/{collective}/edit", [CollectiveController::class, 'update']);	
-
-	Route::post("/co/{collective}/gallery", [CollectiveController::class, 'collectives.gallery']);
 });
+
+Route::get("/co/{collective}/gallery", [CollectiveFolderController::class, 'index_collective'])->name("collectives.folders.index");
+Route::get("/co/{collective}/gallery/folder:{folder}/{all?}", [CollectiveFolderController::class, 'show_collective'])->name("collectives.folders.show");
 
 Route::get("/{username}/tags", [TagController::class, 'index_user'])->name("tags.user.index");
 Route::get("/search", [TagController::class, 'show_global'])->name("tags.global.show");

@@ -25,7 +25,7 @@ class ArtworkController extends Controller
 		$folders = $artwork->folders()
 			->orderBy("artwork_folder.created_at")
 			->get()
-			->reject(function($i){ return $i->id == $i->user()->first()->top_folder_id; });
+			->reject(function($i){ return $i->isTopFolder(); });
 		$image_urls = $artwork->getImageURLs();
 		$owner_ids = $artwork->getOwners();
 		$artwork_text = $artwork->getText();

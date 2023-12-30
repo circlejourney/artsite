@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Collective extends Model
@@ -34,6 +35,12 @@ class Collective extends Model
 		});
 	}
 
+	public function artworks() {
+		return Artwork::whereHas("folders", function($q) {
+			$q->where("collective_id", $this->id);
+		});
+	}
+
 	private function createTopFolder() {
 		$folder = Folder::create([
 			"title" => "Unsorted",
@@ -44,8 +51,12 @@ class Collective extends Model
 		$this->save();
 	}
 
-	public function topFolder() : HasOne {
-		return $this->hasOne(Folder::class, "collective_id");
+	public function folders() : HasMany {
+		return $this->hasMany(Folder::class, "collective_id");
+	}
+
+	public function topFolder() : BelongsTo {
+		return $this->belongsTo(Folder::class, "top_folder_id");
 	}
 
 	public function members() : BelongsToMany {
