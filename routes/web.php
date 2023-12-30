@@ -139,7 +139,10 @@ Route::get("/co/{collective}", [CollectiveController::class, 'show'])->name("col
 Route::middleware("auth")->group(function(){
 	Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
 	Route::post("/co/new", [CollectiveController::class, 'store']);
-	
+	Route::get("/co/{collective}/dashboard/folders", [CollectiveFolderController::class, 'index_manage'])->name("collectives.folders.manage");
+	Route::post("/co/{collective}/dashboard/folders", [CollectiveFolderController::class, 'store']);
+	Route::get("/co/{collective}/dashboard/folders/folder:{folder}", [CollectiveFolderController::class, 'edit'])->name("collectives.folders.edit");
+
 	Route::post("/co/{collective}", [CollectiveController::class, 'request_join']);
 	Route::get("/co/{collective}/leave", [CollectiveController::class, 'show_leave'])->name("collectives.leave");
 	Route::delete("/co/{collective}/leave", [CollectiveController::class, 'leave']);

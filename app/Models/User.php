@@ -185,7 +185,7 @@ class User extends Authenticatable
 	}
 
 	public function getFolderTree($includeRoot, $maxPrivacyAllowed=5): Collection {
-		return FolderListService::class($this->getTopFolder())->tree($includeRoot, $maxPrivacyAllowed);
+		return FolderListService::class($this->top_folder)->tree($includeRoot, $maxPrivacyAllowed);
 	}
 	
 	public function hasRole($role) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Collective;
 use App\Models\Folder;
+use App\Services\FolderListService;
 use App\Services\PrivacyLevelService;
 use Illuminate\Http\Request;
 
@@ -57,5 +58,38 @@ class CollectiveFolderController extends Controller
 
 		return view("folders.collective-show", $params);
 
+    }
+
+    public function index_manage(Collective $collective) {
+        if($collective->members->doesntContain(auth()->user())) abort(403);
+        $topfolder = $collective->top_folder;
+        $folderlist = FolderListService::class($topfolder)->tree(false);
+        return view("folders.collective-manage", ["collective" => $collective, "folderlist" => $folderlist]);
+    }
+
+    public function store(Request $request, Collective $collective) {
+		$query = [
+			"title" => $request->title,
+			"collective_id" => $collective->id,
+			"privacy_level_id" => $request->privacy_level_id,
+			"parent_folder_id" => $request->parent_folder ?? $collective->top_folder_id
+		];
+		
+        Folder::create($query);
+		return redirect( route("collectives.folders.manage", ["collective" => $collective]) )->with('success', 'Folder created successfully.');
+    }
+
+    public function edit(Collective $collective, Folder $folder) {
+		$sorted = $collective->getFolderTree(false);
+		
+		$thisfolder = Folder::with("allChildren")->where("id", $folder->id)->first();
+		$childkeys = FolderListService::class($thisfolder)->tree(false)
+			->map(function($i){ return $i["folder"]->id; })
+			->push($folder->id)
+			->all();
+
+		$selectedfolder = $folder->parent()->first()->id;
+			
+		return view("folders.collective-edit", ["collective" => $collective, "folder" => $folder, "folderlist" => $sorted, "childkeys" => $childkeys, "selected" => $selectedfolder]);
     }
 }

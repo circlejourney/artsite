@@ -20,7 +20,7 @@
 	@endforeach
 
 	<h2>Folders</h2>
-	<div>{{ $collective->topFolder->title }}</div> 
+	<div>{{ $collective->top_folder->title }}</div> 
 
 	@auth
 	<div class="modal" id="request-join" tabindex="-1">

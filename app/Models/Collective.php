@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\User;
+use App\Services\FolderListService;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Collective extends Model
 {
@@ -55,7 +57,7 @@ class Collective extends Model
 		return $this->hasMany(Folder::class, "collective_id");
 	}
 
-	public function topFolder() : BelongsTo {
+	public function top_folder() : BelongsTo {
 		return $this->belongsTo(Folder::class, "top_folder_id");
 	}
 
@@ -65,5 +67,9 @@ class Collective extends Model
 
 	public function notifications(): HasMany {
 		return $this->hasMany(Notification::class, "recipient_collective_id");
+	}
+
+	public function getFolderTree($includeRoot, $maxPrivacyAllowed=5): Collection {
+		return FolderListService::class($this->top_folder)->tree($includeRoot, $maxPrivacyAllowed);
 	}
 }
