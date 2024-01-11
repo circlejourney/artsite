@@ -1,6 +1,6 @@
 @extends("layouts.site")
 @section('body')
-	<h1>{{ $collective->display_name }}</h1>
+	<h1>Collective: {{ $collective->display_name }}</h1>
 
 	@auth
 		@if(auth()->user()->collectives->pluck("id")->doesntContain($collective->id))
@@ -19,8 +19,25 @@
 		</div>
 	@endforeach
 
+	<h2>Latest Art</h2>
+	@include("layouts.gallery", ["artworks" => $artworks])
+
 	<h2>Folders</h2>
-	<div>{{ $collective->top_folder->title }}</div> 
+	@php
+		$folderlist = $collective->folders	
+	@endphp
+	<div class="folder-section">
+		<a class="collapse-link"
+			href="#folder-wrapper"
+			data-toggle="collapse"
+			onclick="$(this).find('.collapse-arrow').toggleClass('upside-down')">
+			Folders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
+		</a>
+		<div id="folder-wrapper" class="folder-row collapse show active">
+			@include("folders.collective-folderrow", ["collective"=>$collective, "folderlist" => $folderlist])
+		</div>
+	</div>
+
 
 	@auth
 	<div class="modal" id="request-join" tabindex="-1">
@@ -45,6 +62,17 @@
 
 		@if(($member = $collective->members()->where("user_id", auth()->user()->id)->withPivot("role_id")->first()))
 			<h2>Manage</h2>
+			<ul>
+				<li>
+					<a href="{{ route("collectives.dashboard", ["collective" => $collective]) }}">Dashboard</a>
+				</li>
+				<li>
+					<a href="{{ route("collectives.folders.manage", [ "collective" => $collective ]) }}">Manage folders</a>
+				</li>
+				<li>
+					<a href="{{ route("collectives.art.manage", [ "collective" => $collective ]) }}">Add, remove and manage art</a>
+				</li>
+			</ul>
 			<p>
 				<a href="{{ route("collectives.leave", ["collective" => $collective]) }}" class="button-pill bg-danger">Leave collective</a>
 			</p>

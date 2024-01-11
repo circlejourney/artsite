@@ -51,7 +51,7 @@ class CollectiveController extends Controller
      */
     public function show(Collective $collective)
     {
-        return view("collectives.show", ["collective" => $collective]);
+        return view("collectives.show", ["collective" => $collective, "artworks" => $collective->artworks()->orderBy("created_at", "DESC")->get()]);
     }
 
     /**
@@ -125,6 +125,14 @@ class CollectiveController extends Controller
             "content" => $request->invite_message
         ]));
         return redirect( route("user", ["username" => $user->name]) )->with("status", "Invite sent successfully.");
+    }
+
+    public function dashboard(Collective $collective) {
+        return view("collectives.dashboard.index", ["collective" => $collective]);
+    }
+
+    public function manage_artworks(Collective $collective) {
+        return view("collectives.dashboard.art", ["collective" => $collective]);
     }
 
     /**

@@ -29,6 +29,7 @@
 @endpush
 
 @section('body')
+	<h1>{{ $collective->display_name }}: Gallery</h1>
 	@if(!$folderlist->isEmpty())
 	<div class="folder-section">
 		<a class="collapse-link"

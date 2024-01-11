@@ -2,7 +2,7 @@
 
 @section('body')
 	<div class="page-block">
-		<h1>Manage Art Folder: {{ $folder->title }}</h1>
+		<h1>{{ $collective->display_name}}: Manage "{{ $folder->title }}"</h1>
 		<div class="row">
 			<div class="col-12 col-md-4">
 				@include("folders.collective-folderlist", ["folderlist" => $folderlist, "selected" => $folder->id, "manage" => true])
