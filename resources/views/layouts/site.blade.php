@@ -25,6 +25,7 @@
     <script src="/src/site.js?v={{ filemtime("src/site.js") }}"></script>
 
 	<meta property="og:title" content="{{ config("app.name") }}@isset($metatitle) - {{ $metatitle }} @endisset">
+    <meta name="robots" content="noai, noimageai">
     @stack("head")
 
 </head>
