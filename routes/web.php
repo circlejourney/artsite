@@ -133,9 +133,6 @@ Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name
 Route::get("/{username}/gallery/folder:{folder}/{all?}", [FolderController::class, 'show'])->name("folders.show");
 
 /* Collectives */
-Route::get("/co", [CollectiveController::class, 'index'])->name("collectives.index");
-Route::get("/co/{collective}", [CollectiveController::class, 'show'])->name("collectives.show");
-
 Route::middleware("auth")->group(function(){
 	Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
 	Route::post("/co/new", [CollectiveController::class, 'store']);
@@ -151,6 +148,9 @@ Route::middleware("auth")->group(function(){
 	Route::get("/co/{collective}/edit", [CollectiveController::class, 'edit'])->name("collectives.edit");
 	Route::patch("/co/{collective}/edit", [CollectiveController::class, 'update']);	
 });
+
+Route::get("/co", [CollectiveController::class, 'index'])->name("collectives.index");
+Route::get("/co/{collective}", [CollectiveController::class, 'show'])->name("collectives.show");
 
 Route::get("/co/{collective}/gallery", [CollectiveFolderController::class, 'index_collective'])->name("collectives.folders.index");
 Route::get("/co/{collective}/gallery/folder:{folder}/{all?}", [CollectiveFolderController::class, 'show_collective'])->name("collectives.folders.show");
