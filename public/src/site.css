@@ -569,6 +569,7 @@ main .page-block {
 }
 .tag.selected {
   background-color: #188EAC;
+  color: white;
 }
 
 .tag-highlight {

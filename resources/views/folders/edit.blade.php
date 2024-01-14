@@ -30,5 +30,12 @@
 				</form>
 			</div>
 		</div>
+		
+		<div>
+			<p>This folder contains the following art:</p>
+			@include("layouts.gallery", ["artworks" => $folder->artworks])
+			<hr>
+			<p>Moving a folder will move all its child folders with it. Deleting a folder will move all its artwork to its parent folder. Currently, folders with child folders cannot be deleted.</p>
+		</div>
 	</div>
 @endsection
