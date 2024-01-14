@@ -1,6 +1,6 @@
 
 <div class="tag-highlight">
-	@if($tag->thumbnail)
+	@if($tag->tag_highlight_thumbnail)
 		<img class="tag-highlight-image" src="{{ $tag->tag_highlight->getThumbnailURL() }}">
 	@endif
 	<div class="tag-highlight-text">
