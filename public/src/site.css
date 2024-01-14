@@ -586,6 +586,7 @@ main .page-block {
 
 .tag-highlight-text {
   flex-grow: 1;
+  flex-basis: 0;
 }
 
 @media screen and (min-width: 1200px) {

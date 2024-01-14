@@ -60,7 +60,7 @@
 				@endauth
 
 				@if($tag->tag_highlight)
-					{!! $tag->tag_highlight->text !!}
+					@include("components.tag-highlight")
 				@endif
 			</div>
 		@endif
