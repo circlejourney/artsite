@@ -46,16 +46,28 @@
 		<div id="tag-wrapper" class="collapse show active">
 			@include("tags.taglist", ["user" => $user, "folder" => $folder, "tags" => $tags ?? null, "selected" => $tag ?? null])
 		</div>
-	</div>
 
-	@if($tag && $tag->tag_highlight)
-		<div id="tag-info-{{ $tag->id }}" class="tag-info py-2 collapse @if(isset($tag) && $tag->id = $tag->tag_highlight->tag_id) show @endif">
-			{!! $tag->tag_highlight->text !!}
-		</div>
-	@endif
+		@if($tag)
+			<div id="tag-info-{{ $tag->id }}" class="tag-info py-2 collapse show">
+				@auth	
+				@if($tag->user == auth()->user())
+					<div class="tag-manage">
+						<a class="folder-badge-link" href="{{ route("tags.edit", ["tag" => $tag->name]) }}">
+							<i class="fa fa-pencil"></i> {{ $tag->tag_highlight ? "Edit" : "Create" }} highlight tag
+						</a>
+					</div>
+				@endif
+				@endauth
+
+				@if($tag->tag_highlight)
+					{!! $tag->tag_highlight->text !!}
+				@endif
+			</div>
+		@endif
+	</div>
 	@endunless
 
-	<h3>
+	<h3 class="gallery-title">
 		{{ $folder->getDisplayName() }}{{ $all ? ": Showing all flattened" : "" }}
 		
 		@unless($folder->isTopFolder())

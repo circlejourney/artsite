@@ -72,17 +72,27 @@
 				id="tag-info-{{ $listtag->id }}"
 				class="py-2 tag-info collapse
 				@if($tag && $tag->id == $listtag->id) show @endif">
-				@if(!$tag)
-					<a class="folder-badge-link"
-						href="{{ route("folders.index", ["username" => $user->name, "tag" => $listtag->name ?? null]) }}"
-						data-toggle="tooltip"
-						title="Tag permalink"
-						onclick="event.stopPropagation()">
-						<i class="fa fa-tag ml-2"></i> Tag permalink
-					</a>
-				@endif
+				<div class="tag-manage">
+					@if(!$tag)
+						<a class="folder-badge-link"
+							href="{{ route("folders.index", ["username" => $user->name, "tag" => $listtag->name ?? null]) }}"
+							data-toggle="tooltip"
+							title="Tag permalink"
+							onclick="event.stopPropagation()">
+							<i class="fa fa-tag"></i> Tag permalink
+						</a>
+					@endif
+					
+					@auth
+						@if($listtag->user == auth()->user())
+						<a class="folder-badge-link" href="{{ route("tags.edit", ["tag" => $listtag->name]) }}">
+							<i class="fa fa-pencil"></i> {{ $listtag->tag_highlight ? "Edit" : "Create" }} highlight tag
+						</a>
+						@endif
+					@endauth
+				</div>
 				@if($listtag->tag_highlight)
-					{!! $listtag->tag_highlight->text !!}
+					@include("components.tag-highlight", ["tag" => $listtag])
 				@endif
 			</div>
 		@endforeach
