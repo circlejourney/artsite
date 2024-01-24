@@ -53,7 +53,9 @@ class CollectiveController extends Controller
      */
     public function show(Collective $collective)
     {
-        return view("collectives.show", ["collective" => $collective, "artworks" => $collective->artworks()->orderBy("created_at", "DESC")->get()]);
+        $artworks = $collective->artwork_folders->pluck("artworks")->flatten();
+        error_log($artworks);
+        return view("collectives.show", ["collective" => $collective, "artworks" => $artworks->sortByDesc("pivot.created_at")]);
     }
 
     /**

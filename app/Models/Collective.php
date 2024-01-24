@@ -37,10 +37,15 @@ class Collective extends Model
 		});
 	}
 
+	public function artwork_folders() {
+		return $this->folders()->with("artworks");
+	}
+
 	public function artworks() {
-		return Artwork::whereHas("folders", function($q) {
+		return $this->artwork_folders;
+		/*return Artwork::with("folders")->whereHas("folders", function($q) {
 			$q->where("collective_id", $this->id);
-		});
+		});*/
 	}
 
 	private function createTopFolder() {
