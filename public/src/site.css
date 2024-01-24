@@ -557,6 +557,11 @@ main .page-block {
   transition: all 0.01s linear;
 }
 
+.tag-manage {
+  display: flex;
+  gap: 0.3rem;
+}
+
 .tag {
   min-width: auto;
   color: black;
@@ -564,11 +569,25 @@ main .page-block {
 }
 .tag.selected {
   background-color: #188EAC;
+  color: white;
+}
+
+.tag-highlight {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .tag-highlight-image {
   width: 100px;
   height: 100px;
+  margin-right: 0.6rem;
+}
+
+.tag-highlight-text {
+  flex-grow: 1;
+  flex-basis: 0;
 }
 
 @media screen and (min-width: 1200px) {
@@ -597,6 +616,14 @@ main .page-block {
 .wide-gallery .gallery-description {
   flex-basis: 0;
   flex-grow: 1;
+}
+
+.gallery-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .gallery-thumbnail {

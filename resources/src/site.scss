@@ -637,6 +637,11 @@ $profile-padding: 1rem;
 	}
 }
 
+.tag-manage {
+	display: flex;
+	gap: $small-padding;
+}
+
 .tag {
 	@extend .button-pill;
 	min-width: auto;
@@ -645,12 +650,24 @@ $profile-padding: 1rem;
 
 	&.selected { 
 		background-color: $mid-bg;
+		color: white;
 	}
+}
+
+.tag-highlight {
+	margin-top: $mid-padding;
+	@include flex-wrap(row);
 }
 
 .tag-highlight-image {
 	width: 100px;
 	height: 100px;
+	margin-right: $mid-padding;
+}
+
+.tag-highlight-text {
+	flex-grow: 1;
+	flex-basis: 0;
 }
 
 div[class$="-section"] {
@@ -678,6 +695,12 @@ div[class$="-section"] {
 		flex-basis: 0;
 		flex-grow: 1;
 	}
+}
+
+.gallery-title {
+	@include flex-wrap(row);
+	align-items: center;
+	gap: $mid-padding;
 }
 
 .gallery-thumbnail {
