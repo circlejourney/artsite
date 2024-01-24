@@ -1,5 +1,7 @@
 <select id="parent_folder" class="form-control" name="parent_folder">
-	<option value="">[None]</option>
+	@if(!isset($hide_none) || $hide_none == false)
+		<option value="">[None]</option>
+	@endif
 	@foreach($folderlist as $listfolder)
 		<option value={{ $listfolder["folder"]->id }}
 		@selected(isset($selected) && $selected == $listfolder["folder"]->id)

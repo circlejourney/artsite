@@ -33,16 +33,28 @@
 				@endif
 
 				@foreach($folders as $listfolder)
-					<a href="{{ route("user", ["username" => $listfolder->user()->first()->name]) }}">
-						{{$listfolder->user()->first()->name}}</a>'s
-					<a href="{{ route("folders.show", ["username" => $listfolder->user()->first()->name, "folder"=>$listfolder]) }}">
-						{{ $listfolder->title }}</a><!--
-					-->@if(!$loop->last), @endif
+
+					@if($listfolder->user)
+						<a href="{{ route("user", ["username" => $listfolder->user->name]) }}">
+							{{$listfolder->user->name}}</a>'s
+						<a href="{{ route("folders.show", ["username" => $listfolder->user->name, "folder"=>$listfolder]) }}">
+							{{ $listfolder->title }}</a><!--
+						-->@if(!$loop->last), @endif
+
+					@elseif($listfolder->collective)
+						<a href="{{ route("collectives.show", ["collective" => $listfolder->collective]) }}">
+							{{$listfolder->collective->display_name}}</a>'s
+						<a href="{{ route("collectives.folders.show", ["collective" => $listfolder->collective, "folder"=>$listfolder]) }}">
+							{{ $listfolder->title }}</a><!--
+						-->@if(!$loop->last), @endif
+
+					@endif
+
 				@endforeach
 			</div>
 			@endif
 			
-			@if($artwork->tags)
+			@if($artwork->tags->count() > 0)
 			<div class="tag-list">
 				Tags -
 					@foreach($artwork->users as $user) 

@@ -1,7 +1,10 @@
 @extends("layouts.site", ["metatitle" => "Manage Art Folders for " . $collective->display_name])
 @section('body')
 	<div class="page-block">
-		<h1>{{ $collective->display_name}}: Manage Folders</h1>
+		<h1>
+			<a href="{{ route("collectives.show", ["collective" => $collective]) }}">
+				{{ $collective->display_name }}
+			</a>: Manage Folders</h1>
 		<div class="row">
 
 			<div class="col-12 col-md-4">

@@ -12,7 +12,7 @@
 			href="#folder-wrapper"
 			data-toggle="collapse"
 			onclick="$(this).find('.collapse-arrow').toggleClass('upside-down')">
-			Folders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
+			Subfolders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 		</a>
 		<div id="folder-wrapper" class="collapse show active">
 			<div class="folder-row">

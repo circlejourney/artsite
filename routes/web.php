@@ -138,6 +138,9 @@ Route::middleware("auth")->group(function(){
 	Route::post("/co/new", [CollectiveController::class, 'store']);
 	Route::get("/co/{collective}/dashboard", [CollectiveController::class, 'dashboard'])->name("collectives.dashboard");
 	Route::get("/co/{collective}/dashboard/art", [CollectiveController::class, 'manage_artworks'])->name("collectives.art.manage");
+	Route::put("/co/{collective}/dashboard/art", [CollectiveController::class, 'update_artworks']);
+	Route::delete("/co/{collective}/dashboard/art", [CollectiveController::class, 'delete_artworks']);
+
 	Route::get("/co/{collective}/dashboard/folders", [CollectiveFolderController::class, 'index_manage'])->name("collectives.folders.manage");
 	Route::post("/co/{collective}/dashboard/folders", [CollectiveFolderController::class, 'store']);
 	Route::get("/co/{collective}/dashboard/folders/folder:{folder}", [CollectiveFolderController::class, 'edit'])->name("collectives.folders.edit");

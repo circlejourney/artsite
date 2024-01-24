@@ -2,7 +2,10 @@
 
 @section('body')
 	<div class="page-block">
-		<h1>{{ $collective->display_name}}: Manage "{{ $folder->title }}"</h1>
+		<h1>
+			<a href="{{ route("collectives.show", ["collective" => $collective]) }}">
+				{{ $collective->display_name }}
+			</a>: Manage "<a href="{{ route("collectives.folders.show", ["collective" => $collective, "folder" => $folder]) }}">{{ $folder->title }}</a>"</h1>
 		<div class="row">
 			<div class="col-12 col-md-4">
 				@include("folders.collective-folderlist", ["folderlist" => $folderlist, "selected" => $folder->id, "manage" => true])

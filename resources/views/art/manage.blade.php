@@ -8,8 +8,9 @@
 	<div class="gallery">
 	@foreach($user->artworks as $artwork)
 		<div class="gallery-thumbnail">
+			<img src="{{ $artwork->getThumbnailURL() }}">
 			<a href="{{ route("art", ["path" => $artwork->path]) }}">
-				<img src="{{ $artwork->getThumbnailURL() }}">
+                View artwork
 			</a>
 			<div>
 				<input type="hidden" name="set_highlight[{{ $artwork->id }}]" value="0">

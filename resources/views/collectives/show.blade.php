@@ -1,6 +1,6 @@
 @extends("layouts.site")
 @section('body')
-	<h1>Collective: {{ $collective->display_name }}</h1>
+	<h1>{{ $collective->display_name }}</h1>
 
 	@auth
 		@if(auth()->user()->collectives->pluck("id")->doesntContain($collective->id))
@@ -21,8 +21,6 @@
 
 	<h2>Latest Art</h2>
 	@include("layouts.gallery", ["artworks" => $artworks])
-
-	<h2>Folders</h2>
 	@php
 		$folderlist = $collective->folders	
 	@endphp

@@ -29,7 +29,10 @@
 @endpush
 
 @section('body')
-	<h1>{{ $collective->display_name }}: Gallery</h1>
+	<h1>
+        <a href="{{ route("collectives.show", ["collective" => $collective]) }}">
+            {{ $collective->display_name }}
+        </a>: Gallery</h1>
 	@if(!$folderlist->isEmpty())
 	<div class="folder-section">
 		<a class="collapse-link"

@@ -11,7 +11,7 @@
 			href="#folder-wrapper"
 			data-toggle="collapse"
 			onclick="$(this).find('.collapse-arrow').toggleClass('upside-down')">
-			Folders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
+			Subfolders <i class="collapse-arrow fa fa-chevron-down upside-down"></i>
 		</a>
 		<div id="folder-wrapper" class="collapse show active">
 			<div class="folder-row">
@@ -59,7 +59,7 @@
 		
 		@unless($folder->isTopFolder())
 			<a class="folder-badge-link" href="{{
-				route("collectives.folders.show", ["collective" => $collective->display_name, "folder" => $folder->parent, "tag" => $tag->name ?? null])
+				route("collectives.folders.show", ["collective" => $collective->url, "folder" => $folder->parent, "tag" => $tag->name ?? null])
 			}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
 		@endunless
 

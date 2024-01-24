@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collective;
+use App\Models\Folder;
 use App\Models\Notification;
 use App\Models\User;
+use App\Services\FolderListService;
 use Illuminate\Http\Request;
 use PHPUnit\TestRunner\TestResult\Collector;
 
@@ -132,7 +134,56 @@ class CollectiveController extends Controller
     }
 
     public function manage_artworks(Collective $collective) {
-        return view("collectives.dashboard.art", ["collective" => $collective]);
+        $folders = FolderListService::class($collective->top_folder)->tree(true);
+        return view("collectives.dashboard.art", ["collective" => $collective, "folders" => $folders]);
+    }
+
+    public function update_artworks(Request $request, Collective $collective) {
+        $user = $request->user();
+        if(!$collective->members()->exists($request->user())) abort(403);
+        $folder = Folder::where("id", $request->parent_folder)->firstOrFail();
+        if(!$collective->folders()->exists($folder)) abort(403);
+
+        if(isset($request->select) && sizeof($request->select) > 0) {
+            $allowed = collect($request->select)->filter(function($i) use($user) {
+                return $user->artworks()->exists($i);
+            });
+
+            foreach($allowed as $id => $value) {
+                if(!$value) continue;
+				if(!$artwork = $request->user()->artworks->where("id", $id)->first()) abort(403);
+                $in_folders = $artwork->folders->filter(function($i) use($collective) {
+                    return $collective->folders()->where("id", $i->id)->exists();
+                })->pluck("id")->all();
+                $artwork->folders()->detach($in_folders);
+                $artwork->folders()->attach($folder->id);
+			}
+            return redirect(route("collectives.art.manage", ["collective" => $collective]))->with("success", "Artwork added successfully.");
+		}
+        
+        return redirect(route("collectives.art.manage", ["collective" => $collective]));
+    }
+
+    public function delete_artworks(Request $request, Collective $collective) {
+        $user = $request->user();
+        if(!$collective->members()->exists($request->user())) abort(403);
+
+        if(isset($request->select) && sizeof($request->select) > 0) {
+            $allowed = collect($request->select)->filter(function($i) use($user) {
+                return $user->artworks()->exists($i);
+            });
+
+            foreach($allowed as $id => $value) {
+                if(!$value) continue;
+				if(!$artwork = $request->user()->artworks->where("id", $id)->first()) abort(403);
+                $in_folders = $artwork->folders->filter(function($i) use($collective) {
+                    return $collective->folders()->where("id", $i->id)->exists();
+                })->pluck("id")->all();
+                $artwork->folders()->detach($in_folders);
+			}
+
+            return redirect(route("collectives.art.manage", ["collective" => $collective]))->with("status", "Artwork removed successfully.");
+		}
     }
 
     /**
