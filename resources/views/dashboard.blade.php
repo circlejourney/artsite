@@ -3,7 +3,9 @@
 @push("title"){{ "Dashboard" }}@endpush
 
 @section('body')
-	<h1>Dashboard</h1>
+	<h1>Hello <x-nametag :user="auth()->user()" />!</h1>
+
+	<h2>Dashboard</h2>
 	<ul>
 		<li>
 		<a href="{{ route("profile.edit") }}">Account settings</a>
@@ -30,7 +32,6 @@
 		@include("components.logout-form")
 		</li>
 	</ul>
-	<br>
 	<h2>Admin section</h2>
 	@include("components.admin-links", ["roles" => auth()->user()->roles()])
 @endsection
