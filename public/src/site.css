@@ -52,6 +52,12 @@ nav .menu-toggle-circle .number-badge {
 .button-blob a, .button-circle a, .button-pill a, .tag a {
   color: black;
 }
+.button-blob .fa:last-child, .button-circle .fa:last-child, .button-pill .fa:last-child, .tag .fa:last-child {
+  margin-left: 0.3rem;
+}
+.button-blob .fa:first-child, .button-circle .fa:first-child, .button-pill .fa:first-child, .tag .fa:first-child {
+  margin-right: 0.3rem;
+}
 
 .button-pill, .tag {
   min-width: 10rem;
@@ -72,11 +78,18 @@ nav .menu-toggle-circle .number-badge {
   padding: 1.2rem;
 }
 
+/* Utility styles */
 .upside-down {
   transform: rotate(180deg);
 }
 
 .fake-link {
+  cursor: pointer;
+}
+
+.invisible-button, nav .search-form button {
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
@@ -88,14 +101,20 @@ nav .menu-toggle-circle .number-badge {
   font-size: 14pt;
 }
 
+.row-gap-1 {
+  row-gap: 1rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
 .monospace {
   font-family: monospace;
 }
 
-.invisible-button, nav .search-form button {
-  background: none;
-  border: none;
-  cursor: pointer;
+.spacer {
+  height: 3rem;
 }
 
 /* BOOTSTRAP */
@@ -216,6 +235,7 @@ nav .collapse-container .collapse.show, nav .collapse-container .collapse.collap
 nav .logo-small, nav .logo {
   padding: 0 1rem;
   font-size: 24pt;
+  line-height: 1.2em;
   text-transform: uppercase;
   font-weight: bold;
   display: inline-block;
@@ -331,7 +351,41 @@ main .page-block {
   padding: 3rem;
 }
 
-/* PROFILE PAGE */
+/* Landing page */
+.hero {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.hero-text {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.hero-image {
+  flex-basis: 0;
+  height: calc(100% + 4rem);
+  margin: -2rem 0;
+}
+
+.hero-image-top {
+  margin-top: -2rem;
+  height: calc(100% + 2rem);
+}
+
+.hero-gallery {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+}
+.hero-gallery img {
+  width: 30%;
+}
+
+/* Profile page */
 .owner-only {
   background-color: #F2FAFB;
   opacity: 0.8;

@@ -22,12 +22,6 @@
 					<a class="menu-item" href="{{route('profile.html.edit')}}">Customise profile</a>
                     <!-- Authentication -->
                     @include("components.logout-form")
-
-                @else
-
-                    <a class="menu-item" href="{{ route("login") }}">Login</a>
-                    <a class="menu-item" href="{{ route("register") }}">Register</a>
-
                 @endif
             </div>
         </div>
@@ -54,6 +48,12 @@
 			</a>
 			<a href="{{ route("user", Auth::user()->name) }}" class="menu-toggle-circle" style="background-image: url({{ Auth::user()->getAvatarURL() }})">
 			</a>
+			
+
+		@else
+			<a class="nav-button" href="{{ route("login") }}"><span class="nav-button-label">Login</span></a>
+			<a class="nav-button" href="{{ route("register") }}"><span class="nav-button-label">Register</span></a>
 		@endauth
+		
     </div>
 </nav>

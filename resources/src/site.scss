@@ -103,6 +103,13 @@ a.link-current {
 	a {
 		color: black;
 	}
+
+	.fa:last-child {
+		margin-left: $small-padding;
+	}
+	.fa:first-child {
+		margin-right: $small-padding;
+	}
 }
 
 .button-pill {
@@ -128,11 +135,19 @@ a.link-current {
 	padding: calc(2 * $mid-padding);
 }
 
+/* Utility styles */
+
 .upside-down {
 	transform: rotate(180deg);
 }
 
 .fake-link {
+	cursor: pointer;
+}
+
+.invisible-button {
+	background: none;
+	border: none;
 	cursor: pointer;
 }
 
@@ -144,14 +159,20 @@ a.link-current {
 	font-size: $large-text;
 }
 
+.row-gap-1 {
+	row-gap: 1rem;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
 .monospace {
 	font-family: monospace;
 }
 
-.invisible-button {
-	background: none;
-	border: none;
-	cursor: pointer;
+.spacer {
+	height: $global-padding;
 }
 
 /* BOOTSTRAP */
@@ -166,7 +187,6 @@ a.link-current {
 	margin: 0 auto;
 	@include flex-centre();
 }
-
 
 /* NAVIGATION */
 nav {
@@ -292,6 +312,7 @@ nav {
 	%logo-style {
         padding: 0 1rem;
         font-size: 24pt;
+		line-height: 1.2em;
         text-transform: uppercase;
         font-weight: bold;
         display: inline-block;
@@ -420,7 +441,43 @@ main {
 	}
 }
 
-/* PROFILE PAGE */
+
+/* Landing page */
+
+.hero {
+	margin: 2rem 0;
+	@include flex-wrap(row);
+}
+
+.hero-text {
+	flex-basis: 0;
+	flex-grow: 1;
+}
+
+.hero-image {
+	flex-basis: 0;
+	height: calc(100% + 4rem);
+	margin: -2rem 0;	
+}
+
+.hero-image-top {
+	margin-top: -2rem;
+	height: calc(100% + 2rem);
+}
+
+.hero-gallery {
+	display: flex;
+	justify-content: space-between;
+	gap: $mid-padding;
+	margin: $mid-padding 0;
+
+	img {
+		width: 30%;
+	}
+}
+
+
+/* Profile page */
 $profile-gap: 3rem;
 $profile-padding: 1rem;
 
