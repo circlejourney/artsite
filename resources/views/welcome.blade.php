@@ -34,15 +34,10 @@
 
 	<div>
 		<h2>Trending Art</h2>
-		<div class="gallery">
-		@foreach($popular_artworks as $popular_art)
-			<a class="gallery-thumbnail" href="{{ route("art", ["path" => $popular_art->path]) }}">
-				<img src="{{ $popular_art->getThumbnailURL() }}">
-			</a>
-		@endforeach
-			<div class="w-100 d-flex justify-content-center">
-				<a href="#" class="button-blob">See More</a>
-			</div>
+		@include("layouts.gallery", ["artworks" => $popular_artworks])
+	
+		<div class="w-100 d-flex justify-content-center">
+			<a href="#" class="button-blob">See More</a>
 		</div>
 	</div>
 
