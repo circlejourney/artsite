@@ -7,6 +7,7 @@ use App\Http\Controllers\FolderController;
 use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\CollectiveController;
 use App\Http\Controllers\CollectiveFolderController;
+use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
@@ -19,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-	return view('welcome');
-})->name("home");
+Route::get('/', [HomepageController::class, "index"])->name("home");
 
 Route::get('/dashboard', function () {
     return view('dashboard');

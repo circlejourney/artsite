@@ -18,9 +18,11 @@
 			<p>{{ config("app.name") }} is a cool art site with collabs, collectives, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad penis pariatur excepteur et cupidatat minim culpa.</p>
 			<a class="button-blob" href="#">Do the thing <i class="fa fa-arrow-right"></i></a>
 			<div class="hero-gallery">
-				<img src="https://dummyimage.com/300">
-				<img src="https://dummyimage.com/300">
-				<img src="https://dummyimage.com/300">
+				@foreach($random_artworks as $random_art)
+				<a href="{{ route("art", ["path" => $random_art->path]) }}">
+					<img src="{{ $random_art->getThumbnailURL() }}">
+				</a>
+				@endforeach
 			</div>
 		</div>
 		<div class="hero-image-wrapper">
@@ -33,8 +35,10 @@
 	<div>
 		<h2>Trending Art</h2>
 		<div class="gallery">
-		@foreach(range(0,9) as $i)
-			<img class="gallery-thumbnail" src="/images/300.png">
+		@foreach($popular_artworks as $popular_art)
+			<a class="gallery-thumbnail" href="{{ route("art", ["path" => $popular_art->path]) }}">
+				<img src="{{ $popular_art->getThumbnailURL() }}">
+			</a>
 		@endforeach
 			<div class="w-100 d-flex justify-content-center">
 				<a href="#" class="button-blob">See More</a>

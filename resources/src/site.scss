@@ -472,7 +472,9 @@ main {
 	margin: $mid-padding 0;
 
 	img {
-		width: 30%;
+		height: 150px;
+		object-fit: cover;
+		object-position: top center;
 	}
 }
 

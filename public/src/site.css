@@ -382,7 +382,11 @@ main .page-block {
   margin: 0.6rem 0;
 }
 .hero-gallery img {
-  width: 30%;
+  height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top center;
+     object-position: top center;
 }
 
 /* Profile page */
