@@ -1,8 +1,8 @@
 <nav class="p-2">
     <div class="nav-left">
         <a href="#nav-menu" class="menu-toggle" data-toggle="collapse"><i class="fa fa-bars"></i></a>
-        <a href="/" class="logo">Logo</a>
-		<a href="/" class="logo-small">L</a>
+        <a href="{{ route('home') }}" class="logo">Logo</a>
+		<a href="{{ route('home') }}" class="logo-small">L</a>
 		<div class="d-none d-lg-block">
 			@include("components.search-form")
 		</div>

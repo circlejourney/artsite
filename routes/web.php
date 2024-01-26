@@ -20,12 +20,9 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomepageController::class, "index"])->name("home");
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/', [HomepageController::class, "index"])->name('dashboard');
+Route::get('/home', [HomepageController::class, "index"])->name("home");
 
 /* Admin management routes */
 Route::middleware("role:admin,mod")->group(function(){

@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Artwork;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class HomepageController extends Controller
 {
     public function index() {
+		if(auth()->check() && Route::currentRouteName() != "home") {
+			return view("dashboard");
+		}
 		$random_art = Artwork::inRandomOrder()->whereNotNull("thumbnail")->limit(3)->get();
 		$date_limit = now()->subWeek();
 		$popular_art = Artwork::whereHas("faved_by", function($q) use($date_limit){
