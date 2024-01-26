@@ -54,7 +54,6 @@ class CollectiveController extends Controller
     public function show(Collective $collective)
     {
         $artworks = $collective->artwork_folders->pluck("artworks")->flatten();
-        error_log($artworks);
         return view("collectives.show", ["collective" => $collective, "artworks" => $artworks->sortByDesc("pivot.created_at")]);
     }
 
