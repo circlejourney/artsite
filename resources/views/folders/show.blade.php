@@ -6,6 +6,18 @@
 @endpush
 
 @section('profile-body')
+
+	<h3 class="gallery-title">
+		{{ $folder->getDisplayName() }}{{ $all ? ": Showing all flattened" : "" }}
+		
+		@unless($folder->isTopFolder())
+			<a class="folder-badge-link" href="{{
+				route("folders.show", ["username" => $user->name, "folder" => $folder->parent()->first(), "tag" => $tag->name ?? null])
+			}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
+		@endunless
+
+	</h3>
+	
 	@unless($childfolders->isEmpty())
 	<div class="folder-section">
 		<a class="collapse-link"
@@ -66,16 +78,5 @@
 		@endif
 	</div>
 	@endunless
-
-	<h3 class="gallery-title">
-		{{ $folder->getDisplayName() }}{{ $all ? ": Showing all flattened" : "" }}
-		
-		@unless($folder->isTopFolder())
-			<a class="folder-badge-link" href="{{
-				route("folders.show", ["username" => $user->name, "folder" => $folder->parent()->first(), "tag" => $tag->name ?? null])
-			}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
-		@endunless
-
-	</h3>
 	@include("layouts.gallery", ["artworks" => $artworks, "user" => $user])
 @endsection

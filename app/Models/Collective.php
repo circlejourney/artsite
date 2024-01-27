@@ -42,7 +42,8 @@ class Collective extends Model
 	}
 
 	public function artworks() {
-		return $this->artwork_folders;
+		$artworks = $this->artwork_folders->pluck("artworks")->flatten();
+		return $artworks;
 		/*return Artwork::with("folders")->whereHas("folders", function($q) {
 			$q->where("collective_id", $this->id);
 		});*/

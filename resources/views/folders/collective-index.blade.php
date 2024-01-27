@@ -47,7 +47,7 @@
 	</div>
 	@endif
 	
-	@unless($tags->isEmpty())
+	{{-- @unless($tags->isEmpty())
 	<div class="tag-section">
 		<a class="collapse-link"
 			href="#tag-wrapper"
@@ -90,7 +90,7 @@
 			</div>
 		@endforeach
 	</div>
-	@endunless
+	@endunless --}}
 	
 	@include("layouts.gallery", ["artworks" => $artworks])
 @endsection

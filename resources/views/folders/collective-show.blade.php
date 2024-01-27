@@ -33,7 +33,7 @@
 	</div>
 	@endunless
 	
-	@unless($tags->isEmpty())
+	{{-- @unless($tags->isEmpty())
 	<div class="tag-section">
 		<a class="collapse-link"
 			href="#tag-wrapper"
@@ -52,7 +52,7 @@
 			{!! $tag->tag_highlight->text !!}
 		</div>
 	@endif
-	@endunless
+	@endunless --}}
 
 	<h3>
 		{{ $folder->getDisplayName() }}{{ $all ? ": Showing all flattened" : "" }}
