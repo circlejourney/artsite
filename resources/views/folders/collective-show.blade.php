@@ -5,6 +5,20 @@
 @endpush
 
 @section('body')
+
+	<h1>
+		<a href="{{ route("collectives.show", ["collective" => $collective]) }}">
+			{{ $collective->display_name }}</a>:
+			{{ $folder->getDisplayName() }}{{ $all ? ": Showing all flattened" : "" }}
+		
+		@unless($folder->isTopFolder())
+			<a class="folder-badge-link" href="{{
+				route("collectives.folders.show", ["collective" => $collective->url, "folder" => $folder->parent, "tag" => $tag->name ?? null])
+			}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
+		@endunless
+
+	</h1>
+
 	@unless($childfolders->isEmpty())
 	<div class="folder-section">
 		<a class="collapse-link"
@@ -53,16 +67,5 @@
 		</div>
 	@endif
 	@endunless --}}
-
-	<h3>
-		{{ $folder->getDisplayName() }}{{ $all ? ": Showing all flattened" : "" }}
-		
-		@unless($folder->isTopFolder())
-			<a class="folder-badge-link" href="{{
-				route("collectives.folders.show", ["collective" => $collective->url, "folder" => $folder->parent, "tag" => $tag->name ?? null])
-			}}">Go back to {{ $folder->parent()->first()->getDisplayName() }}</a>
-		@endunless
-
-	</h3>
 	@include("layouts.gallery", ["artworks" => $artworks])
 @endsection

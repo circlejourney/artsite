@@ -22,10 +22,10 @@ class ArtworkController extends Controller
 
 		if($artworkprivacy > $maxPrivacyAllowed) abort(401);
 
-		$folders = $artwork->folders()
-			->orderBy("artwork_folder.created_at")
-			->get()
-			->reject(function($i){ return $i->isTopFolder(); });
+		$folders = $artwork->folders
+			->sortBy("artwork_folder.created_at");
+			//->reject(function($i){ return $i->isTopFolder(); });
+		error_log($folders);
 		$image_urls = $artwork->getImageURLs();
 		$owner_ids = $artwork->getOwners();
 		$artwork_text = $artwork->getText();
