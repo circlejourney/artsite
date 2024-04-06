@@ -117,20 +117,6 @@ nav .menu-toggle-circle .number-badge {
   height: 3rem;
 }
 
-/* BOOTSTRAP */
-.bg-danger {
-  color: white;
-}
-
-.modal-dialog {
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* NAVIGATION */
 nav {
   position: relative;

@@ -1,0 +1,17 @@
+/* Fix default Bootstrap styling */
+.form-inline label {
+  gap: 0.3rem;
+}
+
+.bg-danger {
+  color: white;
+}
+
+.modal-dialog {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
