@@ -88,7 +88,7 @@ class Artwork extends Model
 		return $thumbnail ?? "";
 	}
 
-	public function getImageURL(int $index) : string {
+	public function getImageURL(int $index=0) : string {
 		if(!($images = $this->images) || !isset($images[$index])) return "";
 		$relative_path = Storage::url($images[$index]);
 		return $relative_path ?? "";

@@ -1,4 +1,6 @@
-<x-guest-layout>
+@extends("layouts.site")
+@section("body")
+    <h1>Reset password</h1>
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
@@ -36,4 +38,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+@endsection

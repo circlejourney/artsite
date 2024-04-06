@@ -1,5 +1,4 @@
 @extends('layouts.site', ["metatitle" => "Home"])
-@push("title"){{ "Home" }}@endpush
 @push("metadescription"){{ "A cool art site with collabs, collectives and more." }}@endpush
 
 @section("body")
@@ -16,7 +15,7 @@
 		<div class="hero-text p-5">
 			<h1>Art for Artists</h1>
 			<p>{{ config("app.name") }} is a cool art site with collabs, collectives, galleries, and lots of placeholder content. Do nostrud occaecat dolor proident incididunt minim ad penis pariatur excepteur et cupidatat minim culpa.</p>
-			<a class="button-blob" href="#">Do the thing <i class="fa fa-arrow-right"></i></a>
+			<a class="button-blob" href="{{ route("register") }}">Sign up now! <i class="fa fa-arrow-right"></i></a>
 			<div class="hero-gallery">
 				@foreach($random_artworks as $random_art)
 				<a href="{{ route("art", ["path" => $random_art->path]) }}">

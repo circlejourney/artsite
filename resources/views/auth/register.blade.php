@@ -1,26 +1,29 @@
-<x-guest-layout>
+@extends("layouts.site", ["metatitle" => "Register"])
+@section("body")
+    <x-spacer/>
+    <h1>Sign up for an account</h1>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
         <!-- Username -->
-        <div>
+        <div class="form-group">
             <x-input-label for="name" :value="__('Username')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="username" />
+            <x-text-input id="name" class="form-control" type="text" name="name" :value="old('name')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
-        <div class="mt-4">
+        <div class="form-group">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
+            <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div class="form-group">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="form-control"
                             type="password"
                             name="password"
                             required autocomplete="new-password" />
@@ -29,10 +32,10 @@
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
+        <div class="form-group">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+            <x-text-input id="password_confirmation" class="form-control"
                             type="password"
                             name="password_confirmation" required autocomplete="new-password" />
 
@@ -41,10 +44,10 @@
 
         <!-- Invite Code -->
         @if(!$firstuser)
-        <div class="mt-4">
+        <div class="form-group">
             <x-input-label for="invite_code" :value="__('Invite Code')" />
 
-            <x-text-input id="invite_code" class="block mt-1 w-full"
+            <x-text-input id="invite_code" class="form-control"
                             type="text"
                             name="invite_code" required />
 
@@ -60,8 +63,8 @@
 			
         </div>
 		<br>
-		<a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-			{{ __('Already registered?') }}
+		<a href="{{ route('login') }}">
+			{{ __('Already registered? Sign in') }}
 		</a>
     </form>
-</x-guest-layout>
+@endsection

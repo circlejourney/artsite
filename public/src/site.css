@@ -353,6 +353,8 @@ main .page-block {
 .hero-image {
   flex-basis: 0;
   height: calc(100% + 4rem);
+  max-width: 600px;
+  max-height: 500px;
   margin: -2rem 0;
 }
 
