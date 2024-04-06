@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <div class="mt-4 d-flex align-items-center justify-content-between">
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
 
@@ -23,7 +23,7 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
 
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button type="submit" class="button-pill">
                 {{ __('Log Out') }}
             </button>
         </form>

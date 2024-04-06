@@ -24,30 +24,32 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomepageController::class, "index"])->name('dashboard');
 Route::get('/home', [HomepageController::class, "index"])->name("home");
 
-/* Admin management routes */
-Route::middleware("role:admin,mod")->group(function(){
-	Route::get("/admin", [AdminPageController::class, 'index'])->name("admin");
-});
-
-Route::middleware("permissions:manage_users")->group(function(){
-	Route::get("/admin/users", [AdminPageController::class, 'index_users'])->name("admin.user.index");
-	Route::get("/admin/users/{user}", [AdminPageController::class, 'edit_user'])->name("admin.user.edit");
-	Route::put("/admin/users/{user}", [AdminPageController::class, 'update_user']);
-	Route::delete("/admin/users/{user}/delete", [ProfileController::class, 'destroy']);
-});
-
-Route::middleware("permissions:manage_roles")->group(function(){
-	Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
-	Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
-	Route::put("/admin/roles/{role}", [AdminPageController::class, 'update_role']);
-});
-
-Route::middleware("permissions:manage_artworks")->group(function(){
-	Route::get("/admin/works", [AdminPageController::class, 'index_artworks'])->name("admin.art.index");
-	Route::get("/admin/works/{role}", [AdminPageController::class, 'edit_artworks'])->name("admin.art.edit");
-});
-
 Route::middleware('auth', 'verified')->group(function () {
+
+	/* Admin management routes */
+	Route::middleware("role:admin,mod")->group(function(){
+		Route::get("/admin", [AdminPageController::class, 'index'])->name("admin");
+	});
+
+	Route::middleware("permissions:manage_users")->group(function(){
+		Route::get("/admin/users", [AdminPageController::class, 'index_users'])->name("admin.user.index");
+		Route::get("/admin/users/{user}", [AdminPageController::class, 'edit_user'])->name("admin.user.edit");
+		Route::put("/admin/users/{user}", [AdminPageController::class, 'update_user']);
+		Route::delete("/admin/users/{user}/delete", [ProfileController::class, 'destroy']);
+	});
+
+	Route::middleware("permissions:manage_roles")->group(function(){
+		Route::get("/admin/roles", [AdminPageController::class, 'index_roles'])->name("admin.role.index");
+		Route::get("/admin/roles/{role}", [AdminPageController::class, 'edit_role'])->name("admin.role.edit");
+		Route::put("/admin/roles/{role}", [AdminPageController::class, 'update_role']);
+	});
+
+	Route::middleware("permissions:manage_artworks")->group(function(){
+		Route::get("/admin/works", [AdminPageController::class, 'index_artworks'])->name("admin.art.index");
+		Route::get("/admin/works/{role}", [AdminPageController::class, 'edit_artworks'])->name("admin.art.edit");
+	});
+
+
 	/* Self management routes */
     Route::get('/dashboard/account', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/dashboard/account', [ProfileController::class, 'update'])->name('profile.update');
@@ -129,7 +131,7 @@ Route::get("/{username}/gallery", [FolderController::class, 'index_user'])->name
 Route::get("/{username}/gallery/folder:{folder}/{all?}", [FolderController::class, 'show'])->name("folders.show");
 
 /* Collectives */
-Route::middleware("auth")->group(function(){
+Route::middleware("auth, verified")->group(function(){
 	Route::get("/co/new", [CollectiveController::class, 'create'])->name("collectives.create");
 	Route::post("/co/new", [CollectiveController::class, 'store']);
 	Route::get("/co/{collective}/dashboard", [CollectiveController::class, 'dashboard'])->name("collectives.dashboard");
